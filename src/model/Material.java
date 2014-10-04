@@ -133,7 +133,7 @@ public class Material implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Material[ codmat=" + codmat + " ]";
+        return codmat.toString() + " " + descricao;
     }
     
 }

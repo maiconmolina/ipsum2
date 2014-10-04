@@ -243,7 +243,7 @@ public class Fornecedor implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Fornecedor[ codfornec=" + codfornec + " ]";
+        return codfornec.toString() + " " + razao;
     }
     
 }
