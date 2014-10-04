@@ -6,6 +6,8 @@
 
 package model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoPagamento.findByTipopag", query = "SELECT t FROM TipoPagamento t WHERE t.tipopag = :tipopag"),
     @NamedQuery(name = "TipoPagamento.findByAtivo", query = "SELECT t FROM TipoPagamento t WHERE t.ativo = :ativo")})
 public class TipoPagamento implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -58,7 +63,9 @@ public class TipoPagamento implements Serializable {
     }
 
     public void setTipopag(Integer tipopag) {
+        Integer oldTipopag = this.tipopag;
         this.tipopag = tipopag;
+        changeSupport.firePropertyChange("tipopag", oldTipopag, tipopag);
     }
 
     public String getDescricao() {
@@ -66,7 +73,9 @@ public class TipoPagamento implements Serializable {
     }
 
     public void setDescricao(String descricao) {
+        String oldDescricao = this.descricao;
         this.descricao = descricao;
+        changeSupport.firePropertyChange("descricao", oldDescricao, descricao);
     }
 
     public Boolean getAtivo() {
@@ -74,7 +83,9 @@ public class TipoPagamento implements Serializable {
     }
 
     public void setAtivo(Boolean ativo) {
+        Boolean oldAtivo = this.ativo;
         this.ativo = ativo;
+        changeSupport.firePropertyChange("ativo", oldAtivo, ativo);
     }
 
     @XmlTransient
@@ -109,6 +120,14 @@ public class TipoPagamento implements Serializable {
     @Override
     public String toString() {
         return "ipsum2.TipoPagamento[ tipopag=" + tipopag + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
