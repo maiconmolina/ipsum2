@@ -6,6 +6,9 @@
 
 package view;
 
+import java.awt.Component;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Maicon
@@ -17,6 +20,17 @@ public class Start extends javax.swing.JFrame {
      */
     public Start() {
         initComponents();
+        setLocationRelativeTo(null);
+    }
+    
+    public static void addFrame(Component comp) {
+        desktopPane.add(comp);
+        comp.setVisible(true);
+        comp.setLocation(0, 0);
+    }
+    
+    public static void showPopup(String str){
+        JOptionPane.showMessageDialog(desktopPane, str);
     }
 
     /**
@@ -45,6 +59,9 @@ public class Start extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1024, 768));
+
+        desktopPane.setBackground(new java.awt.Color(204, 204, 255));
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -168,7 +185,7 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
-    private javax.swing.JDesktopPane desktopPane;
+    private static javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;

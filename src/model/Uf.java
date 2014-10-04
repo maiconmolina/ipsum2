@@ -6,6 +6,8 @@
 
 package model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Uf.findAll", query = "SELECT u FROM Uf u"),
     @NamedQuery(name = "Uf.findByCoduf", query = "SELECT u FROM Uf u WHERE u.coduf = :coduf")})
 public class Uf implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -55,7 +60,9 @@ public class Uf implements Serializable {
     }
 
     public void setCoduf(Integer coduf) {
+        Integer oldCoduf = this.coduf;
         this.coduf = coduf;
+        changeSupport.firePropertyChange("coduf", oldCoduf, coduf);
     }
 
     public String getNome() {
@@ -63,7 +70,9 @@ public class Uf implements Serializable {
     }
 
     public void setNome(String nome) {
+        String oldNome = this.nome;
         this.nome = nome;
+        changeSupport.firePropertyChange("nome", oldNome, nome);
     }
 
     @XmlTransient
@@ -98,6 +107,14 @@ public class Uf implements Serializable {
     @Override
     public String toString() {
         return "ipsum2.Uf[ coduf=" + coduf + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }
