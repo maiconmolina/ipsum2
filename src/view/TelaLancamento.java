@@ -5,7 +5,15 @@
  */
 package view;
 
+import controller.CaixaJpaController;
+import controller.LancamentoJpaController;
 import enuns.EnumTipoDeLancamento;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Caixa;
+import model.Lancamento;
 
 /**
  *
@@ -17,9 +25,38 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
      * Creates new form TelaLancamento
      */
     public TelaLancamento() {
-       
+
         initComponents();
+//        Caixa caixa = new Caixa();
+        List<Caixa> caixa = null;
+
+        CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
         InterfaceUtils.preparaTela(this);
+        Lancamento lancamento = new Lancamento();
+        for (Caixa c : caixa) {
+            lancamento.setCodcaixa(c);
+        }
+        lancamento.setAtivo(true);
+        lancamento.setDescricao("Entrada");
+        lancamento.setEstorno(false);
+        lancamento.setValor(100.00);
+
+        List<Lancamento> lancamentos = null;
+
+        LancamentoJpaController LC = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+        lancamentos = LC.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
+        try {
+            LC.create(lancamento);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (Lancamento lanc : lancamentos) {
+
+            JOptionPane.showMessageDialog(this, lanc.getDescricao());
+        }
+
     }
 
     /**

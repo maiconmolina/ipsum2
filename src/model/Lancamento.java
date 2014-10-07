@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Lancamento.findByCodlanc", query = "SELECT l FROM Lancamento l WHERE l.codlanc = :codlanc"),
     @NamedQuery(name = "Lancamento.findByAtivo", query = "SELECT l FROM Lancamento l WHERE l.ativo = :ativo"),
     @NamedQuery(name = "Lancamento.findByValor", query = "SELECT l FROM Lancamento l WHERE l.valor = :valor"),
+    @NamedQuery(name = "Lancamento.findMaxId", query = "SELECT l FROM Lancamento l ORDER by l.codlanc desc"),
     @NamedQuery(name = "Lancamento.findByEstorno", query = "SELECT l FROM Lancamento l WHERE l.estorno = :estorno")})
 public class Lancamento implements Serializable {
     private static final long serialVersionUID = 1L;

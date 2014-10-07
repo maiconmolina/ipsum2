@@ -5,6 +5,11 @@
  */
 package view;
 
+import controller.CaixaJpaController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Caixa;
+
 /**
  *
  * @author Luis
@@ -17,6 +22,16 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
     public TelaCaixa() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        Caixa caixa = new Caixa();
+        caixa.setCodcaixa(1);
+        caixa.setSaldo(0.0);
+        caixa.setStatus(true);
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        try {
+            caixaController.create(caixa);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
