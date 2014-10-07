@@ -6,9 +6,15 @@
 package view;
 
 import controller.CaixaJpaController;
+import controller.LancamentoJpaController;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Caixa;
+import model.Lancamento;
 
 /**
  *
@@ -22,15 +28,48 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
     public TelaCaixa() {
         initComponents();
         InterfaceUtils.preparaTela(this);
-        Caixa caixa = new Caixa();
-        caixa.setCodcaixa(1);
-        caixa.setSaldo(0.0);
-        caixa.setStatus(true);
+        Caixa caixa = InitCaixa();
+        List<Lancamento> lancamentos ;
+        LancamentoJpaController lancamentoController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+        lancamentos = lancamentoController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
+        this.insereTabela(lancamentos);
+//        for (Lancamento lanc : lancamentos){
+//            JOptionPane.showMessageDialog(this, lanc.getDescricao());
+//        }
+
+    }
+
+    private Caixa InitCaixa() {
+        List<Caixa> caixas;
+        Caixa caixa;
         CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        caixas = caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getResultList();
+        for (Caixa c : caixas) {
+            caixa = c;
+            if (caixa.getCodcaixa() == 1) {
+                return caixa;
+            }
+        }
+        caixa = new Caixa();
+        caixa.setCodcaixa(1);
         try {
             caixaController.create(caixa);
         } catch (Exception ex) {
             Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return caixa;
+
+    }
+    private void insereTabela(List<Lancamento> data) {
+        DefaultTableModel model = (DefaultTableModel) Tabela.getModel();
+        List<Object> dados = new ArrayList<>();
+        for (Lancamento o : data) {
+            dados.add(o.getCodlanc());
+            dados.add(o);            
+            dados.add(o.getValor().toString());
+//            dados.add(o.getValor().toString());
+            model.addRow(dados.toArray());
+            dados.clear();
         }
     }
 
@@ -50,7 +89,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaLancamentos = new javax.swing.JTable();
+        Tabela = new javax.swing.JTable();
 
         jButton1.setText("Novo Lançamento");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -98,7 +137,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             }
         });
 
-        tabelaLancamentos.setModel(new javax.swing.table.DefaultTableModel(
+        Tabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -106,7 +145,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 "Código","Descrição", "Tipo", "Valor"
             }
         ));
-        jScrollPane1.setViewportView(tabelaLancamentos);
+        jScrollPane1.setViewportView(Tabela);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -205,6 +244,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable Tabela;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -212,6 +252,5 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelaLancamentos;
     // End of variables declaration//GEN-END:variables
 }

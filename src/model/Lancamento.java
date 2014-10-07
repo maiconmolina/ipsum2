@@ -37,9 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Lancamento.findByCodlanc", query = "SELECT l FROM Lancamento l WHERE l.codlanc = :codlanc"),
     @NamedQuery(name = "Lancamento.findByAtivo", query = "SELECT l FROM Lancamento l WHERE l.ativo = :ativo"),
     @NamedQuery(name = "Lancamento.findByValor", query = "SELECT l FROM Lancamento l WHERE l.valor = :valor"),
-    @NamedQuery(name = "Lancamento.findMaxId", query = "SELECT l FROM Lancamento l ORDER by l.codlanc desc"),
+    @NamedQuery(name = "Lancamento.findMaxId", query = "SELECT l FROM Lancamento l ORDER by l.codlanc DESC"),
     @NamedQuery(name = "Lancamento.findByEstorno", query = "SELECT l FROM Lancamento l WHERE l.estorno = :estorno")})
 public class Lancamento implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -68,110 +69,116 @@ public class Lancamento implements Serializable {
     private LancamentoPagfunc lancamentoPagfunc;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "lancamento", fetch = FetchType.EAGER)
     private LancamentoEntrada lancamentoEntrada;
-
+    
     public Lancamento() {
+        this.setEstorno(false);
+        this.setLancamentoEntrada(null);
+        this.setLancamentoSaida(null);
+        this.setLancamentoPagfunc(null);
+        this.setLancamentoRecforn(null);
+        this.setSituacaoLancamentoList(null);
     }
-
+    
     public Lancamento(Integer codlanc) {
         this.codlanc = codlanc;
     }
-
+    
     public Integer getCodlanc() {
         return codlanc;
     }
-
+    
     public void setCodlanc(Integer codlanc) {
         this.codlanc = codlanc;
     }
-
+    
     public Boolean getAtivo() {
         return ativo;
     }
-
+    
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
-
+    
     public Double getValor() {
         return valor;
     }
-
+    
     public void setValor(Double valor) {
         this.valor = valor;
     }
-
+    
     public Boolean getEstorno() {
         return estorno;
     }
-
+    
     public void setEstorno(Boolean estorno) {
         this.estorno = estorno;
     }
-
+    
     public String getDescricao() {
         return descricao;
     }
-
+    
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
+    
     public LancamentoSaida getLancamentoSaida() {
         return lancamentoSaida;
     }
-
+    
     public void setLancamentoSaida(LancamentoSaida lancamentoSaida) {
         this.lancamentoSaida = lancamentoSaida;
     }
-
+    
     public LancamentoRecforn getLancamentoRecforn() {
         return lancamentoRecforn;
     }
-
+    
     public void setLancamentoRecforn(LancamentoRecforn lancamentoRecforn) {
         this.lancamentoRecforn = lancamentoRecforn;
     }
-
+    
     @XmlTransient
     public List<SituacaoLancamento> getSituacaoLancamentoList() {
         return situacaoLancamentoList;
     }
-
+    
     public void setSituacaoLancamentoList(List<SituacaoLancamento> situacaoLancamentoList) {
         this.situacaoLancamentoList = situacaoLancamentoList;
     }
-
+    
     public Caixa getCodcaixa() {
         return codcaixa;
     }
-
+    
     public void setCodcaixa(Caixa codcaixa) {
         this.codcaixa = codcaixa;
     }
-
+    
     public LancamentoPagfunc getLancamentoPagfunc() {
         return lancamentoPagfunc;
     }
-
+    
     public void setLancamentoPagfunc(LancamentoPagfunc lancamentoPagfunc) {
         this.lancamentoPagfunc = lancamentoPagfunc;
     }
-
+    
     public LancamentoEntrada getLancamentoEntrada() {
         return lancamentoEntrada;
     }
-
+    
     public void setLancamentoEntrada(LancamentoEntrada lancamentoEntrada) {
         this.lancamentoEntrada = lancamentoEntrada;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (codlanc != null ? codlanc.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -184,10 +191,10 @@ public class Lancamento implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
-        return "ipsum2.Lancamento[ codlanc=" + codlanc + " ]";
+        return this.getDescricao();
     }
     
 }

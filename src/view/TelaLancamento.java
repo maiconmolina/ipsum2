@@ -6,7 +6,10 @@
 package view;
 
 import controller.CaixaJpaController;
+import controller.LancamentoEntradaJpaController;
 import controller.LancamentoJpaController;
+import controller.LancamentoSaidaJpaController;
+import controller.exceptions.PreexistingEntityException;
 import enuns.EnumTipoDeLancamento;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,6 +17,10 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Caixa;
 import model.Lancamento;
+import model.LancamentoEntrada;
+import model.LancamentoPagfunc;
+import model.LancamentoRecforn;
+import model.LancamentoSaida;
 
 /**
  *
@@ -27,36 +34,19 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     public TelaLancamento() {
 
         initComponents();
-//        Caixa caixa = new Caixa();
-        List<Caixa> caixa = null;
-
-        CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
-        caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
         InterfaceUtils.preparaTela(this);
-        Lancamento lancamento = new Lancamento();
-        for (Caixa c : caixa) {
-            lancamento.setCodcaixa(c);
+        int MaxIdLanc = ultimoLancId();
+        codigo.setText(String.valueOf(MaxIdLanc));
+    }
+
+    private int ultimoLancId() {
+        List<Lancamento> lanc;
+        LancamentoJpaController LancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+        lanc = LancController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
+        for (Lancamento l : lanc) {
+            return l.getCodlanc() + 1;
         }
-        lancamento.setAtivo(true);
-        lancamento.setDescricao("Entrada");
-        lancamento.setEstorno(false);
-        lancamento.setValor(100.00);
-
-        List<Lancamento> lancamentos = null;
-
-        LancamentoJpaController LC = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
-        lancamentos = LC.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
-        try {
-            LC.create(lancamento);
-        } catch (Exception ex) {
-            Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        for (Lancamento lanc : lancamentos) {
-
-            JOptionPane.showMessageDialog(this, lanc.getDescricao());
-        }
-
+        return 1;
     }
 
     /**
@@ -194,6 +184,65 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
 
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
 
+        List<Caixa> caixa = null;
+        CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
+
+        Lancamento lanc = new Lancamento();
+
+        for (Caixa c : caixa) {
+            lanc.setCodcaixa(c);
+        }
+        lanc.setDescricao(descricao.getText());
+        lanc.setEstorno(false);
+        lanc.setCodlanc(Integer.parseInt(codigo.getText()));
+        lanc.setValor(Double.parseDouble(valor.getText().replace(",", ".")));
+
+        LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+
+        try {
+            lancController.create(lanc);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (tipo.getSelectedItem().toString() == "Entrada comum") {
+            LancamentoEntrada entrada = new LancamentoEntrada();
+            entrada.setLancamento(lanc);
+            LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
+//            try {
+//                lancEntrController.create(entrada);
+//            } catch (PreexistingEntityException ex) {
+//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (Exception ex) {
+//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        }
+        if (tipo.getSelectedItem().toString() == "Saída comum") {
+            LancamentoSaida saida = new LancamentoSaida();
+            saida.setLancamento(lanc);
+            LancamentoSaidaJpaController lancSaidaontroller = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
+//            try {
+//                lancSaidaontroller.create(saida);
+//            } catch (PreexistingEntityException ex) {
+//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (Exception ex) {
+//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        }
+
+//        if (tipo.getSelectedItem().toString() == "Pagamento de Funcionário") {
+//            LancamentoPagfunc pagFunc = new LancamentoPagfunc();
+//            pagFunc.setLancamento(lanc);
+//            lanc.setLancamentoPagfunc(pagFunc);
+//        }
+//        if (tipo.getSelectedItem().toString() == "Recebimento do Fornecedor/Cliente") {
+//            LancamentoRecforn recForn = new LancamentoRecforn();
+//            recForn.setLancamento(lanc);
+//            lanc.setLancamentoRecforn(recForn);
+//        }
+        this.dispose();
+        new TelaCaixa();
     }//GEN-LAST:event_salvarActionPerformed
 
     /**
