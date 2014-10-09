@@ -109,7 +109,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             }
         });
 
-        salvar.setText("Avançar");
+        salvar.setText("Salvar");
         salvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salvarActionPerformed(evt);
@@ -183,7 +183,8 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tipoActionPerformed
 
     private void excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirActionPerformed
-
+        this.dispose();
+        new TelaCaixa();
     }//GEN-LAST:event_excluirActionPerformed
 
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
@@ -225,15 +226,16 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         }
         if (tipo.getSelectedItem().toString() == "Saída comum") {
             LancamentoSaida saida = new LancamentoSaida();
+            saida.setCodlanc(lanc.getCodlanc());
             saida.setLancamento(lanc);
             LancamentoSaidaJpaController lancSaidaontroller = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
-//            try {
-//                lancSaidaontroller.create(saida);
-//            } catch (PreexistingEntityException ex) {
-//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (Exception ex) {
-//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try {
+                lancSaidaontroller.create(saida);
+            } catch (PreexistingEntityException ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
 //        if (tipo.getSelectedItem().toString() == "Pagamento de Funcionário") {

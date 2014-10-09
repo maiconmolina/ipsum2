@@ -84,7 +84,7 @@ public class LancamentoSaida implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.LancamentoSaida[ codlanc=" + codlanc + " ]";
+        return "Saída Comum";
     }
     
 }

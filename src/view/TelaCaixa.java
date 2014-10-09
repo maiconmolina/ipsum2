@@ -29,13 +29,10 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         initComponents();
         InterfaceUtils.preparaTela(this);
         Caixa caixa = InitCaixa();
-        List<Lancamento> lancamentos ;
+        List<Lancamento> lancamentos;
         LancamentoJpaController lancamentoController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
         lancamentos = lancamentoController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
         this.insereTabela(lancamentos);
-//        for (Lancamento lanc : lancamentos){
-//            JOptionPane.showMessageDialog(this, lanc.getDescricao());
-//        }
 
     }
 
@@ -60,14 +57,19 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         return caixa;
 
     }
+
     private void insereTabela(List<Lancamento> data) {
         DefaultTableModel model = (DefaultTableModel) Tabela.getModel();
         List<Object> dados = new ArrayList<>();
         for (Lancamento o : data) {
             dados.add(o.getCodlanc());
-            dados.add(o);            
+            dados.add(o);
+            if (o.getLancamentoSaida() != null) {
+                dados.add(o.getLancamentoSaida());
+            } else if (o.getLancamentoEntrada() != null) {
+                dados.add(o.getLancamentoEntrada());
+            }
             dados.add(o.getValor().toString());
-//            dados.add(o.getValor().toString());
             model.addRow(dados.toArray());
             dados.clear();
         }

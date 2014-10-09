@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -30,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "LancamentoEntrada.findAll", query = "SELECT l FROM LancamentoEntrada l"),
     @NamedQuery(name = "LancamentoEntrada.findByCodlanc", query = "SELECT l FROM LancamentoEntrada l WHERE l.codlanc = :codlanc")})
 public class LancamentoEntrada implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -84,7 +84,7 @@ public class LancamentoEntrada implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.LancamentoEntrada[ codlanc=" + codlanc + " ]";
+        return "Entrada Comum";
     }
-    
+
 }
