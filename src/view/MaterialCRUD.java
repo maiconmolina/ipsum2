@@ -6,6 +6,14 @@
 
 package view;
 
+import controller.MaterialJpaController;
+import java.util.List;
+import java.util.Stack;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import model.Material;
+
 /**
  *
  * @author Maicon
@@ -15,8 +23,28 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
     /**
      * Creates new form MaterialCRUD
      */
+    private MaterialJpaController matcon;
     public MaterialCRUD() {
         initComponents();
+        matcon = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
+        
+        
+        List<Material> lstmat;
+        lstmat = matcon.findMaterialEntities();
+        DefaultTableModel tm = new DefaultTableModel();
+        String[] colunas = {"Código","Descrição","Qtde","Ativo"};
+        for(Material mat : lstmat){
+            Object[] o = new Object[4];
+            o[0] = mat.getCodmat();
+            o[1] = mat.getDescricao();
+            o[2] = mat.getQtde();
+            o[3] = mat.getAtivo();
+            
+            tm.addRow(o);
+        }
+        
+        jtmat.setModel(tm);
+        tm.setColumnIdentifiers(colunas);
     }
 
     /**
@@ -29,7 +57,7 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtmat = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -37,12 +65,9 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Materiais");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtmat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Código", "Descrição", "Qtde", "Ativo"
@@ -52,7 +77,7 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
                 java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -63,22 +88,27 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(50);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(50);
-            jTable1.getColumnModel().getColumn(2).setMinWidth(50);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(2).setMaxWidth(50);
-            jTable1.getColumnModel().getColumn(3).setMinWidth(50);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(50);
-            jTable1.getColumnModel().getColumn(3).setMaxWidth(50);
+        jScrollPane1.setViewportView(jtmat);
+        if (jtmat.getColumnModel().getColumnCount() > 0) {
+            jtmat.getColumnModel().getColumn(0).setMinWidth(50);
+            jtmat.getColumnModel().getColumn(0).setPreferredWidth(50);
+            jtmat.getColumnModel().getColumn(0).setMaxWidth(50);
+            jtmat.getColumnModel().getColumn(2).setMinWidth(50);
+            jtmat.getColumnModel().getColumn(2).setPreferredWidth(50);
+            jtmat.getColumnModel().getColumn(2).setMaxWidth(50);
+            jtmat.getColumnModel().getColumn(3).setMinWidth(50);
+            jtmat.getColumnModel().getColumn(3).setPreferredWidth(50);
+            jtmat.getColumnModel().getColumn(3).setMaxWidth(50);
         }
 
         jButton1.setText("Alterar");
 
         jButton2.setText("Novo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,6 +138,13 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        MaterialCRUDEdit novo = new MaterialCRUDEdit();
+        Start.addFrame(novo);
+        novo.setLocation(20, 20);
+        novo.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,6 +185,6 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jtmat;
     // End of variables declaration//GEN-END:variables
 }

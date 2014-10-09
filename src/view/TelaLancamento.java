@@ -41,10 +41,14 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
 
     private int ultimoLancId() {
         List<Lancamento> lanc;
+        Lancamento l;
         LancamentoJpaController LancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
         lanc = LancController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
-        for (Lancamento l : lanc) {
-            return l.getCodlanc() + 1;
+        if (!lanc.isEmpty()) {
+            l = lanc.get(lanc.size() - 1);
+            if (l.getCodlanc() > 0) {
+                return l.getCodlanc() + 1;
+            }
         }
         return 1;
     }
@@ -208,15 +212,16 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
 
         if (tipo.getSelectedItem().toString() == "Entrada comum") {
             LancamentoEntrada entrada = new LancamentoEntrada();
+            entrada.setCodlanc(lanc.getCodlanc());
             entrada.setLancamento(lanc);
             LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
-//            try {
-//                lancEntrController.create(entrada);
-//            } catch (PreexistingEntityException ex) {
-//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (Exception ex) {
-//                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+            try {
+                lancEntrController.create(entrada);
+            } catch (PreexistingEntityException ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if (tipo.getSelectedItem().toString() == "Saída comum") {
             LancamentoSaida saida = new LancamentoSaida();
