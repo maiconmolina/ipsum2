@@ -5,6 +5,7 @@
  */
 package view;
 
+import Util.DecimalFormattedField;
 import controller.CaixaJpaController;
 import controller.LancamentoEntradaJpaController;
 import controller.LancamentoJpaController;
@@ -14,6 +15,7 @@ import enuns.EnumTipoDeLancamento;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import model.Caixa;
 import model.Lancamento;
@@ -66,7 +68,8 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         descricao = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         tipo = new javax.swing.JComboBox();
-        valor = new javax.swing.JTextField();
+        valor =   valor = new DecimalFormattedField(DecimalFormattedField.REAL);
+        //new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         codigo = new javax.swing.JTextField();
@@ -95,6 +98,12 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         for(EnumTipoDeLancamento t : EnumTipoDeLancamento.values()){
             this.tipo.addItem(t);
         }
+
+        valor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valorActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Valor:");
 
@@ -199,10 +208,12 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             lanc.setCodcaixa(c);
         }
         lanc.setDescricao(descricao.getText());
-        lanc.setEstorno(Short.parseShort("1"));
+        lanc.setEstorno((short) 1);
         lanc.setCodlanc(Integer.parseInt(codigo.getText()));
-        lanc.setValor(Double.parseDouble(valor.getText().replace(",", ".")));
-
+        JOptionPane.showMessageDialog(this, valor.getText());
+        JOptionPane.showMessageDialog(null, valor.getText());
+        DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
+        lanc.setValor(val.converteDouble(valor.getText()));
         LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
 
         try {
@@ -251,6 +262,10 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         this.dispose();
         new TelaCaixa();
     }//GEN-LAST:event_salvarActionPerformed
+
+    private void valorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_valorActionPerformed
 
     /**
      * @param args the command line arguments

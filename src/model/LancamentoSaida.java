@@ -97,7 +97,7 @@ public class LancamentoSaida implements Serializable {
 
     @Override
     public String toString() {
-        return "model.LancamentoSaida[ codlanc=" + codlanc + " ]";
+        return "Saída comum";
     }
     
 }

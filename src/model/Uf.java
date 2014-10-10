@@ -95,7 +95,7 @@ public class Uf implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Uf[ coduf=" + coduf + " ]";
+        return this.nome;
     }
     
 }

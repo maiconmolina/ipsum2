@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Lancamento.findByEstorno", query = "SELECT l FROM Lancamento l WHERE l.estorno = :estorno"),
     @NamedQuery(name = "Lancamento.findByValor", query = "SELECT l FROM Lancamento l WHERE l.valor = :valor")})
 public class Lancamento implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -184,7 +185,7 @@ public class Lancamento implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Lancamento[ codlanc=" + codlanc + " ]";
+        return this.descricao;
     }
-    
+
 }

@@ -115,6 +115,12 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="valor">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="valorActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="  valor = new DecimalFormattedField(DecimalFormattedField.REAL);&#xa;//new javax.swing.JTextField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>

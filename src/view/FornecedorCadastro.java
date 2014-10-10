@@ -30,7 +30,6 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
      */
     public FornecedorCadastro() {
         initComponents();
-
         InterfaceUtils.preparaTela(this);
     }
 
@@ -288,29 +287,25 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
             Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        }
-        
+
         List<Usuario> listUsu;
 
         Usuario usu;
         UsuarioJpaController controllerUsu = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
         listUsu = controllerUsu.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
-        int ProxCodigo2;
-        if (!listUsu.isEmpty()) {
-
-            usu = listUsu.get(listUsu.size() - 1);
-            ProxCodigo2 = usu.getCodigo();
-            ProxCodigo2++;
-        } else {
-            ProxCodigo2 = 1;
-        }
+//        int ProxCodigo2;
+//        if (!listUsu.isEmpty()) {
+//            usu = listUsu.get(listUsu.size() - 1);
+//            ProxCodigo2 = usu.getCodigo();
+//            ProxCodigo2++;
+//        } else {
+//            ProxCodigo2 = 1;
+//        }
         usu = new Usuario();
-//        usu.setFornecedor(forn);
-        usu.setCodigo(ProxCodigo2);
+        usu.setCodigo(forn.getCodfornec());
         usu.setLogin(login.getText());
         usu.setSenha(senha.getText());
         usu.setTipo(0);
-//        usu.setFornecedor(forn);
-
         try {
             controllerUsu.create(usu);
         } catch (PreexistingEntityException ex) {
