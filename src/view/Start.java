@@ -123,7 +123,7 @@ public class Start extends javax.swing.JFrame {
 
         jMenu3.setText("Fornecedor");
 
-        jMenuItem4.setText("Cadastro");
+        jMenuItem4.setText("Visualizar");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
