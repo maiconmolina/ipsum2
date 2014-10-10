@@ -3,8 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package view;
+
+import controller.FornecedorJpaController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Fornecedor;
 
 /**
  *
@@ -18,6 +24,12 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
     public FornecedorListagem() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        
+        List<Fornecedor> fornAtivos = null;
+        FornecedorJpaController forncontroller = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+        fornAtivos = forncontroller.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
+        this.insereTabela(fornAtivos);
+        
     }
 
     /**
@@ -30,14 +42,14 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TabelaBusca = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        Visualizar = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Listagem Fornedor");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TabelaBusca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -45,42 +57,70 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
                 "CNPJ", "Razão", "Nome"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TabelaBusca);
 
         jButton1.setText("Inserir");
 
-        jButton2.setText("Visualizar");
+        Visualizar.setText("Visualizar");
+        Visualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VisualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(Visualizar)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Visualizar)
+                    .addComponent(jButton1))
+                .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void VisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VisualizarActionPerformed
+         try {
+            DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();  
+            Fornecedor forn = (Fornecedor) model.getValueAt(TabelaBusca.getSelectedRow(), 1); //Pega o objeto na tabela
+            new FornecedorCadastro(forn); //Abre a tela de cadastro com os dados do objeto pesquisado  
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(this, "Item selecionado inválido!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Um erro aconteceu!\n" + ex.getMessage());
+        }
+    }//GEN-LAST:event_VisualizarActionPerformed
+    
+    private void insereTabela(List<Fornecedor> data) {
+        DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();
+        List<Object> dados = new ArrayList<>();
+        for (Fornecedor f : data) {
+            dados.add(f.getCnpj());
+            dados.add(f);            
+            dados.add(f.getRazao());
+            model.addRow(dados.toArray());
+            dados.clear();
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TabelaBusca;
+    private javax.swing.JButton Visualizar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

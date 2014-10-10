@@ -23,6 +23,9 @@ public class CadastroUF extends JPanel {
     
     public CadastroUF() {
         initComponents();
+        
+        
+        
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
