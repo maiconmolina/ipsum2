@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -13,7 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -29,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "LOTE")
@@ -37,39 +35,39 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Lote.findAll", query = "SELECT l FROM Lote l"),
     @NamedQuery(name = "Lote.findByCodlote", query = "SELECT l FROM Lote l WHERE l.codlote = :codlote"),
+    @NamedQuery(name = "Lote.findByCancelado", query = "SELECT l FROM Lote l WHERE l.cancelado = :cancelado"),
     @NamedQuery(name = "Lote.findByDataent", query = "SELECT l FROM Lote l WHERE l.dataent = :dataent"),
-    @NamedQuery(name = "Lote.findByDatasai", query = "SELECT l FROM Lote l WHERE l.datasai = :datasai"),
-    @NamedQuery(name = "Lote.findByCancelado", query = "SELECT l FROM Lote l WHERE l.cancelado = :cancelado")})
+    @NamedQuery(name = "Lote.findByDatasai", query = "SELECT l FROM Lote l WHERE l.datasai = :datasai")})
 public class Lote implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "CODLOTE")
     private Integer codlote;
-    @Lob
-    @Column(name = "DESCRICAO")
-    private String descricao;
+    @Column(name = "CANCELADO")
+    private Short cancelado;
     @Column(name = "DATAENT")
     @Temporal(TemporalType.DATE)
     private Date dataent;
     @Column(name = "DATASAI")
     @Temporal(TemporalType.DATE)
     private Date datasai;
-    @Column(name = "CANCELADO")
-    private Boolean cancelado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lote", fetch = FetchType.EAGER)
+    @Lob
+    @Column(name = "DESCRICAO")
+    private String descricao;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lote")
     private List<ProdutoDoLote> produtoDoLoteList;
-    @OneToMany(mappedBy = "codlote", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "codlote")
     private List<PagamentoLote> pagamentoLoteList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lote", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lote")
     private List<FuncionarioDoLote> funcionarioDoLoteList;
     @JoinColumn(name = "CODFORNEC", referencedColumnName = "CODFORNEC")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Fornecedor codfornec;
     @JoinColumn(name = "SITLOTE", referencedColumnName = "SITLOTE")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private SituacaoLote sitlote;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lote", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lote")
     private List<ProducaoDiaria> producaoDiariaList;
 
     public Lote() {
@@ -87,12 +85,12 @@ public class Lote implements Serializable {
         this.codlote = codlote;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public Short getCancelado() {
+        return cancelado;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setCancelado(Short cancelado) {
+        this.cancelado = cancelado;
     }
 
     public Date getDataent() {
@@ -111,12 +109,12 @@ public class Lote implements Serializable {
         this.datasai = datasai;
     }
 
-    public Boolean getCancelado() {
-        return cancelado;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setCancelado(Boolean cancelado) {
-        this.cancelado = cancelado;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     @XmlTransient
@@ -193,7 +191,7 @@ public class Lote implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Lote[ codlote=" + codlote + " ]";
+        return "model.Lote[ codlote=" + codlote + " ]";
     }
     
 }

@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,16 +18,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "PRODUTO_DO_LOTE")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProdutoDoLote.findAll", query = "SELECT p FROM ProdutoDoLote p"),
-    @NamedQuery(name = "ProdutoDoLote.findByCodlote", query = "SELECT p FROM ProdutoDoLote p WHERE p.produtoDoLotePK.codlote = :codlote"),
+    @NamedQuery(name = "ProdutoDoLote.findByQtde", query = "SELECT p FROM ProdutoDoLote p WHERE p.qtde = :qtde"),
     @NamedQuery(name = "ProdutoDoLote.findByCodprod", query = "SELECT p FROM ProdutoDoLote p WHERE p.produtoDoLotePK.codprod = :codprod"),
-    @NamedQuery(name = "ProdutoDoLote.findByQtde", query = "SELECT p FROM ProdutoDoLote p WHERE p.qtde = :qtde")})
+    @NamedQuery(name = "ProdutoDoLote.findByCodlote", query = "SELECT p FROM ProdutoDoLote p WHERE p.produtoDoLotePK.codlote = :codlote")})
 public class ProdutoDoLote implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -37,10 +35,10 @@ public class ProdutoDoLote implements Serializable {
     @Column(name = "QTDE")
     private Integer qtde;
     @JoinColumn(name = "CODLOTE", referencedColumnName = "CODLOTE", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Lote lote;
     @JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Produto produto;
 
     public ProdutoDoLote() {
@@ -50,8 +48,8 @@ public class ProdutoDoLote implements Serializable {
         this.produtoDoLotePK = produtoDoLotePK;
     }
 
-    public ProdutoDoLote(int codlote, int codprod) {
-        this.produtoDoLotePK = new ProdutoDoLotePK(codlote, codprod);
+    public ProdutoDoLote(int codprod, int codlote) {
+        this.produtoDoLotePK = new ProdutoDoLotePK(codprod, codlote);
     }
 
     public ProdutoDoLotePK getProdutoDoLotePK() {
@@ -108,7 +106,7 @@ public class ProdutoDoLote implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.ProdutoDoLote[ produtoDoLotePK=" + produtoDoLotePK + " ]";
+        return "model.ProdutoDoLote[ produtoDoLotePK=" + produtoDoLotePK + " ]";
     }
     
 }

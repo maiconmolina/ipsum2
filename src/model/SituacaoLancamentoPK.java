@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -13,30 +12,22 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Embeddable
 public class SituacaoLancamentoPK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "CODSIT")
-    private int codsit;
-    @Basic(optional = false)
     @Column(name = "CODLANC")
     private int codlanc;
+    @Basic(optional = false)
+    @Column(name = "CODSIT")
+    private int codsit;
 
     public SituacaoLancamentoPK() {
     }
 
-    public SituacaoLancamentoPK(int codsit, int codlanc) {
-        this.codsit = codsit;
+    public SituacaoLancamentoPK(int codlanc, int codsit) {
         this.codlanc = codlanc;
-    }
-
-    public int getCodsit() {
-        return codsit;
-    }
-
-    public void setCodsit(int codsit) {
         this.codsit = codsit;
     }
 
@@ -48,11 +39,19 @@ public class SituacaoLancamentoPK implements Serializable {
         this.codlanc = codlanc;
     }
 
+    public int getCodsit() {
+        return codsit;
+    }
+
+    public void setCodsit(int codsit) {
+        this.codsit = codsit;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) codsit;
         hash += (int) codlanc;
+        hash += (int) codsit;
         return hash;
     }
 
@@ -63,10 +62,10 @@ public class SituacaoLancamentoPK implements Serializable {
             return false;
         }
         SituacaoLancamentoPK other = (SituacaoLancamentoPK) object;
-        if (this.codsit != other.codsit) {
+        if (this.codlanc != other.codlanc) {
             return false;
         }
-        if (this.codlanc != other.codlanc) {
+        if (this.codsit != other.codsit) {
             return false;
         }
         return true;
@@ -74,7 +73,7 @@ public class SituacaoLancamentoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.SituacaoLancamentoPK[ codsit=" + codsit + ", codlanc=" + codlanc + " ]";
+        return "model.SituacaoLancamentoPK[ codlanc=" + codlanc + ", codsit=" + codsit + " ]";
     }
     
 }

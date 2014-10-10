@@ -199,7 +199,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             lanc.setCodcaixa(c);
         }
         lanc.setDescricao(descricao.getText());
-        lanc.setEstorno(false);
+        lanc.setEstorno(Short.parseShort("1"));
         lanc.setCodlanc(Integer.parseInt(codigo.getText()));
         lanc.setValor(Double.parseDouble(valor.getText().replace(",", ".")));
 

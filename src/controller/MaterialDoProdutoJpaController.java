@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import controller.exceptions.NonexistentEntityException;
@@ -23,7 +22,7 @@ import model.Produto;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 public class MaterialDoProdutoJpaController implements Serializable {
 
@@ -40,8 +39,8 @@ public class MaterialDoProdutoJpaController implements Serializable {
         if (materialDoProduto.getMaterialDoProdutoPK() == null) {
             materialDoProduto.setMaterialDoProdutoPK(new MaterialDoProdutoPK());
         }
-        materialDoProduto.getMaterialDoProdutoPK().setCodmat(materialDoProduto.getMaterial().getCodmat());
         materialDoProduto.getMaterialDoProdutoPK().setCodprod(materialDoProduto.getProduto().getCodprod());
+        materialDoProduto.getMaterialDoProdutoPK().setCodmat(materialDoProduto.getMaterial().getCodmat());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -79,8 +78,8 @@ public class MaterialDoProdutoJpaController implements Serializable {
     }
 
     public void edit(MaterialDoProduto materialDoProduto) throws NonexistentEntityException, Exception {
-        materialDoProduto.getMaterialDoProdutoPK().setCodmat(materialDoProduto.getMaterial().getCodmat());
         materialDoProduto.getMaterialDoProdutoPK().setCodprod(materialDoProduto.getProduto().getCodprod());
+        materialDoProduto.getMaterialDoProdutoPK().setCodmat(materialDoProduto.getMaterial().getCodmat());
         EntityManager em = null;
         try {
             em = getEntityManager();

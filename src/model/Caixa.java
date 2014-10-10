@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "CAIXA")
@@ -42,13 +40,11 @@ public class Caixa implements Serializable {
     @Column(name = "SALDO")
     private Double saldo;
     @Column(name = "STATUS")
-    private Boolean status;
-    @OneToMany(mappedBy = "codcaixa", fetch = FetchType.EAGER)
+    private Short status;
+    @OneToMany(mappedBy = "codcaixa")
     private List<Lancamento> lancamentoList;
 
     public Caixa() {
-        this.setSaldo(0.0);
-        this.setStatus(true);
     }
 
     public Caixa(Integer codcaixa) {
@@ -71,11 +67,11 @@ public class Caixa implements Serializable {
         this.saldo = saldo;
     }
 
-    public Boolean getStatus() {
+    public Short getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Short status) {
         this.status = status;
     }
 
@@ -110,7 +106,7 @@ public class Caixa implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Caixa[ codcaixa=" + codcaixa + " ]";
+        return "model.Caixa[ codcaixa=" + codcaixa + " ]";
     }
     
 }

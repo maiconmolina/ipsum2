@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -13,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Embeddable
 public class FuncionarioDoLotePK implements Serializable {
@@ -74,7 +73,7 @@ public class FuncionarioDoLotePK implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.FuncionarioDoLotePK[ codfunc=" + codfunc + ", codlote=" + codlote + " ]";
+        return "model.FuncionarioDoLotePK[ codfunc=" + codfunc + ", codlote=" + codlote + " ]";
     }
     
 }

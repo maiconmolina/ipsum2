@@ -6,37 +6,42 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "LANCAMENTO_ENTRADA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "LancamentoEntrada.findAll", query = "SELECT l FROM LancamentoEntrada l"),
-    @NamedQuery(name = "LancamentoEntrada.findByCodlanc", query = "SELECT l FROM LancamentoEntrada l WHERE l.codlanc = :codlanc")})
+    @NamedQuery(name = "LancamentoEntrada.findByCodlanc", query = "SELECT l FROM LancamentoEntrada l WHERE l.codlanc = :codlanc"),
+    @NamedQuery(name = "LancamentoEntrada.findByData", query = "SELECT l FROM LancamentoEntrada l WHERE l.data = :data")})
 public class LancamentoEntrada implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "CODLANC")
     private Integer codlanc;
+    @Column(name = "DATA")
+    @Temporal(TemporalType.DATE)
+    private Date data;
     @JoinColumn(name = "CODLANC", referencedColumnName = "CODLANC", insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false)
     private Lancamento lancamento;
 
     public LancamentoEntrada() {
@@ -52,6 +57,14 @@ public class LancamentoEntrada implements Serializable {
 
     public void setCodlanc(Integer codlanc) {
         this.codlanc = codlanc;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
     }
 
     public Lancamento getLancamento() {
@@ -84,7 +97,7 @@ public class LancamentoEntrada implements Serializable {
 
     @Override
     public String toString() {
-        return "Entrada Comum";
+        return "model.LancamentoEntrada[ codlanc=" + codlanc + " ]";
     }
-
+    
 }

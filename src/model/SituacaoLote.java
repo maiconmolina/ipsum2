@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -23,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "SITUACAO_LOTE")
@@ -38,12 +36,12 @@ public class SituacaoLote implements Serializable {
     @Basic(optional = false)
     @Column(name = "SITLOTE")
     private Integer sitlote;
+    @Column(name = "ATIVO")
+    private Short ativo;
     @Lob
     @Column(name = "DESCRICAO")
     private String descricao;
-    @Column(name = "ATIVO")
-    private Boolean ativo;
-    @OneToMany(mappedBy = "sitlote", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sitlote")
     private List<Lote> loteList;
 
     public SituacaoLote() {
@@ -61,20 +59,20 @@ public class SituacaoLote implements Serializable {
         this.sitlote = sitlote;
     }
 
+    public Short getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Short ativo) {
+        this.ativo = ativo;
+    }
+
     public String getDescricao() {
         return descricao;
     }
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
     }
 
     @XmlTransient
@@ -108,7 +106,7 @@ public class SituacaoLote implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.SituacaoLote[ sitlote=" + sitlote + " ]";
+        return "model.SituacaoLote[ sitlote=" + sitlote + " ]";
     }
     
 }

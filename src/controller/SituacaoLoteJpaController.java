@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import controller.exceptions.NonexistentEntityException;
@@ -22,7 +21,7 @@ import model.SituacaoLote;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 public class SituacaoLoteJpaController implements Serializable {
 

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -12,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -26,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "MATERIAL")
@@ -34,25 +32,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Material.findAll", query = "SELECT m FROM Material m"),
     @NamedQuery(name = "Material.findByCodmat", query = "SELECT m FROM Material m WHERE m.codmat = :codmat"),
-    @NamedQuery(name = "Material.findByQtde", query = "SELECT m FROM Material m WHERE m.qtde = :qtde"),
-    @NamedQuery(name = "Material.findByAtivo", query = "SELECT m FROM Material m WHERE m.ativo = :ativo")})
+    @NamedQuery(name = "Material.findByAtivo", query = "SELECT m FROM Material m WHERE m.ativo = :ativo"),
+    @NamedQuery(name = "Material.findByQtde", query = "SELECT m FROM Material m WHERE m.qtde = :qtde")})
 public class Material implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "CODMAT")
     private Integer codmat;
+    @Column(name = "ATIVO")
+    private Short ativo;
     @Lob
     @Column(name = "DESCRICAO")
     private String descricao;
     @Column(name = "QTDE")
     private Integer qtde;
-    @Column(name = "ATIVO")
-    private Boolean ativo;
     @JoinColumn(name = "CODFORNEC", referencedColumnName = "CODFORNEC")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Fornecedor codfornec;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "material")
     private List<MaterialDoProduto> materialDoProdutoList;
 
     public Material() {
@@ -70,6 +68,14 @@ public class Material implements Serializable {
         this.codmat = codmat;
     }
 
+    public Short getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Short ativo) {
+        this.ativo = ativo;
+    }
+
     public String getDescricao() {
         return descricao;
     }
@@ -84,14 +90,6 @@ public class Material implements Serializable {
 
     public void setQtde(Integer qtde) {
         this.qtde = qtde;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
     }
 
     public Fornecedor getCodfornec() {
@@ -133,7 +131,7 @@ public class Material implements Serializable {
 
     @Override
     public String toString() {
-        return codmat.toString() + " " + descricao;
+        return "model.Material[ codmat=" + codmat + " ]";
     }
     
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -13,7 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -21,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "FUNCIONARIO")
@@ -48,11 +45,8 @@ public class Funcionario implements Serializable {
     @Basic(optional = false)
     @Column(name = "CODFUNC")
     private Integer codfunc;
-    @Lob
-    @Column(name = "NOME")
-    private String nome;
     @Column(name = "ATIVO")
-    private Boolean ativo;
+    private Short ativo;
     @Lob
     @Column(name = "CPF")
     private String cpf;
@@ -63,6 +57,9 @@ public class Funcionario implements Serializable {
     @Column(name = "ENDERECO")
     private String endereco;
     @Lob
+    @Column(name = "NOME")
+    private String nome;
+    @Lob
     @Column(name = "RG")
     private String rg;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -72,20 +69,18 @@ public class Funcionario implements Serializable {
     @Column(name = "TELEFONE")
     private String telefone;
     @Column(name = "TEMPORARIO")
-    private Boolean temporario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario", fetch = FetchType.EAGER)
+    private Short temporario;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private List<FuncionarioDoLote> funcionarioDoLoteList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private List<ProducaoDiaria> producaoDiariaList;
     @JoinColumn(name = "CODFUNCAO", referencedColumnName = "CODFUNCAO")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Funcao codfuncao;
     @JoinColumn(name = "CODHAB", referencedColumnName = "CODHAB")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Habilidade codhab;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "funcionario", fetch = FetchType.EAGER)
-    private Usuario usuario;
-    @OneToMany(mappedBy = "codfunc", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "codfunc")
     private List<LancamentoPagfunc> lancamentoPagfuncList;
 
     public Funcionario() {
@@ -103,19 +98,11 @@ public class Funcionario implements Serializable {
         this.codfunc = codfunc;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public Boolean getAtivo() {
+    public Short getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(Boolean ativo) {
+    public void setAtivo(Short ativo) {
         this.ativo = ativo;
     }
 
@@ -143,6 +130,14 @@ public class Funcionario implements Serializable {
         this.endereco = endereco;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
     public String getRg() {
         return rg;
     }
@@ -167,11 +162,11 @@ public class Funcionario implements Serializable {
         this.telefone = telefone;
     }
 
-    public Boolean getTemporario() {
+    public Short getTemporario() {
         return temporario;
     }
 
-    public void setTemporario(Boolean temporario) {
+    public void setTemporario(Short temporario) {
         this.temporario = temporario;
     }
 
@@ -209,14 +204,6 @@ public class Funcionario implements Serializable {
         this.codhab = codhab;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     @XmlTransient
     public List<LancamentoPagfunc> getLancamentoPagfuncList() {
         return lancamentoPagfuncList;
@@ -248,7 +235,7 @@ public class Funcionario implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Funcionario[ codfunc=" + codfunc + " ]";
+        return "model.Funcionario[ codfunc=" + codfunc + " ]";
     }
     
 }

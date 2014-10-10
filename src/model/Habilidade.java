@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -23,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "HABILIDADE")
@@ -40,7 +38,7 @@ public class Habilidade implements Serializable {
     @Lob
     @Column(name = "DESCRICAO")
     private String descricao;
-    @OneToMany(mappedBy = "codhab", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "codhab")
     private List<Funcionario> funcionarioList;
 
     public Habilidade() {
@@ -97,7 +95,7 @@ public class Habilidade implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Habilidade[ codhab=" + codhab + " ]";
+        return "model.Habilidade[ codhab=" + codhab + " ]";
     }
     
 }

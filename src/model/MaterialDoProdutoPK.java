@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -13,30 +12,22 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Embeddable
 public class MaterialDoProdutoPK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "CODPROD")
-    private int codprod;
-    @Basic(optional = false)
     @Column(name = "CODMAT")
     private int codmat;
+    @Basic(optional = false)
+    @Column(name = "CODPROD")
+    private int codprod;
 
     public MaterialDoProdutoPK() {
     }
 
-    public MaterialDoProdutoPK(int codprod, int codmat) {
-        this.codprod = codprod;
+    public MaterialDoProdutoPK(int codmat, int codprod) {
         this.codmat = codmat;
-    }
-
-    public int getCodprod() {
-        return codprod;
-    }
-
-    public void setCodprod(int codprod) {
         this.codprod = codprod;
     }
 
@@ -48,11 +39,19 @@ public class MaterialDoProdutoPK implements Serializable {
         this.codmat = codmat;
     }
 
+    public int getCodprod() {
+        return codprod;
+    }
+
+    public void setCodprod(int codprod) {
+        this.codprod = codprod;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) codprod;
         hash += (int) codmat;
+        hash += (int) codprod;
         return hash;
     }
 
@@ -63,10 +62,10 @@ public class MaterialDoProdutoPK implements Serializable {
             return false;
         }
         MaterialDoProdutoPK other = (MaterialDoProdutoPK) object;
-        if (this.codprod != other.codprod) {
+        if (this.codmat != other.codmat) {
             return false;
         }
-        if (this.codmat != other.codmat) {
+        if (this.codprod != other.codprod) {
             return false;
         }
         return true;
@@ -74,7 +73,7 @@ public class MaterialDoProdutoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.MaterialDoProdutoPK[ codprod=" + codprod + ", codmat=" + codmat + " ]";
+        return "model.MaterialDoProdutoPK[ codmat=" + codmat + ", codprod=" + codprod + " ]";
     }
     
 }

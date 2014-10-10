@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import controller.exceptions.IllegalOrphanException;
@@ -16,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import model.Funcao;
 import model.Habilidade;
-import model.Usuario;
 import model.FuncionarioDoLote;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ import model.LancamentoPagfunc;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 public class FuncionarioJpaController implements Serializable {
 
@@ -65,11 +63,6 @@ public class FuncionarioJpaController implements Serializable {
                 codhab = em.getReference(codhab.getClass(), codhab.getCodhab());
                 funcionario.setCodhab(codhab);
             }
-            Usuario usuario = funcionario.getUsuario();
-            if (usuario != null) {
-                usuario = em.getReference(usuario.getClass(), usuario.getCodigo());
-                funcionario.setUsuario(usuario);
-            }
             List<FuncionarioDoLote> attachedFuncionarioDoLoteList = new ArrayList<FuncionarioDoLote>();
             for (FuncionarioDoLote funcionarioDoLoteListFuncionarioDoLoteToAttach : funcionario.getFuncionarioDoLoteList()) {
                 funcionarioDoLoteListFuncionarioDoLoteToAttach = em.getReference(funcionarioDoLoteListFuncionarioDoLoteToAttach.getClass(), funcionarioDoLoteListFuncionarioDoLoteToAttach.getFuncionarioDoLotePK());
@@ -96,15 +89,6 @@ public class FuncionarioJpaController implements Serializable {
             if (codhab != null) {
                 codhab.getFuncionarioList().add(funcionario);
                 codhab = em.merge(codhab);
-            }
-            if (usuario != null) {
-                Funcionario oldFuncionarioOfUsuario = usuario.getFuncionario();
-                if (oldFuncionarioOfUsuario != null) {
-                    oldFuncionarioOfUsuario.setUsuario(null);
-                    oldFuncionarioOfUsuario = em.merge(oldFuncionarioOfUsuario);
-                }
-                usuario.setFuncionario(funcionario);
-                usuario = em.merge(usuario);
             }
             for (FuncionarioDoLote funcionarioDoLoteListFuncionarioDoLote : funcionario.getFuncionarioDoLoteList()) {
                 Funcionario oldFuncionarioOfFuncionarioDoLoteListFuncionarioDoLote = funcionarioDoLoteListFuncionarioDoLote.getFuncionario();
@@ -156,8 +140,6 @@ public class FuncionarioJpaController implements Serializable {
             Funcao codfuncaoNew = funcionario.getCodfuncao();
             Habilidade codhabOld = persistentFuncionario.getCodhab();
             Habilidade codhabNew = funcionario.getCodhab();
-            Usuario usuarioOld = persistentFuncionario.getUsuario();
-            Usuario usuarioNew = funcionario.getUsuario();
             List<FuncionarioDoLote> funcionarioDoLoteListOld = persistentFuncionario.getFuncionarioDoLoteList();
             List<FuncionarioDoLote> funcionarioDoLoteListNew = funcionario.getFuncionarioDoLoteList();
             List<ProducaoDiaria> producaoDiariaListOld = persistentFuncionario.getProducaoDiariaList();
@@ -165,12 +147,6 @@ public class FuncionarioJpaController implements Serializable {
             List<LancamentoPagfunc> lancamentoPagfuncListOld = persistentFuncionario.getLancamentoPagfuncList();
             List<LancamentoPagfunc> lancamentoPagfuncListNew = funcionario.getLancamentoPagfuncList();
             List<String> illegalOrphanMessages = null;
-            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("You must retain Usuario " + usuarioOld + " since its funcionario field is not nullable.");
-            }
             for (FuncionarioDoLote funcionarioDoLoteListOldFuncionarioDoLote : funcionarioDoLoteListOld) {
                 if (!funcionarioDoLoteListNew.contains(funcionarioDoLoteListOldFuncionarioDoLote)) {
                     if (illegalOrphanMessages == null) {
@@ -197,10 +173,6 @@ public class FuncionarioJpaController implements Serializable {
             if (codhabNew != null) {
                 codhabNew = em.getReference(codhabNew.getClass(), codhabNew.getCodhab());
                 funcionario.setCodhab(codhabNew);
-            }
-            if (usuarioNew != null) {
-                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getCodigo());
-                funcionario.setUsuario(usuarioNew);
             }
             List<FuncionarioDoLote> attachedFuncionarioDoLoteListNew = new ArrayList<FuncionarioDoLote>();
             for (FuncionarioDoLote funcionarioDoLoteListNewFuncionarioDoLoteToAttach : funcionarioDoLoteListNew) {
@@ -239,15 +211,6 @@ public class FuncionarioJpaController implements Serializable {
             if (codhabNew != null && !codhabNew.equals(codhabOld)) {
                 codhabNew.getFuncionarioList().add(funcionario);
                 codhabNew = em.merge(codhabNew);
-            }
-            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
-                Funcionario oldFuncionarioOfUsuario = usuarioNew.getFuncionario();
-                if (oldFuncionarioOfUsuario != null) {
-                    oldFuncionarioOfUsuario.setUsuario(null);
-                    oldFuncionarioOfUsuario = em.merge(oldFuncionarioOfUsuario);
-                }
-                usuarioNew.setFuncionario(funcionario);
-                usuarioNew = em.merge(usuarioNew);
             }
             for (FuncionarioDoLote funcionarioDoLoteListNewFuncionarioDoLote : funcionarioDoLoteListNew) {
                 if (!funcionarioDoLoteListOld.contains(funcionarioDoLoteListNewFuncionarioDoLote)) {
@@ -318,13 +281,6 @@ public class FuncionarioJpaController implements Serializable {
                 throw new NonexistentEntityException("The funcionario with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Usuario usuarioOrphanCheck = funcionario.getUsuario();
-            if (usuarioOrphanCheck != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Funcionario (" + funcionario + ") cannot be destroyed since the Usuario " + usuarioOrphanCheck + " in its usuario field has a non-nullable funcionario field.");
-            }
             List<FuncionarioDoLote> funcionarioDoLoteListOrphanCheck = funcionario.getFuncionarioDoLoteList();
             for (FuncionarioDoLote funcionarioDoLoteListOrphanCheckFuncionarioDoLote : funcionarioDoLoteListOrphanCheck) {
                 if (illegalOrphanMessages == null) {

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "NFE")
@@ -43,10 +41,10 @@ public class Nfe implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataemi;
     @JoinColumn(name = "CODFORNEC", referencedColumnName = "CODFORNEC")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Fornecedor codfornec;
     @JoinColumn(name = "CODPAGLOTE", referencedColumnName = "CODPAGLOTE")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private PagamentoLote codpaglote;
 
     public Nfe() {
@@ -110,7 +108,7 @@ public class Nfe implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Nfe[ codnfe=" + codnfe + " ]";
+        return "model.Nfe[ codnfe=" + codnfe + " ]";
     }
     
 }

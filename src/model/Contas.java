@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -22,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "CONTAS")
@@ -30,22 +29,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Contas.findAll", query = "SELECT c FROM Contas c"),
     @NamedQuery(name = "Contas.findByCodconta", query = "SELECT c FROM Contas c WHERE c.codconta = :codconta"),
-    @NamedQuery(name = "Contas.findByTipo", query = "SELECT c FROM Contas c WHERE c.tipo = :tipo"),
-    @NamedQuery(name = "Contas.findByData", query = "SELECT c FROM Contas c WHERE c.data = :data")})
+    @NamedQuery(name = "Contas.findByData", query = "SELECT c FROM Contas c WHERE c.data = :data"),
+    @NamedQuery(name = "Contas.findByTipo", query = "SELECT c FROM Contas c WHERE c.tipo = :tipo")})
 public class Contas implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "CODCONTA")
     private Integer codconta;
-    @Column(name = "TIPO")
-    private Boolean tipo;
     @Column(name = "DATA")
     @Temporal(TemporalType.DATE)
     private Date data;
     @Lob
     @Column(name = "DESCRICAO")
     private String descricao;
+    @Column(name = "TIPO")
+    private Short tipo;
 
     public Contas() {
     }
@@ -62,14 +61,6 @@ public class Contas implements Serializable {
         this.codconta = codconta;
     }
 
-    public Boolean getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Boolean tipo) {
-        this.tipo = tipo;
-    }
-
     public Date getData() {
         return data;
     }
@@ -84,6 +75,14 @@ public class Contas implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Short getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Short tipo) {
+        this.tipo = tipo;
     }
 
     @Override
@@ -108,7 +107,7 @@ public class Contas implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Contas[ codconta=" + codconta + " ]";
+        return "model.Contas[ codconta=" + codconta + " ]";
     }
     
 }

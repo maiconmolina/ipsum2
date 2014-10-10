@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "LANCAMENTO_PAGFUNC")
@@ -33,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "LancamentoPagfunc.findAll", query = "SELECT l FROM LancamentoPagfunc l"),
     @NamedQuery(name = "LancamentoPagfunc.findByCodlanc", query = "SELECT l FROM LancamentoPagfunc l WHERE l.codlanc = :codlanc"),
-    @NamedQuery(name = "LancamentoPagfunc.findByData", query = "SELECT l FROM LancamentoPagfunc l WHERE l.data = :data")})
+    @NamedQuery(name = "LancamentoPagfunc.findByData", query = "SELECT l FROM LancamentoPagfunc l WHERE l.data = :data"),
+    @NamedQuery(name = "LancamentoPagfunc.findByBonif", query = "SELECT l FROM LancamentoPagfunc l WHERE l.bonif = :bonif")})
 public class LancamentoPagfunc implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,11 +42,14 @@ public class LancamentoPagfunc implements Serializable {
     @Column(name = "DATA")
     @Temporal(TemporalType.DATE)
     private Date data;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "BONIF")
+    private Double bonif;
     @JoinColumn(name = "CODFUNC", referencedColumnName = "CODFUNC")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Funcionario codfunc;
     @JoinColumn(name = "CODLANC", referencedColumnName = "CODLANC", insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false)
     private Lancamento lancamento;
 
     public LancamentoPagfunc() {
@@ -71,6 +73,14 @@ public class LancamentoPagfunc implements Serializable {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public Double getBonif() {
+        return bonif;
+    }
+
+    public void setBonif(Double bonif) {
+        this.bonif = bonif;
     }
 
     public Funcionario getCodfunc() {
@@ -111,7 +121,7 @@ public class LancamentoPagfunc implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.LancamentoPagfunc[ codlanc=" + codlanc + " ]";
+        return "model.LancamentoPagfunc[ codlanc=" + codlanc + " ]";
     }
     
 }

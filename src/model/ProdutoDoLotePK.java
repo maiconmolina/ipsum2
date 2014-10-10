@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -13,30 +12,22 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Embeddable
 public class ProdutoDoLotePK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "CODLOTE")
-    private int codlote;
-    @Basic(optional = false)
     @Column(name = "CODPROD")
     private int codprod;
+    @Basic(optional = false)
+    @Column(name = "CODLOTE")
+    private int codlote;
 
     public ProdutoDoLotePK() {
     }
 
-    public ProdutoDoLotePK(int codlote, int codprod) {
-        this.codlote = codlote;
+    public ProdutoDoLotePK(int codprod, int codlote) {
         this.codprod = codprod;
-    }
-
-    public int getCodlote() {
-        return codlote;
-    }
-
-    public void setCodlote(int codlote) {
         this.codlote = codlote;
     }
 
@@ -48,11 +39,19 @@ public class ProdutoDoLotePK implements Serializable {
         this.codprod = codprod;
     }
 
+    public int getCodlote() {
+        return codlote;
+    }
+
+    public void setCodlote(int codlote) {
+        this.codlote = codlote;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) codlote;
         hash += (int) codprod;
+        hash += (int) codlote;
         return hash;
     }
 
@@ -63,10 +62,10 @@ public class ProdutoDoLotePK implements Serializable {
             return false;
         }
         ProdutoDoLotePK other = (ProdutoDoLotePK) object;
-        if (this.codlote != other.codlote) {
+        if (this.codprod != other.codprod) {
             return false;
         }
-        if (this.codprod != other.codprod) {
+        if (this.codlote != other.codlote) {
             return false;
         }
         return true;
@@ -74,7 +73,7 @@ public class ProdutoDoLotePK implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.ProdutoDoLotePK[ codlote=" + codlote + ", codprod=" + codprod + " ]";
+        return "model.ProdutoDoLotePK[ codprod=" + codprod + ", codlote=" + codlote + " ]";
     }
     
 }

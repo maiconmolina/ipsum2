@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -16,31 +15,47 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Embeddable
 public class ProducaoDiariaPK implements Serializable {
     @Basic(optional = false)
-    @Column(name = "CODLOTE")
-    private int codlote;
-    @Basic(optional = false)
     @Column(name = "CODPROD")
     private int codprod;
+    @Basic(optional = false)
+    @Column(name = "CODFUNC")
+    private int codfunc;
+    @Basic(optional = false)
+    @Column(name = "CODLOTE")
+    private int codlote;
     @Basic(optional = false)
     @Column(name = "DATAPROD")
     @Temporal(TemporalType.DATE)
     private Date dataprod;
-    @Basic(optional = false)
-    @Column(name = "CODFUNC")
-    private int codfunc;
 
     public ProducaoDiariaPK() {
     }
 
-    public ProducaoDiariaPK(int codlote, int codprod, Date dataprod, int codfunc) {
-        this.codlote = codlote;
+    public ProducaoDiariaPK(int codprod, int codfunc, int codlote, Date dataprod) {
         this.codprod = codprod;
+        this.codfunc = codfunc;
+        this.codlote = codlote;
         this.dataprod = dataprod;
+    }
+
+    public int getCodprod() {
+        return codprod;
+    }
+
+    public void setCodprod(int codprod) {
+        this.codprod = codprod;
+    }
+
+    public int getCodfunc() {
+        return codfunc;
+    }
+
+    public void setCodfunc(int codfunc) {
         this.codfunc = codfunc;
     }
 
@@ -52,14 +67,6 @@ public class ProducaoDiariaPK implements Serializable {
         this.codlote = codlote;
     }
 
-    public int getCodprod() {
-        return codprod;
-    }
-
-    public void setCodprod(int codprod) {
-        this.codprod = codprod;
-    }
-
     public Date getDataprod() {
         return dataprod;
     }
@@ -68,21 +75,13 @@ public class ProducaoDiariaPK implements Serializable {
         this.dataprod = dataprod;
     }
 
-    public int getCodfunc() {
-        return codfunc;
-    }
-
-    public void setCodfunc(int codfunc) {
-        this.codfunc = codfunc;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) codlote;
         hash += (int) codprod;
-        hash += (dataprod != null ? dataprod.hashCode() : 0);
         hash += (int) codfunc;
+        hash += (int) codlote;
+        hash += (dataprod != null ? dataprod.hashCode() : 0);
         return hash;
     }
 
@@ -93,16 +92,16 @@ public class ProducaoDiariaPK implements Serializable {
             return false;
         }
         ProducaoDiariaPK other = (ProducaoDiariaPK) object;
-        if (this.codlote != other.codlote) {
-            return false;
-        }
         if (this.codprod != other.codprod) {
             return false;
         }
-        if ((this.dataprod == null && other.dataprod != null) || (this.dataprod != null && !this.dataprod.equals(other.dataprod))) {
+        if (this.codfunc != other.codfunc) {
             return false;
         }
-        if (this.codfunc != other.codfunc) {
+        if (this.codlote != other.codlote) {
+            return false;
+        }
+        if ((this.dataprod == null && other.dataprod != null) || (this.dataprod != null && !this.dataprod.equals(other.dataprod))) {
             return false;
         }
         return true;
@@ -110,7 +109,7 @@ public class ProducaoDiariaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.ProducaoDiariaPK[ codlote=" + codlote + ", codprod=" + codprod + ", dataprod=" + dataprod + ", codfunc=" + codfunc + " ]";
+        return "model.ProducaoDiariaPK[ codprod=" + codprod + ", codfunc=" + codfunc + ", codlote=" + codlote + ", dataprod=" + dataprod + " ]";
     }
     
 }

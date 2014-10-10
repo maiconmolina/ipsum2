@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import controller.exceptions.NonexistentEntityException;
@@ -24,7 +23,7 @@ import model.Produto;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 public class ProducaoDiariaJpaController implements Serializable {
 
@@ -41,9 +40,9 @@ public class ProducaoDiariaJpaController implements Serializable {
         if (producaoDiaria.getProducaoDiariaPK() == null) {
             producaoDiaria.setProducaoDiariaPK(new ProducaoDiariaPK());
         }
+        producaoDiaria.getProducaoDiariaPK().setCodprod(producaoDiaria.getProduto().getCodprod());
         producaoDiaria.getProducaoDiariaPK().setCodfunc(producaoDiaria.getFuncionario().getCodfunc());
         producaoDiaria.getProducaoDiariaPK().setCodlote(producaoDiaria.getLote().getCodlote());
-        producaoDiaria.getProducaoDiariaPK().setCodprod(producaoDiaria.getProduto().getCodprod());
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -90,9 +89,9 @@ public class ProducaoDiariaJpaController implements Serializable {
     }
 
     public void edit(ProducaoDiaria producaoDiaria) throws NonexistentEntityException, Exception {
+        producaoDiaria.getProducaoDiariaPK().setCodprod(producaoDiaria.getProduto().getCodprod());
         producaoDiaria.getProducaoDiariaPK().setCodfunc(producaoDiaria.getFuncionario().getCodfunc());
         producaoDiaria.getProducaoDiariaPK().setCodlote(producaoDiaria.getLote().getCodlote());
-        producaoDiaria.getProducaoDiariaPK().setCodprod(producaoDiaria.getProduto().getCodprod());
         EntityManager em = null;
         try {
             em = getEntityManager();

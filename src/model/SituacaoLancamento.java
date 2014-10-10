@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,16 +21,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "SITUACAO_LANCAMENTO")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SituacaoLancamento.findAll", query = "SELECT s FROM SituacaoLancamento s"),
-    @NamedQuery(name = "SituacaoLancamento.findByCodsit", query = "SELECT s FROM SituacaoLancamento s WHERE s.situacaoLancamentoPK.codsit = :codsit"),
+    @NamedQuery(name = "SituacaoLancamento.findByData", query = "SELECT s FROM SituacaoLancamento s WHERE s.data = :data"),
     @NamedQuery(name = "SituacaoLancamento.findByCodlanc", query = "SELECT s FROM SituacaoLancamento s WHERE s.situacaoLancamentoPK.codlanc = :codlanc"),
-    @NamedQuery(name = "SituacaoLancamento.findByData", query = "SELECT s FROM SituacaoLancamento s WHERE s.data = :data")})
+    @NamedQuery(name = "SituacaoLancamento.findByCodsit", query = "SELECT s FROM SituacaoLancamento s WHERE s.situacaoLancamentoPK.codsit = :codsit")})
 public class SituacaoLancamento implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -41,7 +39,7 @@ public class SituacaoLancamento implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date data;
     @JoinColumn(name = "CODLANC", referencedColumnName = "CODLANC", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Lancamento lancamento;
 
     public SituacaoLancamento() {
@@ -51,8 +49,8 @@ public class SituacaoLancamento implements Serializable {
         this.situacaoLancamentoPK = situacaoLancamentoPK;
     }
 
-    public SituacaoLancamento(int codsit, int codlanc) {
-        this.situacaoLancamentoPK = new SituacaoLancamentoPK(codsit, codlanc);
+    public SituacaoLancamento(int codlanc, int codsit) {
+        this.situacaoLancamentoPK = new SituacaoLancamentoPK(codlanc, codsit);
     }
 
     public SituacaoLancamentoPK getSituacaoLancamentoPK() {
@@ -101,7 +99,7 @@ public class SituacaoLancamento implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.SituacaoLancamento[ situacaoLancamentoPK=" + situacaoLancamentoPK + " ]";
+        return "model.SituacaoLancamento[ situacaoLancamentoPK=" + situacaoLancamentoPK + " ]";
     }
     
 }

@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,16 +18,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "MATERIAL_DO_PRODUTO")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MaterialDoProduto.findAll", query = "SELECT m FROM MaterialDoProduto m"),
-    @NamedQuery(name = "MaterialDoProduto.findByCodprod", query = "SELECT m FROM MaterialDoProduto m WHERE m.materialDoProdutoPK.codprod = :codprod"),
+    @NamedQuery(name = "MaterialDoProduto.findByQtde", query = "SELECT m FROM MaterialDoProduto m WHERE m.qtde = :qtde"),
     @NamedQuery(name = "MaterialDoProduto.findByCodmat", query = "SELECT m FROM MaterialDoProduto m WHERE m.materialDoProdutoPK.codmat = :codmat"),
-    @NamedQuery(name = "MaterialDoProduto.findByQtde", query = "SELECT m FROM MaterialDoProduto m WHERE m.qtde = :qtde")})
+    @NamedQuery(name = "MaterialDoProduto.findByCodprod", query = "SELECT m FROM MaterialDoProduto m WHERE m.materialDoProdutoPK.codprod = :codprod")})
 public class MaterialDoProduto implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -37,10 +35,10 @@ public class MaterialDoProduto implements Serializable {
     @Column(name = "QTDE")
     private Integer qtde;
     @JoinColumn(name = "CODMAT", referencedColumnName = "CODMAT", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Material material;
     @JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Produto produto;
 
     public MaterialDoProduto() {
@@ -50,8 +48,8 @@ public class MaterialDoProduto implements Serializable {
         this.materialDoProdutoPK = materialDoProdutoPK;
     }
 
-    public MaterialDoProduto(int codprod, int codmat) {
-        this.materialDoProdutoPK = new MaterialDoProdutoPK(codprod, codmat);
+    public MaterialDoProduto(int codmat, int codprod) {
+        this.materialDoProdutoPK = new MaterialDoProdutoPK(codmat, codprod);
     }
 
     public MaterialDoProdutoPK getMaterialDoProdutoPK() {
@@ -108,7 +106,7 @@ public class MaterialDoProduto implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.MaterialDoProduto[ materialDoProdutoPK=" + materialDoProdutoPK + " ]";
+        return "model.MaterialDoProduto[ materialDoProdutoPK=" + materialDoProdutoPK + " ]";
     }
     
 }

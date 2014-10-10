@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -22,35 +20,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "PRODUCAO_DIARIA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ProducaoDiaria.findAll", query = "SELECT p FROM ProducaoDiaria p"),
-    @NamedQuery(name = "ProducaoDiaria.findByCodlote", query = "SELECT p FROM ProducaoDiaria p WHERE p.producaoDiariaPK.codlote = :codlote"),
+    @NamedQuery(name = "ProducaoDiaria.findByQtde", query = "SELECT p FROM ProducaoDiaria p WHERE p.qtde = :qtde"),
     @NamedQuery(name = "ProducaoDiaria.findByCodprod", query = "SELECT p FROM ProducaoDiaria p WHERE p.producaoDiariaPK.codprod = :codprod"),
-    @NamedQuery(name = "ProducaoDiaria.findByDataprod", query = "SELECT p FROM ProducaoDiaria p WHERE p.producaoDiariaPK.dataprod = :dataprod"),
     @NamedQuery(name = "ProducaoDiaria.findByCodfunc", query = "SELECT p FROM ProducaoDiaria p WHERE p.producaoDiariaPK.codfunc = :codfunc"),
-    @NamedQuery(name = "ProducaoDiaria.findByQtde", query = "SELECT p FROM ProducaoDiaria p WHERE p.qtde = :qtde")})
+    @NamedQuery(name = "ProducaoDiaria.findByCodlote", query = "SELECT p FROM ProducaoDiaria p WHERE p.producaoDiariaPK.codlote = :codlote"),
+    @NamedQuery(name = "ProducaoDiaria.findByDataprod", query = "SELECT p FROM ProducaoDiaria p WHERE p.producaoDiariaPK.dataprod = :dataprod")})
 public class ProducaoDiaria implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected ProducaoDiariaPK producaoDiariaPK;
-    @Column(name = "QTDE")
-    private Integer qtde;
     @Lob
     @Column(name = "OBS")
     private String obs;
+    @Column(name = "QTDE")
+    private Integer qtde;
     @JoinColumn(name = "CODFUNC", referencedColumnName = "CODFUNC", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Funcionario funcionario;
     @JoinColumn(name = "CODLOTE", referencedColumnName = "CODLOTE", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Lote lote;
     @JoinColumn(name = "CODPROD", referencedColumnName = "CODPROD", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Produto produto;
 
     public ProducaoDiaria() {
@@ -60,8 +58,8 @@ public class ProducaoDiaria implements Serializable {
         this.producaoDiariaPK = producaoDiariaPK;
     }
 
-    public ProducaoDiaria(int codlote, int codprod, Date dataprod, int codfunc) {
-        this.producaoDiariaPK = new ProducaoDiariaPK(codlote, codprod, dataprod, codfunc);
+    public ProducaoDiaria(int codprod, int codfunc, int codlote, Date dataprod) {
+        this.producaoDiariaPK = new ProducaoDiariaPK(codprod, codfunc, codlote, dataprod);
     }
 
     public ProducaoDiariaPK getProducaoDiariaPK() {
@@ -72,20 +70,20 @@ public class ProducaoDiaria implements Serializable {
         this.producaoDiariaPK = producaoDiariaPK;
     }
 
-    public Integer getQtde() {
-        return qtde;
-    }
-
-    public void setQtde(Integer qtde) {
-        this.qtde = qtde;
-    }
-
     public String getObs() {
         return obs;
     }
 
     public void setObs(String obs) {
         this.obs = obs;
+    }
+
+    public Integer getQtde() {
+        return qtde;
+    }
+
+    public void setQtde(Integer qtde) {
+        this.qtde = qtde;
     }
 
     public Funcionario getFuncionario() {
@@ -134,7 +132,7 @@ public class ProducaoDiaria implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.ProducaoDiaria[ producaoDiariaPK=" + producaoDiariaPK + " ]";
+        return "model.ProducaoDiaria[ producaoDiariaPK=" + producaoDiariaPK + " ]";
     }
     
 }

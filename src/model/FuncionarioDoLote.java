@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,27 +18,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "FUNCIONARIO_DO_LOTE")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FuncionarioDoLote.findAll", query = "SELECT f FROM FuncionarioDoLote f"),
+    @NamedQuery(name = "FuncionarioDoLote.findByAtivo", query = "SELECT f FROM FuncionarioDoLote f WHERE f.ativo = :ativo"),
     @NamedQuery(name = "FuncionarioDoLote.findByCodfunc", query = "SELECT f FROM FuncionarioDoLote f WHERE f.funcionarioDoLotePK.codfunc = :codfunc"),
-    @NamedQuery(name = "FuncionarioDoLote.findByCodlote", query = "SELECT f FROM FuncionarioDoLote f WHERE f.funcionarioDoLotePK.codlote = :codlote"),
-    @NamedQuery(name = "FuncionarioDoLote.findByAtivo", query = "SELECT f FROM FuncionarioDoLote f WHERE f.ativo = :ativo")})
+    @NamedQuery(name = "FuncionarioDoLote.findByCodlote", query = "SELECT f FROM FuncionarioDoLote f WHERE f.funcionarioDoLotePK.codlote = :codlote")})
 public class FuncionarioDoLote implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FuncionarioDoLotePK funcionarioDoLotePK;
     @Column(name = "ATIVO")
-    private Boolean ativo;
+    private Short ativo;
     @JoinColumn(name = "CODFUNC", referencedColumnName = "CODFUNC", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Funcionario funcionario;
     @JoinColumn(name = "CODLOTE", referencedColumnName = "CODLOTE", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Lote lote;
 
     public FuncionarioDoLote() {
@@ -62,11 +60,11 @@ public class FuncionarioDoLote implements Serializable {
         this.funcionarioDoLotePK = funcionarioDoLotePK;
     }
 
-    public Boolean getAtivo() {
+    public Short getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(Boolean ativo) {
+    public void setAtivo(Short ativo) {
         this.ativo = ativo;
     }
 
@@ -108,7 +106,7 @@ public class FuncionarioDoLote implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.FuncionarioDoLote[ funcionarioDoLotePK=" + funcionarioDoLotePK + " ]";
+        return "model.FuncionarioDoLote[ funcionarioDoLotePK=" + funcionarioDoLotePK + " ]";
     }
     
 }

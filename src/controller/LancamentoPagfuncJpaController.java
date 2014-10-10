@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
 import controller.exceptions.IllegalOrphanException;
@@ -24,7 +23,7 @@ import model.LancamentoPagfunc;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 public class LancamentoPagfuncJpaController implements Serializable {
 

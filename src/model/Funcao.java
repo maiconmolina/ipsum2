@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -23,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "FUNCAO")
@@ -38,13 +36,12 @@ public class Funcao implements Serializable {
     @Basic(optional = false)
     @Column(name = "CODFUNCAO")
     private Integer codfuncao;
-    @Basic(optional = false)
+    @Column(name = "ATIVO")
+    private Short ativo;
     @Lob
     @Column(name = "DESCRICAO")
     private String descricao;
-    @Column(name = "ATIVO")
-    private Boolean ativo;
-    @OneToMany(mappedBy = "codfuncao", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "codfuncao")
     private List<Funcionario> funcionarioList;
 
     public Funcao() {
@@ -52,11 +49,6 @@ public class Funcao implements Serializable {
 
     public Funcao(Integer codfuncao) {
         this.codfuncao = codfuncao;
-    }
-
-    public Funcao(Integer codfuncao, String descricao) {
-        this.codfuncao = codfuncao;
-        this.descricao = descricao;
     }
 
     public Integer getCodfuncao() {
@@ -67,20 +59,20 @@ public class Funcao implements Serializable {
         this.codfuncao = codfuncao;
     }
 
+    public Short getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Short ativo) {
+        this.ativo = ativo;
+    }
+
     public String getDescricao() {
         return descricao;
     }
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
     }
 
     @XmlTransient
@@ -114,7 +106,7 @@ public class Funcao implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Funcao[ codfuncao=" + codfuncao + " ]";
+        return "model.Funcao[ codfuncao=" + codfuncao + " ]";
     }
     
 }

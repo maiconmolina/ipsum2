@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -12,7 +11,6 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "PAGAMENTO_LOTE")
@@ -46,12 +44,12 @@ public class PagamentoLote implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date datpag;
     @JoinColumn(name = "CODLOTE", referencedColumnName = "CODLOTE")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private Lote codlote;
     @JoinColumn(name = "TIPOPAG", referencedColumnName = "TIPOPAG")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     private TipoPagamento tipopag;
-    @OneToMany(mappedBy = "codpaglote", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "codpaglote")
     private List<Nfe> nfeList;
 
     public PagamentoLote() {
@@ -124,7 +122,7 @@ public class PagamentoLote implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.PagamentoLote[ codpaglote=" + codpaglote + " ]";
+        return "model.PagamentoLote[ codpaglote=" + codpaglote + " ]";
     }
     
 }

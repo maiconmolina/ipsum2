@@ -126,7 +126,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
             Material novo = new Material();
             MaterialJpaController matct = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
             novo.setCodmat(matct.getMaterialCount() + 1);
-            novo.setAtivo(true);
+            novo.setAtivo(Short.parseShort("1"));
             novo.setCodfornec((Fornecedor)comboFor.getSelectedItem());
             novo.setDescricao(desc.getText());
             novo.setQtde(Integer.parseInt(qtde.getText()));

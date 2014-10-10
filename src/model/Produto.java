@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model;
 
 import java.io.Serializable;
@@ -12,7 +11,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -24,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 @Entity
 @Table(name = "PRODUTO")
@@ -32,27 +30,27 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Produto.findAll", query = "SELECT p FROM Produto p"),
     @NamedQuery(name = "Produto.findByCodprod", query = "SELECT p FROM Produto p WHERE p.codprod = :codprod"),
-    @NamedQuery(name = "Produto.findByPreco", query = "SELECT p FROM Produto p WHERE p.preco = :preco"),
-    @NamedQuery(name = "Produto.findByAtivo", query = "SELECT p FROM Produto p WHERE p.ativo = :ativo")})
+    @NamedQuery(name = "Produto.findByAtivo", query = "SELECT p FROM Produto p WHERE p.ativo = :ativo"),
+    @NamedQuery(name = "Produto.findByPreco", query = "SELECT p FROM Produto p WHERE p.preco = :preco")})
 public class Produto implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "CODPROD")
     private Integer codprod;
+    @Column(name = "ATIVO")
+    private Short ativo;
     @Lob
     @Column(name = "DESCRICAO")
     private String descricao;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PRECO")
     private Double preco;
-    @Column(name = "ATIVO")
-    private Boolean ativo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
     private List<ProdutoDoLote> produtoDoLoteList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
     private List<ProducaoDiaria> producaoDiariaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "produto")
     private List<MaterialDoProduto> materialDoProdutoList;
 
     public Produto() {
@@ -70,6 +68,14 @@ public class Produto implements Serializable {
         this.codprod = codprod;
     }
 
+    public Short getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Short ativo) {
+        this.ativo = ativo;
+    }
+
     public String getDescricao() {
         return descricao;
     }
@@ -84,14 +90,6 @@ public class Produto implements Serializable {
 
     public void setPreco(Double preco) {
         this.preco = preco;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
     }
 
     @XmlTransient
@@ -143,7 +141,7 @@ public class Produto implements Serializable {
 
     @Override
     public String toString() {
-        return "ipsum2.Produto[ codprod=" + codprod + " ]";
+        return "model.Produto[ codprod=" + codprod + " ]";
     }
     
 }

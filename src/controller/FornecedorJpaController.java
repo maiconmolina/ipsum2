@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controller;
 
-import controller.exceptions.IllegalOrphanException;
 import controller.exceptions.NonexistentEntityException;
 import controller.exceptions.PreexistingEntityException;
 import java.io.Serializable;
@@ -15,7 +13,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import model.Uf;
-import model.Usuario;
 import model.Nfe;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +25,7 @@ import model.Material;
 
 /**
  *
- * @author Maicon
+ * @author Luis
  */
 public class FornecedorJpaController implements Serializable {
 
@@ -63,11 +60,6 @@ public class FornecedorJpaController implements Serializable {
                 coduf = em.getReference(coduf.getClass(), coduf.getCoduf());
                 fornecedor.setCoduf(coduf);
             }
-            Usuario usuario = fornecedor.getUsuario();
-            if (usuario != null) {
-                usuario = em.getReference(usuario.getClass(), usuario.getCodigo());
-                fornecedor.setUsuario(usuario);
-            }
             List<Nfe> attachedNfeList = new ArrayList<Nfe>();
             for (Nfe nfeListNfeToAttach : fornecedor.getNfeList()) {
                 nfeListNfeToAttach = em.getReference(nfeListNfeToAttach.getClass(), nfeListNfeToAttach.getCodnfe());
@@ -96,15 +88,6 @@ public class FornecedorJpaController implements Serializable {
             if (coduf != null) {
                 coduf.getFornecedorList().add(fornecedor);
                 coduf = em.merge(coduf);
-            }
-            if (usuario != null) {
-                Fornecedor oldFornecedorOfUsuario = usuario.getFornecedor();
-                if (oldFornecedorOfUsuario != null) {
-                    oldFornecedorOfUsuario.setUsuario(null);
-                    oldFornecedorOfUsuario = em.merge(oldFornecedorOfUsuario);
-                }
-                usuario.setFornecedor(fornecedor);
-                usuario = em.merge(usuario);
             }
             for (Nfe nfeListNfe : fornecedor.getNfeList()) {
                 Fornecedor oldCodfornecOfNfeListNfe = nfeListNfe.getCodfornec();
@@ -155,7 +138,7 @@ public class FornecedorJpaController implements Serializable {
         }
     }
 
-    public void edit(Fornecedor fornecedor) throws IllegalOrphanException, NonexistentEntityException, Exception {
+    public void edit(Fornecedor fornecedor) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -163,8 +146,6 @@ public class FornecedorJpaController implements Serializable {
             Fornecedor persistentFornecedor = em.find(Fornecedor.class, fornecedor.getCodfornec());
             Uf codufOld = persistentFornecedor.getCoduf();
             Uf codufNew = fornecedor.getCoduf();
-            Usuario usuarioOld = persistentFornecedor.getUsuario();
-            Usuario usuarioNew = fornecedor.getUsuario();
             List<Nfe> nfeListOld = persistentFornecedor.getNfeList();
             List<Nfe> nfeListNew = fornecedor.getNfeList();
             List<Lote> loteListOld = persistentFornecedor.getLoteList();
@@ -173,23 +154,9 @@ public class FornecedorJpaController implements Serializable {
             List<LancamentoRecforn> lancamentoRecfornListNew = fornecedor.getLancamentoRecfornList();
             List<Material> materialListOld = persistentFornecedor.getMaterialList();
             List<Material> materialListNew = fornecedor.getMaterialList();
-            List<String> illegalOrphanMessages = null;
-            if (usuarioOld != null && !usuarioOld.equals(usuarioNew)) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("You must retain Usuario " + usuarioOld + " since its fornecedor field is not nullable.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             if (codufNew != null) {
                 codufNew = em.getReference(codufNew.getClass(), codufNew.getCoduf());
                 fornecedor.setCoduf(codufNew);
-            }
-            if (usuarioNew != null) {
-                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getCodigo());
-                fornecedor.setUsuario(usuarioNew);
             }
             List<Nfe> attachedNfeListNew = new ArrayList<Nfe>();
             for (Nfe nfeListNewNfeToAttach : nfeListNew) {
@@ -227,15 +194,6 @@ public class FornecedorJpaController implements Serializable {
             if (codufNew != null && !codufNew.equals(codufOld)) {
                 codufNew.getFornecedorList().add(fornecedor);
                 codufNew = em.merge(codufNew);
-            }
-            if (usuarioNew != null && !usuarioNew.equals(usuarioOld)) {
-                Fornecedor oldFornecedorOfUsuario = usuarioNew.getFornecedor();
-                if (oldFornecedorOfUsuario != null) {
-                    oldFornecedorOfUsuario.setUsuario(null);
-                    oldFornecedorOfUsuario = em.merge(oldFornecedorOfUsuario);
-                }
-                usuarioNew.setFornecedor(fornecedor);
-                usuarioNew = em.merge(usuarioNew);
             }
             for (Nfe nfeListOldNfe : nfeListOld) {
                 if (!nfeListNew.contains(nfeListOldNfe)) {
@@ -322,7 +280,7 @@ public class FornecedorJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException {
+    public void destroy(Integer id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -333,17 +291,6 @@ public class FornecedorJpaController implements Serializable {
                 fornecedor.getCodfornec();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The fornecedor with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            Usuario usuarioOrphanCheck = fornecedor.getUsuario();
-            if (usuarioOrphanCheck != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Fornecedor (" + fornecedor + ") cannot be destroyed since the Usuario " + usuarioOrphanCheck + " in its usuario field has a non-nullable fornecedor field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             Uf coduf = fornecedor.getCoduf();
             if (coduf != null) {
