@@ -10,6 +10,7 @@ import controller.CaixaJpaController;
 import controller.LancamentoEntradaJpaController;
 import controller.LancamentoJpaController;
 import controller.LancamentoSaidaJpaController;
+import controller.exceptions.NonexistentEntityException;
 import controller.exceptions.PreexistingEntityException;
 import enuns.EnumTipoDeLancamento;
 import java.util.List;
@@ -30,6 +31,8 @@ import model.LancamentoSaida;
  */
 public class TelaLancamento extends javax.swing.JInternalFrame {
 
+    private Lancamento editandoLanc = null;
+
     /**
      * Creates new form TelaLancamento
      */
@@ -39,6 +42,25 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         InterfaceUtils.preparaTela(this);
         int MaxIdLanc = ultimoLancId();
         codigo.setText(String.valueOf(MaxIdLanc));
+    }
+
+    public TelaLancamento(Lancamento lanc) {
+        initComponents();
+        this.editandoLanc = lanc;
+        descricao.setText(lanc.getDescricao());
+        if (lanc.getLancamentoEntrada() != null) {
+            tipo.setSelectedIndex(0);
+        }
+        if (lanc.getLancamentoSaida() != null) {
+            tipo.setSelectedIndex(1);
+        }
+
+        DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
+        val.setValue(lanc.getValor());
+//        JOptionPane.showMessageDialog(this, val.getText());
+        valor.setText(lanc.getValor().toString());
+        codigo.setText(lanc.getCodlanc().toString());
+        InterfaceUtils.preparaTela(this);
     }
 
     private int ultimoLancId() {
@@ -202,7 +224,15 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
         caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
 
-        Lancamento lanc = new Lancamento();
+        //Consulta pra ver se nao esta editando
+        Lancamento lanc = null;
+        if (this.editandoLanc != null) {
+            lanc = this.editandoLanc;
+
+        } else {
+            lanc = new Lancamento();
+        }
+        //Consulta pra ver se nao esta editando
 
         for (Caixa c : caixa) {
             lanc.setCodcaixa(c);
@@ -210,23 +240,48 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         lanc.setDescricao(descricao.getText());
         lanc.setEstorno((short) 1);
         lanc.setCodlanc(Integer.parseInt(codigo.getText()));
-        JOptionPane.showMessageDialog(this, valor.getText());
-        JOptionPane.showMessageDialog(null, valor.getText());
         DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
         lanc.setValor(val.converteDouble(valor.getText()));
         LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
 
-        try {
-            lancController.create(lanc);
-        } catch (Exception ex) {
-            Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
+        LancamentoSaidaJpaController lancSaidController = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
 
+        if (this.editandoLanc != null) {
+            if (lanc.getLancamentoEntrada() != null) {
+                try {
+                    lancEntrController.destroy(lanc.getLancamentoEntrada().getCodlanc());
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                lanc.setLancamentoEntrada(null);
+            }
+            if (lanc.getLancamentoSaida() != null) {
+                try {
+                    lancSaidController.destroy(lanc.getLancamentoSaida().getCodlanc());
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                lanc.setLancamentoEntrada(null);
+            }
+            try {
+                lancController.edit(lanc);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                lancController.create(lanc);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         if (tipo.getSelectedItem().toString() == "Entrada comum") {
             LancamentoEntrada entrada = new LancamentoEntrada();
             entrada.setCodlanc(lanc.getCodlanc());
             entrada.setLancamento(lanc);
-            LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
             try {
                 lancEntrController.create(entrada);
             } catch (PreexistingEntityException ex) {
@@ -235,13 +290,13 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
         if (tipo.getSelectedItem().toString() == "Saída comum") {
             LancamentoSaida saida = new LancamentoSaida();
             saida.setCodlanc(lanc.getCodlanc());
             saida.setLancamento(lanc);
-            LancamentoSaidaJpaController lancSaidaontroller = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
             try {
-                lancSaidaontroller.create(saida);
+                lancSaidController.create(saida);
             } catch (PreexistingEntityException ex) {
                 Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -260,6 +315,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
 //            lanc.setLancamentoRecforn(recForn);
 //        }
         this.dispose();
+
         new TelaCaixa();
     }//GEN-LAST:event_salvarActionPerformed
 
@@ -281,16 +337,21 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaLancamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLancamento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaLancamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLancamento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaLancamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLancamento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaLancamento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaLancamento.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

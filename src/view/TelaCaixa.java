@@ -202,7 +202,16 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
+        try {
+            DefaultTableModel model = (DefaultTableModel) Tabela.getModel();
+            Lancamento lanc = (Lancamento) model.getValueAt(Tabela.getSelectedRow(), 1); //Pega o objeto na tabela
+            new TelaLancamento(lanc);
+            this.dispose();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(this, "Item selecionado inválido!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Um erro aconteceu!\n" + ex.getMessage());
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
