@@ -23,6 +23,7 @@ public class CadastroTipoPagamentoCRUD extends JPanel {
     
     public CadastroTipoPagamentoCRUD() {
         initComponents();
+        
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }

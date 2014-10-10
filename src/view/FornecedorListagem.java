@@ -24,11 +24,10 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
     public FornecedorListagem() {
         initComponents();
         InterfaceUtils.preparaTela(this);
-        
-        List<Fornecedor> fornAtivos = null;
-        FornecedorJpaController forncontroller = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
-        fornAtivos = forncontroller.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
-        this.insereTabela(fornAtivos);
+        List<Fornecedor> forn;
+        FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+        forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
+        this.insereTabela(forn);
         
     }
 
@@ -54,7 +53,7 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "CNPJ", "Razão", "Nome"
+                "CNPJ", "Razão", "Telefone"
             }
         ));
         jScrollPane1.setViewportView(TabelaBusca);
@@ -94,10 +93,11 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void VisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VisualizarActionPerformed
-         try {
+        try {
             DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();  
             Fornecedor forn = (Fornecedor) model.getValueAt(TabelaBusca.getSelectedRow(), 1); //Pega o objeto na tabela
-            new FornecedorCadastro(forn); //Abre a tela de cadastro com os dados do objeto pesquisado  
+            new FornecedorCadastro(forn); //Abre a tela de cadastro com os dados do objeto pesquisado 
+            this.dispose();
         } catch (ArrayIndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(this, "Item selecionado inválido!");
         } catch (Exception ex) {
@@ -108,10 +108,10 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
     private void insereTabela(List<Fornecedor> data) {
         DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();
         List<Object> dados = new ArrayList<>();
-        for (Fornecedor f : data) {
-            dados.add(f.getCnpj());
-            dados.add(f);            
-            dados.add(f.getRazao());
+        for (Fornecedor o : data) {
+            dados.add(o.getCnpj());
+            dados.add(o);
+            dados.add(o.getTelefone());
             model.addRow(dados.toArray());
             dados.clear();
         }
