@@ -59,6 +59,11 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(TabelaBusca);
 
         jButton1.setText("Inserir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         Visualizar.setText("Visualizar");
         Visualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -104,6 +109,11 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Um erro aconteceu!\n" + ex.getMessage());
         }
     }//GEN-LAST:event_VisualizarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new FornecedorCadastro();
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     private void insereTabela(List<Fornecedor> data) {
         DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();

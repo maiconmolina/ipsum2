@@ -155,10 +155,6 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
 
         Inativar.setText("Inativar");
 
-        senha.setText("jPasswordField1");
-
-        confirmaSenha.setText("jPasswordField2");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -367,10 +363,26 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                 Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
             }
             Usuario usu = null;
-            
-            UsuarioJpaController usuController = new UsuarioJpaController(null);
+            List<Usuario> usuList = null;
+            UsuarioJpaController usuController = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
+            usuList = usuController.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
+            for (Usuario u : usuList) {
+                if (u.getCodigo() == forn.getCodfornec() && u.getTipo() == 0) {
+                    usu = u;
+                }
+            }
+            usu.setLogin(title);
+            usu.setLogin(login.getText());
+            usu.setSenha(senha.getText());
+
+            try {
+                usuController.edit(usu);
+            } catch (Exception ex) {
+                Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.dispose();
+        new FornecedorListagem();
     }//GEN-LAST:event_SalvarActionPerformed
 
 
