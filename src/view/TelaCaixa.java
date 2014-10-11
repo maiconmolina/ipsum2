@@ -6,6 +6,7 @@
 package view;
 
 import Util.DecimalFormattedField;
+import static Util.Util.DateToString;
 import static Util.Util.doubleDuasCasasDecimais;
 import controller.CaixaJpaController;
 import controller.LancamentoJpaController;
@@ -93,6 +94,13 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             } else {
                 dados.add("Estornado");
             }
+            if (o.getLancamentoEntrada() != null) {
+//                dados.add(DateToString(o.getLancamentoEntrada().getData()));
+            }
+            if (o.getLancamentoSaida() != null) {
+//                dados.add(DateToString(o.getLancamentoSaida().getData()));
+            }
+
             model.addRow(dados.toArray());
             dados.clear();
         }
@@ -178,6 +186,10 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 "Código","Descrição", "Tipo", "Valor", "Estorno","Data"
             }
         ));
+        Tabela.getColumnModel().getColumn(0).setPreferredWidth(40);
+        Tabela.getColumnModel().getColumn(1).setPreferredWidth(300);
+        Tabela.getColumnModel().getColumn(2).setPreferredWidth(150);
+        Tabela.getColumnModel().getColumn(4).setPreferredWidth(90);
         jScrollPane1.setViewportView(Tabela);
 
         jLabel1.setText("Status: ");
@@ -205,25 +217,28 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(novoLanc)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(alterar)
                         .addGap(18, 18, 18)
                         .addComponent(checkEstorno))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(statusCaixa)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 271, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saldo))
-                    .addComponent(jButton6)))
+                        .addComponent(saldo)
+                        .addGap(87, 87, 87))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton6)
+                        .addContainerGap())))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()

@@ -1,6 +1,12 @@
 package Util;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.text.MaskFormatter;
 
 public class Util {
@@ -70,8 +76,12 @@ public class Util {
 
     public static boolean ValidateCnpj(String cnpj) {
         // Fonte: http://www.guj.com.br/java/212033-validar-cnpj
-        if (cnpj == null) return false;
-        if (cnpj.equals("")) return false;
+        if (cnpj == null) {
+            return false;
+        }
+        if (cnpj.equals("")) {
+            return false;
+        }
         if (!cnpj.substring(0, 1).equals("")) {
             try {
                 cnpj = cnpj.replace('.', ' ');
@@ -161,17 +171,20 @@ public class Util {
         }
         return true;
     }
-    
-    public static boolean isNullOrEmpty(String str){
+
+    public static boolean isNullOrEmpty(String str) {
         return str == null || str.equals("");
     }
-    
-    public static short boolToShort(Boolean b){
-        if (b) return Short.parseShort("1");
-        else return Short.parseShort("0");
+
+    public static short boolToShort(Boolean b) {
+        if (b) {
+            return Short.parseShort("1");
+        } else {
+            return Short.parseShort("0");
+        }
     }
-    
-     public static double doubleDuasCasasDecimais(double d) {
+
+    public static double doubleDuasCasasDecimais(double d) {
         d = Math.round(d * 100);
         d = d / 100;
         return d;
@@ -189,5 +202,21 @@ public class Util {
         retorno += date.get(Calendar.YEAR);
 
         return retorno;
+    }
+
+    public static String DateToString(Date data) {//dd/MM/yyyy
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return dateFormat.format(data);
+    }
+
+    public static Date StringToDate(String data) {//dd/MM/yyyy
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date convertedCurrentDate = sdf.parse(data);
+            return convertedCurrentDate;
+        } catch (ParseException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

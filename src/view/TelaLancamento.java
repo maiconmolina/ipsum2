@@ -13,6 +13,9 @@ import controller.LancamentoSaidaJpaController;
 import controller.exceptions.NonexistentEntityException;
 import controller.exceptions.PreexistingEntityException;
 import enuns.EnumTipoDeLancamento;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,21 +46,31 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         int MaxIdLanc = ultimoLancId();
         codigo.setText(String.valueOf(MaxIdLanc));
         estorno.setEnabled(false);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        dataAgora.setText(dateFormat.format(date));
     }
 
     public TelaLancamento(Lancamento lanc) {
         initComponents();
+        InterfaceUtils.preparaTela(this);
+
         this.editandoLanc = lanc;
         estorno.setEnabled(true);
 
         descricao.setText(lanc.getDescricao());
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
         if (lanc.getLancamentoEntrada() != null) {
             tipo.setSelectedIndex(0);
+            date = lanc.getLancamentoEntrada().getData();
         }
         if (lanc.getLancamentoSaida() != null) {
+            date = lanc.getLancamentoSaida().getData();
             tipo.setSelectedIndex(1);
         }
 
+        dataAgora.setText(dateFormat.format(date));
         if (lanc.getEstorno() == 0) {
             estorno.setSelectedIndex(1);
         }
@@ -70,7 +83,6 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
 //        JOptionPane.showMessageDialog(this, val.getText());
         valor.setText(lanc.getValor().toString());
         codigo.setText(lanc.getCodlanc().toString());
-        InterfaceUtils.preparaTela(this);
     }
 
     private int ultimoLancId() {
@@ -113,6 +125,8 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         salvar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         estorno = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        dataAgora = new javax.swing.JTextField();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -135,6 +149,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         });
         for(EnumTipoDeLancamento t : EnumTipoDeLancamento.values()){
             this.tipo.addItem(t);
+
         }
 
         valor.addActionListener(new java.awt.event.ActionListener() {
@@ -167,6 +182,11 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
 
         estorno.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sim", "Não" }));
 
+        jLabel6.setText("Data:");
+
+        dataAgora.setEditable(false);
+        dataAgora.setText("00/00/0000");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -178,7 +198,8 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel6))
                         .addGap(8, 8, 8))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
@@ -188,12 +209,6 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(tipo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(descricao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-                            .addComponent(valor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -201,16 +216,25 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(estorno, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
                                 .addComponent(excluir)
-                                .addGap(18, 18, 18)
-                                .addComponent(salvar)))))
-                .addContainerGap())
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(salvar)))
+                        .addContainerGap())
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(tipo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(descricao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+                        .addComponent(valor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dataAgora, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(dataAgora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(descricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -218,27 +242,21 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(excluir)
-                            .addComponent(salvar))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(estorno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(25, Short.MAX_VALUE))))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(estorno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(excluir)
+                    .addComponent(salvar))
+                .addGap(40, 40, 40))
         );
 
         pack();
@@ -285,16 +303,14 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
         LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
         LancamentoSaidaJpaController lancSaidController = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
+        Date gambData = null;
 
         if (this.editandoLanc != null) {
             if (estorno.getSelectedIndex() == 0) {
                 lanc.setEstorno((short) 1);
-//                JOptionPane.showMessageDialog(this, "Index-> 0, set Estorno 1 ( estornado)");
             } else {
                 lanc.setEstorno((short) 0);
-//                JOptionPane.showMessageDialog(this, "Index-> 1, set Estorno 0 (naoestornado)");
             }
-//            JOptionPane.showMessageDialog(this, lanc.getValor().toString());
             try {
                 lancController.edit(lanc);
             } catch (NonexistentEntityException ex) {
@@ -303,6 +319,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (lanc.getLancamentoEntrada() != null) {
+                gambData = lanc.getLancamentoEntrada().getData();
                 try {
                     lancEntrController.destroy(lanc.getLancamentoEntrada().getCodlanc());
                 } catch (NonexistentEntityException ex) {
@@ -311,6 +328,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 lanc.setLancamentoEntrada(null);
             }
             if (lanc.getLancamentoSaida() != null) {
+                gambData = lanc.getLancamentoEntrada().getData();
                 try {
                     lancSaidController.destroy(lanc.getLancamentoSaida().getCodlanc());
                 } catch (NonexistentEntityException ex) {
@@ -319,6 +337,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 lanc.setLancamentoSaida(null);
             }
         } else {
+            gambData = new Date();
             try {
                 lancController.create(lanc);
             } catch (Exception ex) {
@@ -328,6 +347,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         if (tipo.getSelectedItem().toString() == "Entrada comum") {
             LancamentoEntrada entrada = new LancamentoEntrada();
             entrada.setCodlanc(lanc.getCodlanc());
+            entrada.setData(gambData);
             entrada.setLancamento(lanc);
             try {
                 lancEntrController.create(entrada);
@@ -342,6 +362,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             LancamentoSaida saida = new LancamentoSaida();
             saida.setCodlanc(lanc.getCodlanc());
             saida.setLancamento(lanc);
+            saida.setData(gambData);
             try {
                 lancSaidController.create(saida);
             } catch (PreexistingEntityException ex) {
@@ -416,6 +437,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.JTextField codigo;
+    private javax.swing.JTextField dataAgora;
     private javax.swing.JTextField descricao;
     private javax.swing.JComboBox estorno;
     private javax.swing.JButton excluir;
@@ -424,6 +446,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JButton salvar;
     private javax.swing.JComboBox tipo;
     private javax.swing.JTextField valor;
