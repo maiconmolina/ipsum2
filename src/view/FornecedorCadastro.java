@@ -25,6 +25,8 @@ import model.Usuario;
  */
 public class FornecedorCadastro extends javax.swing.JInternalFrame {
 
+    private Fornecedor editaFornecedor = null;
+
     /**
      * Creates new form FornecedorCadastro
      */
@@ -35,8 +37,9 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
 
     public FornecedorCadastro(Fornecedor forn) {
         initComponents();
+        editaFornecedor = forn;
         InterfaceUtils.preparaTela(this);
-        
+
         razao.setText(forn.getRazao());
         fantasia.setText(forn.getFantasia());
         cnpj.setText(forn.getCnpj());
@@ -47,30 +50,27 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         endereco.setText(forn.getEndereco());
         campoUF.setSelectedItem(forn.getCoduf());
         cep.setText(forn.getCep());
-        
+
         List<Usuario> usu;
         Usuario usua = null;
         UsuarioJpaController usucontroller = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
         usu = usucontroller.getEntityManager().createNamedQuery("Usuario.findByCodigo").setParameter("codigo", forn.getCodfornec()).getResultList();
-        for(Usuario usuario : usu){
-            if(usuario.getTipo() == 0){
+        for (Usuario usuario : usu) {
+            if (usuario.getTipo() == 0) {
                 usua = usuario;
             }
         }
-        
+
         login.setText(usua.getLogin());
         senha.setText(usua.getSenha());
         confirmaSenha.setText(usua.getSenha());
-        
-        
+
         UfJpaController ufct = new UfJpaController(ipsum2.Ipsum2.getFactory());
 
         List<Uf> estados = ufct.getEntityManager().createNamedQuery("Uf.findAll").getResultList();
         ComboBoxModel teste = new DefaultComboBoxModel(estados.toArray());
         campoUF.setModel(teste);
-        
-       
-    
+
     }
 
     /**
@@ -290,16 +290,28 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         Fornecedor forn;
         FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         listForn = controllerForn.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
+
         int ProxCodigo;
         if (!listForn.isEmpty()) {
-
             forn = listForn.get(listForn.size() - 1);
             ProxCodigo = forn.getCodfornec();
             ProxCodigo++;
         } else {
             ProxCodigo = 1;
         }
-        forn = new Fornecedor();
+        List<Usuario> listUsu;
+
+        if (editaFornecedor != null) {
+            forn = editaFornecedor;
+            Usuario usuarioExist;
+            UsuarioJpaController usuarioController = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
+            listUsu = usuarioController.getEntityManager().createNamedQuery("Usuario.findByCodigo").setParameter("codigo", forn.getCodfornec()).getResultList();
+            for (Usuario u:listUsu){
+            }
+
+        } else {
+            forn = new Fornecedor();
+        }
         forn.setCodfornec(ProxCodigo);
 
         forn.setRazao(razao.getText());
@@ -320,19 +332,17 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         }
 //        }
 
-        List<Usuario> listUsu;
-
         Usuario usu;
         UsuarioJpaController controllerUsu = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
         listUsu = controllerUsu.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
-//        int ProxCodigo2;
-//        if (!listUsu.isEmpty()) {
-//            usu = listUsu.get(listUsu.size() - 1);
-//            ProxCodigo2 = usu.getCodigo();
-//            ProxCodigo2++;
-//        } else {
-//            ProxCodigo2 = 1;
-//        }
+        int ProxCodigo2;
+        if (!listUsu.isEmpty()) {
+            usu = listUsu.get(listUsu.size() - 1);
+            ProxCodigo2 = usu.getCodigo();
+            ProxCodigo2++;
+        } else {
+            ProxCodigo2 = 1;
+        }
         usu = new Usuario();
         usu.setCodigo(forn.getCodfornec());
         usu.setLogin(login.getText());
