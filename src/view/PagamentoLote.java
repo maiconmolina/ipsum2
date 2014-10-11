@@ -7,9 +7,11 @@ package view;
 
 import controller.FornecedorJpaController;
 import controller.PagamentoLoteJpaController;
+import controller.TipoPagamentoJpaController;
 import java.util.Date;
 import java.util.List;
 import model.Fornecedor;
+import model.TipoPagamento;
 
 /**
  *
@@ -81,7 +83,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         paglote = pagamentoLoteController.getEntityManager().createNamedQuery("PagamentoLote.findAll").getResultList();
         for (PagamentoLote p : paglote) {
 
-            this.lote.addItem(p + " " + );
+            // this.lote.addItem(p + " " + );
 
         }
 
@@ -89,7 +91,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
         for (Fornecedor f: forn){
-            this.fornecedor.addItem(f);
+            //this.fornecedor.addItem(f);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -156,6 +158,13 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                     .addComponent(cancelar))
                 .addGap(18, 18, 18))
         );
+
+        List<TipoPagamento> tipopag;
+        TipoPagamentoJpaController tipopagController = new TipoPagamentoJpaController(ipsum2.Ipsum2.getFactory());
+        tipopag = tipopagController.getEntityManager().createNamedQuery("TipoPagamento.findAll").getResultList();
+        for (TipoPagamento t: tipopag){
+            this.tipoPagamento.addItem(t);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
