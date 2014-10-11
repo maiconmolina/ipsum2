@@ -280,109 +280,113 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_campoUFActionPerformed
 
     private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalvarActionPerformed
-        if (this.editaFornecedor == null) {
-            List<Fornecedor> listForn;
+        if (senha.getText().equals(confirmaSenha.getText())){
+            if (this.editaFornecedor == null) {
+                List<Fornecedor> listForn;
 
-            Fornecedor forn;
-            FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
-            listForn = controllerForn.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
+                Fornecedor forn;
+                FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+                listForn = controllerForn.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
 
-            int ProxCodigo;
-            if (!listForn.isEmpty()) {
-                forn = listForn.get(listForn.size() - 1);
-                ProxCodigo = forn.getCodfornec();
-                ProxCodigo++;
+                int ProxCodigo;
+                if (!listForn.isEmpty()) {
+                    forn = listForn.get(listForn.size() - 1);
+                    ProxCodigo = forn.getCodfornec();
+                    ProxCodigo++;
+                } else {
+                    ProxCodigo = 1;
+                }
+                List<Usuario> listUsu;
+
+                forn = new Fornecedor();
+                forn.setCodfornec(ProxCodigo);
+
+                forn.setRazao(razao.getText());
+                forn.setFantasia(fantasia.getText());
+                forn.setCnpj(cnpj.getText());
+                forn.setTelefone(telefone.getText());
+                forn.setEmail(email.getText());
+                forn.setCidade(cidade.getText());
+                forn.setNumero(Integer.parseInt(numero.getText()));
+                forn.setEndereco(endereco.getText());
+                forn.setCoduf((Uf) campoUF.getSelectedItem());
+                forn.setCep(cep.getText());
+
+                try {
+                    controllerForn.create(forn);
+                } catch (Exception ex) {
+                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                Usuario usu;
+                UsuarioJpaController controllerUsu = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
+                listUsu = controllerUsu.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
+                int ProxCodigo2;
+                if (!listUsu.isEmpty()) {
+                    usu = listUsu.get(listUsu.size() - 1);
+                    ProxCodigo2 = usu.getCodigo();
+                    ProxCodigo2++;
+                } else {
+                    ProxCodigo2 = 1;
+                }
+                usu = new Usuario();
+                usu.setCodigo(forn.getCodfornec());
+                usu.setLogin(login.getText());
+                usu.setSenha(senha.getText());
+                usu.setTipo(0);
+                try {
+                    controllerUsu.create(usu);
+                } catch (PreexistingEntityException ex) {
+                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             } else {
-                ProxCodigo = 1;
-            }
-            List<Usuario> listUsu;
+                Fornecedor forn;
+                forn = this.editaFornecedor;
+                FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
 
-            forn = new Fornecedor();
-            forn.setCodfornec(ProxCodigo);
+                forn.setRazao(razao.getText());
+                forn.setFantasia(fantasia.getText());
+                forn.setCnpj(cnpj.getText());
+                forn.setTelefone(telefone.getText());
+                forn.setEmail(email.getText());
+                forn.setCidade(cidade.getText());
+                forn.setNumero(Integer.parseInt(numero.getText()));
+                forn.setEndereco(endereco.getText());
+                forn.setCoduf((Uf) campoUF.getSelectedItem());
+                forn.setCep(cep.getText());
 
-            forn.setRazao(razao.getText());
-            forn.setFantasia(fantasia.getText());
-            forn.setCnpj(cnpj.getText());
-            forn.setTelefone(telefone.getText());
-            forn.setEmail(email.getText());
-            forn.setCidade(cidade.getText());
-            forn.setNumero(Integer.parseInt(numero.getText()));
-            forn.setEndereco(endereco.getText());
-            forn.setCoduf((Uf) campoUF.getSelectedItem());
-            forn.setCep(cep.getText());
+                try {
+                    controllerForn.edit(forn);
+                } catch (Exception ex) {
+                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                Usuario usu = null;
+                List<Usuario> usuList = null;
+                UsuarioJpaController usuController = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
+                usuList = usuController.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
+                for (Usuario u : usuList) {
+                    if (u.getCodigo() == forn.getCodfornec() && u.getTipo() == 0) {
+                        usu = u;
+                    }
+                }
+                usu.setLogin(title);
+                usu.setLogin(login.getText());
+                usu.setSenha(senha.getText());
 
-            try {
-                controllerForn.create(forn);
-            } catch (Exception ex) {
-                Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            Usuario usu;
-            UsuarioJpaController controllerUsu = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
-            listUsu = controllerUsu.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
-            int ProxCodigo2;
-            if (!listUsu.isEmpty()) {
-                usu = listUsu.get(listUsu.size() - 1);
-                ProxCodigo2 = usu.getCodigo();
-                ProxCodigo2++;
-            } else {
-                ProxCodigo2 = 1;
-            }
-            usu = new Usuario();
-            usu.setCodigo(forn.getCodfornec());
-            usu.setLogin(login.getText());
-            usu.setSenha(senha.getText());
-            usu.setTipo(0);
-            try {
-                controllerUsu.create(usu);
-            } catch (PreexistingEntityException ex) {
-                Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        } else {
-            Fornecedor forn;
-            forn = this.editaFornecedor;
-            FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
-
-            forn.setRazao(razao.getText());
-            forn.setFantasia(fantasia.getText());
-            forn.setCnpj(cnpj.getText());
-            forn.setTelefone(telefone.getText());
-            forn.setEmail(email.getText());
-            forn.setCidade(cidade.getText());
-            forn.setNumero(Integer.parseInt(numero.getText()));
-            forn.setEndereco(endereco.getText());
-            forn.setCoduf((Uf) campoUF.getSelectedItem());
-            forn.setCep(cep.getText());
-
-            try {
-                controllerForn.edit(forn);
-            } catch (Exception ex) {
-                Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Usuario usu = null;
-            List<Usuario> usuList = null;
-            UsuarioJpaController usuController = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
-            usuList = usuController.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
-            for (Usuario u : usuList) {
-                if (u.getCodigo() == forn.getCodfornec() && u.getTipo() == 0) {
-                    usu = u;
+                try {
+                    usuController.edit(usu);
+                } catch (Exception ex) {
+                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            usu.setLogin(title);
-            usu.setLogin(login.getText());
-            usu.setSenha(senha.getText());
-
-            try {
-                usuController.edit(usu);
-            } catch (Exception ex) {
-                Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.dispose();
+            new FornecedorListagem();
+        }else{
+            JOptionPane.showMessageDialog(this, "As senhas não conferem!");
         }
-        this.dispose();
-        new FornecedorListagem();
     }//GEN-LAST:event_SalvarActionPerformed
 
 
