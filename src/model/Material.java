@@ -131,7 +131,7 @@ public class Material implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Material[ codmat=" + codmat + " ]";
+        return getDescricao();
     }
     
 }

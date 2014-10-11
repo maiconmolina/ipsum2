@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package view;
 
 import controller.FornecedorJpaController;
@@ -15,6 +14,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import model.Fornecedor;
 import model.Material;
+import Util.*;
 
 /**
  *
@@ -25,13 +25,28 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
     /**
      * Creates new form MaterialCRUD
      */
-    
     private FornecedorJpaController fctr;
+    private Boolean isEditing;
+    private Material mobj;
+
     public MaterialCRUDEdit() {
         initComponents();
-        
-        /*Preenche combo fornec */
-        fctr = new  FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+        initFornec();
+    }
+
+    public MaterialCRUDEdit(Material m) {
+        initComponents();
+        initFornec();
+        this.isEditing = true;
+        this.mobj = m;
+        desc.setText(m.getDescricao());
+        qtde.setText(m.getQtde().toString());
+        jativo.setSelected(m.getAtivo() == 1);
+        comboFor.setSelectedItem(m.getCodfornec());
+    }
+
+    private void initFornec() {
+        fctr = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         List<Fornecedor> lstfnc = fctr.findFornecedorEntities();
         ComboBoxModel combofnc = new DefaultComboBoxModel(lstfnc.toArray());
         comboFor.setModel(combofnc);
@@ -53,6 +68,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
         comboFor = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jativo = new javax.swing.JCheckBox();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -71,6 +87,9 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
             }
         });
 
+        jativo.setSelected(true);
+        jativo.setText("Ativo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,6 +106,8 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
                             .addComponent(desc)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(qtde, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jativo)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 1, Short.MAX_VALUE)
@@ -108,12 +129,13 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(qtde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(qtde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jativo))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboFor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -122,25 +144,39 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            Material novo = new Material();
-            MaterialJpaController matct = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
-            novo.setCodmat(matct.getMaterialCount() + 1);
-            novo.setAtivo(Short.parseShort("1"));
-            novo.setCodfornec((Fornecedor)comboFor.getSelectedItem());
-            novo.setDescricao(desc.getText());
-            novo.setQtde(Integer.parseInt(qtde.getText()));
-            
-            matct.create(novo);
-            MaterialCRUD reload = new MaterialCRUD();
-            Start.addFrame(reload);
-            reload.setLocation(10, 10);
-            reload.setVisible(true);
-            this.dispose();
-        } catch (Exception ex) {
-            Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
+        MaterialJpaController matct = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
+        if (!isEditing) {
+            try {
+                Material novo = new Material();
+
+                novo.setCodmat(matct.getMaterialCount() + 1);
+                novo.setAtivo(Util.boolToShort(jativo.isSelected()));
+                novo.setCodfornec((Fornecedor) comboFor.getSelectedItem());
+                novo.setDescricao(desc.getText());
+                novo.setQtde(Integer.parseInt(qtde.getText()));
+                
+                matct.create(novo);
+            } catch (Exception ex) {
+                Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            mobj.setQtde(Integer.parseInt(qtde.getText()));
+            mobj.setDescricao(desc.getText());
+            mobj.setCodfornec((Fornecedor) comboFor.getSelectedItem());
+            mobj.setAtivo(Util.boolToShort(jativo.isSelected()));
+
+            try {
+                matct.edit(mobj);
+            } catch (Exception ex) {
+                Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        MaterialCRUD reload = new MaterialCRUD();
+        Start.addFrame(reload);
+        reload.setLocation(10, 10);
+        reload.setVisible(true);
         this.dispose();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -185,6 +221,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JCheckBox jativo;
     private javax.swing.JTextField qtde;
     // End of variables declaration//GEN-END:variables
 }

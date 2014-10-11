@@ -7,9 +7,11 @@
 package view;
 
 import controller.MaterialJpaController;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import model.Material;
@@ -31,20 +33,21 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
         
         List<Material> lstmat;
         lstmat = matcon.findMaterialEntities();
-        DefaultTableModel tm = new DefaultTableModel();
-        String[] colunas = {"Código","Descrição","Qtde","Ativo"};
+        DefaultTableModel model = (DefaultTableModel) jtmat.getModel();
+        List<Object> dados = new ArrayList<>();
         for(Material mat : lstmat){
-            Object[] o = new Object[4];
-            o[0] = mat.getCodmat();
-            o[1] = mat.getDescricao();
-            o[2] = mat.getQtde();
-            o[3] = mat.getAtivo();
+            dados.add(mat.getCodmat());
+            dados.add(mat.toString());
+            dados.add(mat.getQtde());
+            dados.add((mat.getAtivo() == 1));
             
-            tm.addRow(o);
+            model.addRow(dados.toArray());
+            dados.clear();
         }
         
-        jtmat.setModel(tm);
-        tm.setColumnIdentifiers(colunas);
+        
+        
+        
     }
 
     /**
@@ -58,8 +61,8 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jtmat = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btAltera = new javax.swing.JButton();
+        btNovo = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -101,12 +104,17 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
             jtmat.getColumnModel().getColumn(3).setMaxWidth(50);
         }
 
-        jButton1.setText("Alterar");
-
-        jButton2.setText("Novo");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btAltera.setText("Alterar");
+        btAltera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btAlteraActionPerformed(evt);
+            }
+        });
+
+        btNovo.setText("Novo");
+        btNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNovoActionPerformed(evt);
             }
         });
 
@@ -118,9 +126,9 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(btNovo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(btAltera))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -131,20 +139,37 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(btNovo)
+                    .addComponent(btAltera))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
         MaterialCRUDEdit novo = new MaterialCRUDEdit();
         Start.addFrame(novo);
         novo.setLocation(20, 20);
         novo.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btNovoActionPerformed
+
+    private void btAlteraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlteraActionPerformed
+        try {
+            DefaultTableModel model = (DefaultTableModel) jtmat.getModel();
+            Material mat = matcon.findMaterial((Integer) model.getValueAt(jtmat.getSelectedRow(), 0));
+            MaterialCRUDEdit emat = new MaterialCRUDEdit(mat);
+            Start.addFrame(emat);
+            emat.setLocation(20, 20);
+            emat.setVisible(true);
+            this.dispose();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(this, "Item selecionado inválido!");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Um erro aconteceu!\n" + ex.getMessage());
+        }
+    }//GEN-LAST:event_btAlteraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,8 +207,8 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btAltera;
+    private javax.swing.JButton btNovo;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jtmat;
     // End of variables declaration//GEN-END:variables

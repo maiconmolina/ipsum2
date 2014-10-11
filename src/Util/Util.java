@@ -165,6 +165,17 @@ public class Util {
     public static boolean isNullOrEmpty(String str){
         return str == null || str.equals("");
     }
+    
+    public static short boolToShort(Boolean b){
+        if (b) return Short.parseShort("1");
+        else return Short.parseShort("0");
+    }
+    
+     public static double oubleDuasCasasDecimais(double d) {
+        d = Math.round(d * 100);
+        d = d / 100;
+        return d;
+    }
 
     public static String CalendarToString(Calendar date) {
         String retorno = "";
