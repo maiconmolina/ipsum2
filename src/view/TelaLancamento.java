@@ -242,12 +242,20 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         lanc.setCodlanc(Integer.parseInt(codigo.getText()));
         DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
         lanc.setValor(val.converteDouble(valor.getText()));
-        LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
 
+        LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
         LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
         LancamentoSaidaJpaController lancSaidController = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
 
         if (this.editandoLanc != null) {
+//            JOptionPane.showMessageDialog(this, lanc.getValor().toString());
+            try {
+                lancController.edit(lanc);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if (lanc.getLancamentoEntrada() != null) {
                 try {
                     lancEntrController.destroy(lanc.getLancamentoEntrada().getCodlanc());
@@ -262,14 +270,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 } catch (NonexistentEntityException ex) {
                     Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                lanc.setLancamentoEntrada(null);
-            }
-            try {
-                lancController.edit(lanc);
-            } catch (NonexistentEntityException ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                lanc.setLancamentoSaida(null);
             }
         } else {
             try {
