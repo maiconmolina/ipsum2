@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Caixa.findBySaldo", query = "SELECT c FROM Caixa c WHERE c.saldo = :saldo"),
     @NamedQuery(name = "Caixa.findByStatus", query = "SELECT c FROM Caixa c WHERE c.status = :status")})
 public class Caixa implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -75,6 +76,10 @@ public class Caixa implements Serializable {
         this.status = status;
     }
 
+    public void setStatus(int statusInt) {
+        this.status = Short.parseShort(Integer.toString(statusInt));
+    }
+
     @XmlTransient
     public List<Lancamento> getLancamentoList() {
         return lancamentoList;
@@ -108,5 +113,5 @@ public class Caixa implements Serializable {
     public String toString() {
         return "model.Caixa[ codcaixa=" + codcaixa + " ]";
     }
-    
+
 }

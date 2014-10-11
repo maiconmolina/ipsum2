@@ -50,7 +50,6 @@ public class Lancamento implements Serializable {
     private String descricao;
     @Column(name = "ESTORNO")
     private Short estorno;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "VALOR")
     private Double valor;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "lancamento")
@@ -68,6 +67,8 @@ public class Lancamento implements Serializable {
     private LancamentoEntrada lancamentoEntrada;
 
     public Lancamento() {
+        this.estorno = Short.parseShort(Integer.toString(0));
+        this.valor=0.0;
     }
 
     public Lancamento(Integer codlanc) {
@@ -104,6 +105,10 @@ public class Lancamento implements Serializable {
 
     public void setEstorno(Short estorno) {
         this.estorno = estorno;
+    }
+
+    public void setEstorno(int statusInt) {
+        this.estorno = Short.parseShort(Integer.toString(statusInt));
     }
 
     public Double getValor() {

@@ -216,4 +216,7 @@ public class DecimalFormattedField extends JFormattedTextField {
             return (Math.floor((d * 100.0))) / 100.0;
         }
     }
+
+   
+
 }

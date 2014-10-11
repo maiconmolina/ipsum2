@@ -5,6 +5,8 @@
  */
 package view;
 
+import Util.DecimalFormattedField;
+import static Util.Util.doubleDuasCasasDecimais;
 import controller.CaixaJpaController;
 import controller.LancamentoJpaController;
 import java.util.ArrayList;
@@ -22,6 +24,10 @@ import model.Lancamento;
  */
 public class TelaCaixa extends javax.swing.JInternalFrame {
 
+    public static Caixa caixa = null;
+    public static List<Lancamento> listLancamentosAtivos = null;
+    public static List<Lancamento> listLancamentos = null;
+
     /**
      * Creates new form TelaCaixa
      */
@@ -29,9 +35,16 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         initComponents();
         InterfaceUtils.preparaTela(this);
         Caixa caixa = InitCaixa();
+        this.caixa = caixa;
+        statusCaixa.setText("Aberto");
+        alterar.setEnabled(true);
+        novoLanc.setEnabled(true);
         List<Lancamento> lancamentos;
         LancamentoJpaController lancamentoController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
         lancamentos = lancamentoController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
+        this.listLancamentos = lancamentos;
+        lancamentos = lancamentoController.getEntityManager().createNamedQuery("Lancamento.findByEstorno").setParameter("estorno", (short) 0).getResultList();
+        this.listLancamentosAtivos = lancamentos;
         this.insereTabela(lancamentos);
 
     }
@@ -49,6 +62,8 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         }
         caixa = new Caixa();
         caixa.setCodcaixa(1);
+        caixa.setSaldo(0.0);
+        caixa.setStatus(Short.parseShort("1"));
         try {
             caixaController.create(caixa);
         } catch (Exception ex) {
@@ -60,6 +75,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
 
     private void insereTabela(List<Lancamento> data) {
         DefaultTableModel model = (DefaultTableModel) Tabela.getModel();
+        model.setRowCount(0);
         List<Object> dados = new ArrayList<>();
         for (Lancamento o : data) {
             dados.add(o.getCodlanc());
@@ -69,7 +85,15 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             } else if (o.getLancamentoEntrada() != null) {
                 dados.add(o.getLancamentoEntrada());
             }
-            dados.add(o.getValor().toString());
+            DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
+
+            double r = doubleDuasCasasDecimais(o.getValor());
+            dados.add(String.valueOf(r).replace(".", ","));
+            if (o.getEstorno() == 0) {
+                dados.add("Não");
+            } else {
+                dados.add("Estornado");
+            }
             model.addRow(dados.toArray());
             dados.clear();
         }
@@ -87,11 +111,17 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        novoLanc = new javax.swing.JButton();
+        alterar = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabela = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        statusCaixa = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        saldo = new javax.swing.JLabel();
+        checkEstorno = new javax.swing.JCheckBox();
 
         jButton1.setText("Novo Lançamento");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -114,21 +144,23 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setText("jLabel3");
+
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Caixa");
 
-        jButton2.setText("Novo Lançamento");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        novoLanc.setText("Novo Lançamento");
+        novoLanc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                novoLancActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Alterar");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        alterar.setText("Alterar");
+        alterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                alterarActionPerformed(evt);
             }
         });
 
@@ -144,41 +176,83 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Código","Descrição", "Tipo", "Valor"
+                "Código","Descrição", "Tipo", "Valor", "Estorno"
             }
         ));
         jScrollPane1.setViewportView(Tabela);
+
+        jLabel1.setText("Status: ");
+
+        statusCaixa.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        jLabel2.setText("Saldo:");
+
+        saldo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        checkEstorno.setText("Estornados");
+        checkEstorno.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                checkEstornoStateChanged(evt);
+            }
+        });
+        checkEstorno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkEstornoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
-                .addComponent(jButton6))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(novoLanc)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(alterar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(statusCaixa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(checkEstorno)
+                        .addGap(49, 49, 49)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saldo))
+                    .addComponent(jButton6)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(366, Short.MAX_VALUE)
+                .addContainerGap(365, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(jLabel1)
+                    .addComponent(statusCaixa)
+                    .addComponent(jLabel2)
+                    .addComponent(saldo)
+                    .addComponent(checkEstorno))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(novoLanc)
                     .addComponent(jButton6)
-                    .addComponent(jButton5))
+                    .addComponent(alterar))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(51, Short.MAX_VALUE)))
+                    .addContainerGap(80, Short.MAX_VALUE)))
         );
 
         pack();
@@ -196,12 +270,12 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void novoLancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoLancActionPerformed
         this.dispose();
         new TelaLancamento();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_novoLancActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void alterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarActionPerformed
         try {
             DefaultTableModel model = (DefaultTableModel) Tabela.getModel();
             Lancamento lanc = (Lancamento) model.getValueAt(Tabela.getSelectedRow(), 1); //Pega o objeto na tabela
@@ -212,12 +286,42 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Um erro aconteceu!\n" + ex.getMessage());
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_alterarActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        Caixa caixa = this.caixa;
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        if (caixa.getStatus() == 1) {
+            caixa.setStatus(0);
+            statusCaixa.setText("Fechado");
+            alterar.setEnabled(false);
+            novoLanc.setEnabled(false);
 
+        } else {
+            caixa.setStatus(1);
+            statusCaixa.setText("Aberto");
+            alterar.setEnabled(true);
+            novoLanc.setEnabled(true);
+        }
+        try {
+            caixaController.edit(caixa);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void checkEstornoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkEstornoStateChanged
+
+    }//GEN-LAST:event_checkEstornoStateChanged
+
+    private void checkEstornoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkEstornoActionPerformed
+        if (checkEstorno.isSelected() == true) {
+            this.insereTabela(this.listLancamentos);
+        } else {
+            this.insereTabela(this.listLancamentosAtivos);
+        }
+    }//GEN-LAST:event_checkEstornoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,12 +360,18 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Tabela;
+    private javax.swing.JButton alterar;
+    private javax.swing.JCheckBox checkEstorno;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton novoLanc;
+    private javax.swing.JLabel saldo;
+    private javax.swing.JLabel statusCaixa;
     // End of variables declaration//GEN-END:variables
 }
