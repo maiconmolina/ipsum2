@@ -87,8 +87,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             }
             DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
 
-            double r = doubleDuasCasasDecimais(o.getValor());
-            dados.add(String.valueOf(r).replace(".", ","));
+            dados.add("R$ " + String.valueOf(doubleDuasCasasDecimais(o.getValor())).replace(".", ","));
             if (o.getEstorno() == 0) {
                 dados.add("Não");
             } else {
@@ -176,7 +175,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Código","Descrição", "Tipo", "Valor", "Estorno"
+                "Código","Descrição", "Tipo", "Valor", "Estorno","Data"
             }
         ));
         jScrollPane1.setViewportView(Tabela);
@@ -189,7 +188,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
 
         saldo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
-        checkEstorno.setText("Estornados");
+        checkEstorno.setText("Ver estornados");
         checkEstorno.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 checkEstornoStateChanged(evt);
@@ -211,15 +210,14 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                         .addComponent(novoLanc)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(alterar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(checkEstorno))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(statusCaixa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(checkEstorno)
-                        .addGap(49, 49, 49)))
+                        .addComponent(statusCaixa)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 287, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -229,30 +227,30 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 701, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(365, Short.MAX_VALUE)
+                .addContainerGap(382, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(statusCaixa)
                     .addComponent(jLabel2)
-                    .addComponent(saldo)
-                    .addComponent(checkEstorno))
+                    .addComponent(saldo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(novoLanc)
                     .addComponent(jButton6)
-                    .addComponent(alterar))
+                    .addComponent(alterar)
+                    .addComponent(checkEstorno))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(80, Short.MAX_VALUE)))
+                    .addContainerGap(92, Short.MAX_VALUE)))
         );
 
         pack();
