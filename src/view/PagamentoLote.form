@@ -32,16 +32,11 @@
                       <Component id="confirmarPagamento" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -58,12 +53,9 @@
                               </Group>
                           </Group>
                           <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
-                          <Component id="fornecedor" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lote" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="data" min="-2" pref="149" max="-2" attributes="0"/>
-                                  <Component id="lote" min="-2" pref="147" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="data" min="-2" pref="149" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -81,17 +73,12 @@
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                   <Component id="data" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="11" max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fornecedor" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="lote" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <Component id="lote" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane2" min="-2" pref="67" max="-2" attributes="0"/>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -118,11 +105,6 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Fornecedor"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Lote"/>
       </Properties>
@@ -183,22 +165,15 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="fornecedor">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="List&lt;Fornecedor&gt; forn;&#xa;FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());&#xa;forn = lancamentoController.getEntityManager().createNamedQuery(&quot;Fornecedor.findAll&quot;).getResultList();&#xa;for (Fornecedor f: forn){&#xa;    this.fornecedor.addItem(f);&#xa;}"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JComboBox" name="lote">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="List&lt;PagamentoLote&gt; paglote;&#xa;PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());&#xa;paglote = pagamentoLoteController.getEntityManager().createNamedQuery(&quot;PagamentoLote.findAll&quot;).getResultList();&#xa;for (PagamentoLote p : paglote) {&#xa;   &#xa;    this.lote.addItem(p + &quot; &quot; + );&#xa;&#xa;}&#xa;&#xa;List&lt;Fornecedor&gt; forn;&#xa;FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());&#xa;forn = lancamentoController.getEntityManager().createNamedQuery(&quot;Fornecedor.findAll&quot;).getResultList();&#xa;for (Fornecedor f: forn){&#xa;    this.fornecedor.addItem(f);&#xa;}"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

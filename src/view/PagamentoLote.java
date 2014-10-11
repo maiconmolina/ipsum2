@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package view;
 
 import controller.FornecedorJpaController;
+import controller.PagamentoLoteJpaController;
 import java.util.Date;
 import java.util.List;
 import model.Fornecedor;
@@ -21,17 +21,15 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
      * Creates new form PagamentoLote
      */
     public PagamentoLote() {
-        initComponents();    
-        InterfaceUtils.preparaTela(this);
-    }
-    
-    public PagamentoLote(PagamentoLote paglote){
         initComponents();
         InterfaceUtils.preparaTela(this);
-       
-        List<Fornecedor> forn;
-        FornecedorJpaController forncontroller = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         
+    }
+
+    public PagamentoLote(PagamentoLote paglote) {
+        initComponents();
+        InterfaceUtils.preparaTela(this);
+
     }
 
     /**
@@ -44,7 +42,6 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         confirmarPagamento = new javax.swing.JButton();
         cancelar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -56,15 +53,12 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         data = new javax.swing.JTextField();
         valorTotal = new javax.swing.JTextField();
         tipoPagamento = new javax.swing.JComboBox();
-        fornecedor = new javax.swing.JComboBox();
         lote = new javax.swing.JComboBox();
 
         setClosable(true);
         setTitle("Pagamento de Lote");
 
-        jLabel1.setText("Fornecedor");
-
-        jLabel2.setText("Lote");
+        jLabel1.setText("Lote");
 
         confirmarPagamento.setText("Confirmar Pagamento");
 
@@ -81,6 +75,15 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(descricao);
 
         jLabel7.setText("Data");
+
+        List<PagamentoLote> paglote;
+        PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
+        paglote = pagamentoLoteController.getEntityManager().createNamedQuery("PagamentoLote.findAll").getResultList();
+        for (PagamentoLote p : paglote) {
+
+            this.lote.addItem(p + " " + );
+
+        }
 
         List<Fornecedor> forn;
         FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
@@ -101,14 +104,11 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(confirmarPagamento))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel6)))
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -121,11 +121,9 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                                     .addComponent(valorTotal)
                                     .addComponent(tipoPagamento, 0, 166, Short.MAX_VALUE)))
                             .addComponent(jScrollPane2)
-                            .addComponent(fornecedor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lote, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lote, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -136,15 +134,11 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addComponent(data, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(fornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
                     .addComponent(lote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
@@ -172,9 +166,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
     private javax.swing.JButton confirmarPagamento;
     private javax.swing.JTextField data;
     private javax.swing.JTextArea descricao;
-    private javax.swing.JComboBox fornecedor;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
