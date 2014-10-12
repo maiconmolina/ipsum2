@@ -30,6 +30,10 @@ public class FuncaoJpaController implements Serializable {
     }
     private EntityManagerFactory emf = null;
 
+    public FuncaoJpaController() {
+        this.emf = ipsum2.Ipsum2.getFactory();
+    }
+
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
@@ -80,9 +84,11 @@ public class FuncaoJpaController implements Serializable {
             List<Funcionario> funcionarioListOld = persistentFuncao.getFuncionarioList();
             List<Funcionario> funcionarioListNew = funcao.getFuncionarioList();
             List<Funcionario> attachedFuncionarioListNew = new ArrayList<Funcionario>();
-            for (Funcionario funcionarioListNewFuncionarioToAttach : funcionarioListNew) {
-                funcionarioListNewFuncionarioToAttach = em.getReference(funcionarioListNewFuncionarioToAttach.getClass(), funcionarioListNewFuncionarioToAttach.getCodfunc());
-                attachedFuncionarioListNew.add(funcionarioListNewFuncionarioToAttach);
+            if (funcionarioListNew != null) {
+                for (Funcionario funcionarioListNewFuncionarioToAttach : funcionarioListNew) {
+                    funcionarioListNewFuncionarioToAttach = em.getReference(funcionarioListNewFuncionarioToAttach.getClass(), funcionarioListNewFuncionarioToAttach.getCodfunc());
+                    attachedFuncionarioListNew.add(funcionarioListNewFuncionarioToAttach);
+                }
             }
             funcionarioListNew = attachedFuncionarioListNew;
             funcao.setFuncionarioList(funcionarioListNew);
@@ -192,5 +198,16 @@ public class FuncaoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public void setAtivo(Funcao funcao, boolean b) throws Exception {
+        funcao.setAtivo(b);
+        this.edit(funcao);
+    }
+
+    public List<Funcao> getAllActive() {
+        return this.getEntityManager()
+                .createNamedQuery("Funcao.findByAtivo")
+                .setParameter("ativo", 1)
+                .getResultList();
+    }
 }

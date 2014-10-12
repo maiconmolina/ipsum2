@@ -1,23 +1,36 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package view;
 
-/**
- *
- * @author Usuario
- */
+import controller.FuncionarioJpaController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Funcionario;
+
 public class FuncionarioListagem extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form FuncionarioListagem
-     */
     public FuncionarioListagem() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        this.atualizaLista();
+    }
+
+    private void atualizaLista() {
+        List<Funcionario> func = new FuncionarioJpaController()
+                .getEntityManager()
+                .createNamedQuery("Funcionario.findByAtivo")
+                .setParameter("ativo", jAtivo.isSelected() ? 1 : 0)
+                .getResultList();
+        DefaultTableModel table = (DefaultTableModel) jTable1.getModel();
+        table.setRowCount(0);
+        List<Object> buffer = new ArrayList<>();
+        for (Funcionario funcionario : func) {//PAU NESSA LINHA
+            buffer.clear();
+            buffer.add(funcionario.getCodfunc());
+            buffer.add(funcionario.getNome());
+            buffer.add(funcionario.getCpf());
+            table.addRow(buffer.toArray());
+        }
     }
 
     /**
@@ -32,8 +45,8 @@ public class FuncionarioListagem extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jVisualizar = new javax.swing.JButton();
+        jAtivo = new javax.swing.JCheckBox();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -53,9 +66,20 @@ public class FuncionarioListagem extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Inserir");
+        jVisualizar.setText("Visualizar");
+        jVisualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jVisualizarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Visualizar");
+        jAtivo.setSelected(true);
+        jAtivo.setText("Ativo");
+        jAtivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jAtivoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -64,10 +88,10 @@ public class FuncionarioListagem extends javax.swing.JInternalFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jVisualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jAtivo)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -75,8 +99,8 @@ public class FuncionarioListagem extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jVisualizar)
+                    .addComponent(jAtivo))
                 .addGap(0, 9, Short.MAX_VALUE))
         );
 
@@ -94,12 +118,29 @@ public class FuncionarioListagem extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jAtivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAtivoActionPerformed
+        this.atualizaLista();
+    }//GEN-LAST:event_jAtivoActionPerformed
+
+    private void jVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVisualizarActionPerformed
+        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
+        try {
+            int cod = (int) model.getValueAt(jTable1.getSelectedRow(), 0);
+            FuncionarioJpaController ctr = new FuncionarioJpaController();
+            Funcionario funcionario = ctr.findFuncionario(cod);
+            new FuncionarioCadastro(funcionario);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Registro inválido.");
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jVisualizarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBox jAtivo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton jVisualizar;
     // End of variables declaration//GEN-END:variables
 }

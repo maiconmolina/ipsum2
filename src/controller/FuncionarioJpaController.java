@@ -35,6 +35,10 @@ public class FuncionarioJpaController implements Serializable {
     }
     private EntityManagerFactory emf = null;
 
+    public FuncionarioJpaController() {
+        this.emf = ipsum2.Ipsum2.getFactory();
+    }
+
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }

@@ -1,22 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
-/**
- *
- * @author Usuario
- */
+import controller.FuncaoJpaController;
+import javax.swing.JOptionPane;
+import model.Funcao;
+import utils.Util;
+
 public class FuncaoCadastro extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form FuncaoCadastro
-     */
+    private final Funcao funcao;
+
     public FuncaoCadastro() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        this.setEditando(false);
+        funcao = null;
+    }
+
+    public FuncaoCadastro(Funcao func) {
+        initComponents();
+        this.funcao = func;
+        InterfaceUtils.preparaTela(this);
+        this.setEditando(true);
+
+    }
+
+    private void setEditando(boolean edit) {
+        if (edit) {
+            this.jFuncao.setText(funcao.getDescricao());
+            this.jInativar.setText(funcao.isAtivo() ? "Inativar" : "Reativar");
+            this.jFuncao.setEditable(funcao.isAtivo());
+            this.jSalvar.setVisible(funcao.isAtivo());
+        }
+        this.jInativar.setVisible(edit);
     }
 
     /**
@@ -30,17 +45,27 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jFuncao = new javax.swing.JTextField();
+        jSalvar = new javax.swing.JButton();
+        jInativar = new javax.swing.JButton();
 
         setTitle("Cadastro");
 
         jLabel1.setText("Função:");
 
-        jButton1.setText("Salvar");
+        jSalvar.setText("Salvar");
+        jSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSalvarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Inativar");
+        jInativar.setText("Inativar");
+        jInativar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jInativarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -52,12 +77,12 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1))
+                        .addComponent(jFuncao))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 234, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(jInativar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(jSalvar)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -66,11 +91,11 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jFuncao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jSalvar)
+                    .addComponent(jInativar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -88,12 +113,59 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSalvarActionPerformed
+        if (!Util.isNullOrEmpty(jFuncao.getText())) {
+            FuncaoJpaController controller = new FuncaoJpaController();
+            Funcao func = new Funcao();
+            func.setDescricao(jFuncao.getText());
+            try {
+                if (funcao == null) {
+                    func.setCodfuncao(controller.getFuncaoCount() + 1);
+                    controller.create(func);
+                } else {
+                    func.setCodfuncao(funcao.getCodfuncao());
+                    controller.edit(func);
+                }
+                this.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Um erro ocorreu:\n" + ex.getMessage());
+                ex.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Campo 'Função' não pode ser vazio");
+        }
+    }//GEN-LAST:event_jSalvarActionPerformed
+
+    private void jInativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInativarActionPerformed
+        if (funcao.isAtivo()) {
+            if (JOptionPane.showConfirmDialog(this, "Deseja mesmo inativar?", "Confirmação", 1) == 0) {
+                FuncaoJpaController ctrl = new FuncaoJpaController();
+                try {
+                    ctrl.setAtivo(funcao, false);
+                    new FuncaoCadastro(funcao);
+                    this.dispose();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
+                }
+            }
+        } else {
+            FuncaoJpaController ctrl = new FuncaoJpaController();
+            try {
+                ctrl.setAtivo(funcao, true);
+                new FuncaoCadastro(funcao);
+                this.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jInativarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField jFuncao;
+    private javax.swing.JButton jInativar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton jSalvar;
     // End of variables declaration//GEN-END:variables
 }

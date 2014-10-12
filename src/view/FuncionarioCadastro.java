@@ -3,8 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package view;
+
+import controller.FuncaoJpaController;
+import controller.FuncionarioJpaController;
+import javax.swing.JOptionPane;
+import model.Funcao;
+import model.Funcionario;
+import utils.Constante;
+import utils.Util;
 
 /**
  *
@@ -18,6 +25,52 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
     public FuncionarioCadastro() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        this.setEditando(false);
+        func = null;
+    }
+
+    public FuncionarioCadastro(Funcionario f) {
+        initComponents();
+        InterfaceUtils.preparaTela(this);
+        this.func = f;
+        this.setEditando(true);
+    }
+
+    private final Funcionario func;
+
+    private void setEditando(boolean edit) {
+        if (edit) {
+            //Setar campos
+            jNome.setText(func.getNome());
+            jDataNasc.setText(func.getDatanasc().toString());
+            jEndereco.setText(func.getEndereco());
+            jCPF.setText(func.getCpf());
+            jRg.setText(func.getRg());
+            jTelefone.setText(func.getTelefone());
+            jSalario.setText(func.getSalario().toString());
+            jDataNasc.setText(Util.DateToString(func.getDatanasc()));
+            jSenha1.setText("");
+            jPasswordField1.setText("");
+            jLogin.setText("");
+            jTemporario.setSelected(func.getTemporario() != 0);
+
+            this.jInativar.setText(func.isAtivo() ? "Inativar" : "Reativar");
+            this.jSalvar.setVisible(func.isAtivo());
+            if (!func.isAtivo()) {
+                jNome.setEditable(false);
+                jDataNasc.setEditable(false);
+                jEndereco.setEditable(false);
+                jCPF.setEditable(false);
+                jRg.setEditable(false);
+                jTelefone.setEditable(false);
+                jSalario.setEditable(false);
+                jSenha1.setEditable(false);
+                jPasswordField1.setEditable(false);
+                jLogin.setEditable(false);
+                jTemporario.setEnabled(false);
+            }
+        }
+        this.jInativar.setVisible(edit);
     }
 
     /**
@@ -32,27 +85,29 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
         Labels = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jDataNasc = new javax.swing.JFormattedTextField();
+        jNome = new javax.swing.JTextField();
+        jDataNasc = new javax.swing.JFormattedTextField(Constante.DateMask);
         jLabel3 = new javax.swing.JLabel();
-        jCPF = new javax.swing.JFormattedTextField();
+        jCPF = new javax.swing.JFormattedTextField(Constante.CpfMask);
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTelefone = new javax.swing.JFormattedTextField();
+        jSalario = new javax.swing.JTextField();
+        jRg = new javax.swing.JTextField();
+        jTelefone = new javax.swing.JFormattedTextField(Constante.TelefoneMask);
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jEndereco = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jLogin = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        jSenha1 = new javax.swing.JPasswordField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jTemporario = new javax.swing.JCheckBox();
+        jSalvar = new javax.swing.JButton();
+        jInativar = new javax.swing.JButton();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jLabel11 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
 
         jLabel1.setText("Nome:");
 
@@ -74,11 +129,18 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
 
         jLabel10.setText("Confirmar senha:");
 
-        jCheckBox1.setText("Temporário");
+        jTemporario.setText("Temporário");
 
-        jButton1.setText("Salvar");
+        jSalvar.setText("Salvar");
+        jSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSalvarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Inativar");
+        jInativar.setText("Inativar");
+
+        jLabel11.setText("Função:");
 
         javax.swing.GroupLayout LabelsLayout = new javax.swing.GroupLayout(Labels);
         Labels.setLayout(LabelsLayout);
@@ -94,12 +156,13 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                             .addComponent(jLabel7)
                             .addComponent(jLabel5)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel11))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(LabelsLayout.createSequentialGroup()
                                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField1)
+                                    .addComponent(jNome)
                                     .addComponent(jCPF)
                                     .addComponent(jTelefone, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
@@ -110,24 +173,25 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jDataNasc)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                                    .addComponent(jTextField4)))
-                            .addComponent(jTextField2)
+                                    .addComponent(jSalario, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                                    .addComponent(jRg)))
+                            .addComponent(jEndereco)
                             .addGroup(LabelsLayout.createSequentialGroup()
                                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jSenha1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                                    .addComponent(jLogin, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))))
+                                .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(LabelsLayout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jCheckBox1)
+                        .addComponent(jTemporario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(jInativar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(jSalvar)))
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         LabelsLayout.setVerticalGroup(
@@ -136,7 +200,7 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jDataNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -144,35 +208,44 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jRg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
                 .addGap(18, 18, 18)
                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSenha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel10)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(LabelsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jTemporario)
+                    .addComponent(jSalvar)
+                    .addComponent(jInativar))
                 .addContainerGap())
         );
+
+        FuncaoJpaController ctr = new FuncaoJpaController();
+        for (Funcao f : ctr.getAllActive()){
+            jComboBox1.addItem(f);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,16 +265,60 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSalvarActionPerformed
+        if (Util.CharArrayToString(jSenha1.getPassword()).equals(
+                Util.CharArrayToString(jPasswordField1.getPassword()))) {
+            try {
+                Funcionario f = new Funcionario();
+                f.setNome(jNome.getText());
+                f.setDatanasc(Util.StringToDate(jDataNasc.getText()));
+                if (Util.ValidateCpf(jCPF.getText())) {
+                    f.setCpf(jCPF.getText());
+                } else {
+                    JOptionPane.showMessageDialog(this, "CPF inválido");
+                    return;
+                }
+                if (Util.isNumeric(jRg.getText().replace(".", "").replace("-", ""))) {
+                    f.setRg(jRg.getText());
+                } else {
+                    JOptionPane.showMessageDialog(this, "RG inválido");
+                    return;
+                }
+                f.setEndereco(jEndereco.getText());
+                f.setTelefone(jTelefone.getText());
+                f.setSalario(jSalario.getText());
+                f.setCodfuncao((Funcao) jComboBox1.getSelectedItem());
+                f.setTemporario(jTemporario.isSelected() ? (short) 1 : 0);
+
+                FuncionarioJpaController ctr = new FuncionarioJpaController();
+                if (this.func == null) {
+                    f.setCodfunc(ctr.getFuncionarioCount() + 1);
+                    ctr.create(f);
+                } else {
+                    f.setCodfunc(func.getCodfunc());
+                    ctr.edit(f);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Um erro ocorreu: \n" + ex.getMessage());
+                ex.printStackTrace();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "As senhas não conferem.");
+        }
+    }//GEN-LAST:event_jSalvarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Labels;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JFormattedTextField jCPF;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JFormattedTextField jDataNasc;
+    private javax.swing.JTextField jEndereco;
+    private javax.swing.JButton jInativar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -210,13 +327,14 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jLogin;
+    private javax.swing.JTextField jNome;
     private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JTextField jRg;
+    private javax.swing.JTextField jSalario;
+    private javax.swing.JButton jSalvar;
+    private javax.swing.JPasswordField jSenha1;
     private javax.swing.JFormattedTextField jTelefone;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JCheckBox jTemporario;
     // End of variables declaration//GEN-END:variables
 }

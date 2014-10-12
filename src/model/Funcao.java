@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Funcao.findByCodfuncao", query = "SELECT f FROM Funcao f WHERE f.codfuncao = :codfuncao"),
     @NamedQuery(name = "Funcao.findByAtivo", query = "SELECT f FROM Funcao f WHERE f.ativo = :ativo")})
 public class Funcao implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -45,6 +46,7 @@ public class Funcao implements Serializable {
     private List<Funcionario> funcionarioList;
 
     public Funcao() {
+        this.ativo = 1;
     }
 
     public Funcao(Integer codfuncao) {
@@ -63,8 +65,20 @@ public class Funcao implements Serializable {
         return ativo;
     }
 
+    public boolean isAtivo() {
+        return ativo != 0;
+    }
+
     public void setAtivo(Short ativo) {
         this.ativo = ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        if (ativo) {
+            this.ativo = 1;
+        } else {
+            this.ativo = 0;
+        }
     }
 
     public String getDescricao() {
@@ -106,7 +120,7 @@ public class Funcao implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Funcao[ codfuncao=" + codfuncao + " ]";
+        return this.descricao;
     }
-    
+
 }

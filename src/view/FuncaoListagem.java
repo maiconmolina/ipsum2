@@ -1,23 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package view;
 
-/**
- *
- * @author Usuario
- */
+import controller.FuncaoJpaController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Funcao;
+
 public class FuncaoListagem extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form FuncaoListagem
-     */
     public FuncaoListagem() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        this.atualizaLista();
+    }
+
+    private void atualizaLista() {
+        List<Funcao> func = new FuncaoJpaController(ipsum2.Ipsum2.getFactory())
+                .getEntityManager()
+                .createNamedQuery("Funcao.findByAtivo")
+                .setParameter("ativo", jCheckBox1.isSelected() ? 1 : 0)
+                .getResultList();
+        DefaultTableModel table = (DefaultTableModel) jTable1.getModel();
+        table.setRowCount(0);
+        List<Object> buffer = new ArrayList<>();
+        for (Funcao f : func) {
+            buffer.clear();
+            buffer.add(f.getCodfuncao());
+            buffer.add(f.getDescricao());
+            table.addRow(buffer.toArray());
+        }
     }
 
     /**
@@ -33,7 +45,7 @@ public class FuncaoListagem extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jVisualizar = new javax.swing.JButton();
-        jInserir = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setTitle("Função");
 
@@ -56,8 +68,19 @@ public class FuncaoListagem extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jVisualizar.setText("Visualizar");
+        jVisualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jVisualizarActionPerformed(evt);
+            }
+        });
 
-        jInserir.setText("Inserir");
+        jCheckBox1.setSelected(true);
+        jCheckBox1.setText("Ativos");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -65,11 +88,11 @@ public class FuncaoListagem extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jInserir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jVisualizar)
-                .addContainerGap(238, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jCheckBox1)
+                .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -78,8 +101,8 @@ public class FuncaoListagem extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jVisualizar)
-                    .addComponent(jInserir))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCheckBox1))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -96,9 +119,26 @@ public class FuncaoListagem extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        this.atualizaLista();
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jVisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jVisualizarActionPerformed
+        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
+        try {
+            int cod = (int) model.getValueAt(jTable1.getSelectedRow(), 0);
+            FuncaoJpaController ctr = new FuncaoJpaController();
+            Funcao funcao = ctr.findFuncao(cod);
+            new FuncaoCadastro(funcao);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Registro inválido.");
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jVisualizarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jInserir;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

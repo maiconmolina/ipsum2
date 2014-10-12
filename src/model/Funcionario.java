@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Funcionario.findBySalario", query = "SELECT f FROM Funcionario f WHERE f.salario = :salario"),
     @NamedQuery(name = "Funcionario.findByTemporario", query = "SELECT f FROM Funcionario f WHERE f.temporario = :temporario")})
 public class Funcionario implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -84,6 +85,7 @@ public class Funcionario implements Serializable {
     private List<LancamentoPagfunc> lancamentoPagfuncList;
 
     public Funcionario() {
+        this.ativo = 1;
     }
 
     public Funcionario(Integer codfunc) {
@@ -152,6 +154,14 @@ public class Funcionario implements Serializable {
 
     public void setSalario(Double salario) {
         this.salario = salario;
+    }
+
+    public void setSalario(String salario) throws Exception {
+        try {
+            this.salario = Double.parseDouble(salario.replace(",", "."));
+        } catch (NumberFormatException ex) {
+            throw new Exception("Salário inválido.");
+        }
     }
 
     public String getTelefone() {
@@ -237,5 +247,17 @@ public class Funcionario implements Serializable {
     public String toString() {
         return "model.Funcionario[ codfunc=" + codfunc + " ]";
     }
-    
+
+    public boolean isAtivo() {
+        return ativo != 0;
+    }
+
+    public void setAtivo(boolean ativo) {
+        if (ativo) {
+            this.ativo = 1;
+        } else {
+            this.ativo = 0;
+        }
+    }
+
 }
