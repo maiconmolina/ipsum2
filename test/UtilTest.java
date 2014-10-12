@@ -7,7 +7,7 @@ import static junit.framework.Assert.assertTrue;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import utils.Util;
+import Util.Util;
 
 
 public class UtilTest {

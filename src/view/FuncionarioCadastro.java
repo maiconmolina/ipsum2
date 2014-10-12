@@ -5,13 +5,13 @@
  */
 package view;
 
+import Util.Util;
 import controller.FuncaoJpaController;
 import controller.FuncionarioJpaController;
 import javax.swing.JOptionPane;
 import model.Funcao;
 import model.Funcionario;
-import utils.Constante;
-import utils.Util;
+import Util.Constante;
 
 /**
  *

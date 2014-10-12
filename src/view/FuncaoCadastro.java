@@ -3,7 +3,7 @@ package view;
 import controller.FuncaoJpaController;
 import javax.swing.JOptionPane;
 import model.Funcao;
-import utils.Util;
+import Util.Util;
 
 public class FuncaoCadastro extends javax.swing.JInternalFrame {
 

@@ -204,19 +204,43 @@ public class Util {
         return retorno;
     }
 
-    public static String DateToString(Date data) {//dd/MM/yyyy
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormat.format(data);
+    public static String DateToString(Date date) {//dd/MM/yyyy
+        StringBuilder retorno = new StringBuilder();
+        if (date == null) {
+            return retorno.toString();
+        }
+
+        retorno.append(date.getDate());
+        retorno.append("/");
+        int mes = date.getMonth() + 1;
+        retorno.append(mes);
+        retorno.append("/");
+        retorno.append(date.getYear());
+
+        return retorno.toString();
     }
 
-    public static Date StringToDate(String data) {//dd/MM/yyyy
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date convertedCurrentDate = sdf.parse(data);
-            return convertedCurrentDate;
-        } catch (ParseException ex) {
-            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+    public static Date StringToDate(String dateStr) {//dd/MM/yyyy
+        if (dateStr.length() != 10) {
+            throw new NullPointerException();
         }
-        return null;
+        String[] str = new String[3];
+        str = dateStr.split("/");
+        return new Date(
+                Integer.parseInt(str[2]),
+                Integer.parseInt(str[1]) - 1,
+                Integer.parseInt(str[0])
+        );
+    }
+
+    public static Object CharArrayToString(char[] array) {
+        if (array == null) {
+            throw new NullPointerException("Nulo...");
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            sb.append(array[i]);
+        }
+        return sb.toString();
     }
 }
