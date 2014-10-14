@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Lote.findByDataent", query = "SELECT l FROM Lote l WHERE l.dataent = :dataent"),
     @NamedQuery(name = "Lote.findByDatasai", query = "SELECT l FROM Lote l WHERE l.datasai = :datasai")})
 public class Lote implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -59,6 +60,7 @@ public class Lote implements Serializable {
     private List<ProdutoDoLote> produtoDoLoteList;
     @OneToMany(mappedBy = "codlote")
     private List<PagamentoLote> pagamentoLoteList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lote")
     private List<FuncionarioDoLote> funcionarioDoLoteList;
     @JoinColumn(name = "CODFORNEC", referencedColumnName = "CODFORNEC")
@@ -195,7 +197,7 @@ public class Lote implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Lote[ codlote=" + codlote + " ]";
+         return this.codlote.toString()+ " - "+ codfornec.getRazao();
     }
-    
+
 }

@@ -13,6 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.Fornecedor;
 import model.Lote;
 import model.TipoPagamento;
@@ -32,9 +33,14 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         campoData.setText(dateFormat.format(date));
-       
-           
 
+        
+
+//        PagamentoLote pagLote = new PagamentoLote();
+//        int i;
+//        for (i = 0; i <= pagLote.size(); i++) {
+//
+//        }
     }
 
     public PagamentoLote(PagamentoLote paglote) {
@@ -100,9 +106,17 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         List<Fornecedor> forn;
         FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
-        for (Lote l:Listlote){
-            if (l.getPagamentoLoteList()==null){
-                this.lote.addItem(l.getDescricao()+" "+l.getCodfornec().getRazao());
+
+        for (Lote l : Listlote) {
+            boolean achou = false;
+            for (model.PagamentoLote pgL : l.getPagamentoLoteList()) {
+                if (pgL.getCodlote() == l) {
+                    achou = true;
+                }
+            }
+            if (achou == false) {
+                this.lote.addItem(l);
+                //                this.lote.addItem(ll.getDescricao() + " " + l.getCodfornec().getRazao());
             }
         }
 
