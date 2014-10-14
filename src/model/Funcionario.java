@@ -5,6 +5,7 @@
  */
 package model;
 
+import Util.Util;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -136,7 +137,10 @@ public class Funcionario implements Serializable {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(String nome) throws Exception {
+        if (Util.isNullOrEmpty(nome)){
+            throw new Exception("Nome não pode ser vazio");
+        }
         this.nome = nome;
     }
 

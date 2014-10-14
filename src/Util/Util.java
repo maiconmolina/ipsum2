@@ -1,12 +1,7 @@
 package Util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.text.MaskFormatter;
 
 public class Util {
@@ -220,17 +215,27 @@ public class Util {
         return retorno.toString();
     }
 
-    public static Date StringToDate(String dateStr) {//dd/MM/yyyy
+    public static Date StringToDate(String dateStr) throws Exception {//dd/MM/yyyy
         if (dateStr.length() != 10) {
             throw new NullPointerException();
         }
         String[] str = new String[3];
         str = dateStr.split("/");
-        return new Date(
-                Integer.parseInt(str[2]),
-                Integer.parseInt(str[1]) - 1,
-                Integer.parseInt(str[0])
-        );
+        try {
+            Calendar validate = Calendar.getInstance();
+            validate.setLenient(false);
+            validate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(str[0]));
+            validate.set(Calendar.MONTH, Integer.parseInt(str[1]) - 1);
+            validate.set(Calendar.YEAR, Integer.parseInt(str[2]));
+            validate.getTime();
+            return new Date(
+                    Integer.parseInt(str[2]),
+                    Integer.parseInt(str[1]) - 1,
+                    Integer.parseInt(str[0])
+            );
+        } catch (Exception ex) {
+            throw new Exception("Data inválida");
+        }
     }
 
     public static Object CharArrayToString(char[] array) {

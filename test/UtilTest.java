@@ -1,3 +1,4 @@
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,7 +9,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import Util.Util;
-
 
 public class UtilTest {
 
@@ -230,14 +230,30 @@ public class UtilTest {
     }
 
     @Test
-    public void testStringToDate() {
+    public void testStringToDate() throws Exception {
         System.out.println("StringToDate");
-        assertEquals(new Date(1994, 9, 18), Util.StringToDate("18/10/1994"));
+        Date d = new Date(1994, 9, 18);
+        Date asserted = Util.StringToDate("18/10/1994");
+        assertEquals(d.getDate(), asserted.getDate());
+        assertEquals(d.getMonth(), asserted.getMonth());
+        assertEquals(d.getYear(), asserted.getYear());
     }
 
     @Test
-    public void testStringToDateFail() {
+    public void testStringToDateFail() throws Exception {
         System.out.println("StringToDateFail");
         assertFalse(new Date(1994, 9, 16).equals(Util.StringToDate("18/10/1994")));
+    }
+
+    @Test
+    public void testStringToDateInvalid() {
+        System.out.println("StringToDateInvalid");
+        boolean deuErro = false;
+        try {
+            Util.StringToDate("18/35/1994");
+        } catch (Exception ex) {
+            deuErro = true;
+        }
+        assertTrue(deuErro);
     }
 }

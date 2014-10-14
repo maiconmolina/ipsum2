@@ -68,6 +68,7 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                 jPasswordField1.setEditable(false);
                 jLogin.setEditable(false);
                 jTemporario.setEnabled(false);
+                jComboBox1.setEnabled(false);
             }
         }
         this.jInativar.setVisible(edit);
@@ -139,6 +140,11 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
         });
 
         jInativar.setText("Inativar");
+        jInativar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jInativarActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("Função:");
 
@@ -298,15 +304,40 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                     f.setCodfunc(func.getCodfunc());
                     ctr.edit(f);
                 }
+                this.dispose();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Um erro ocorreu: \n" + ex.getMessage());
-                ex.printStackTrace();
             }
 
         } else {
             JOptionPane.showMessageDialog(this, "As senhas não conferem.");
         }
     }//GEN-LAST:event_jSalvarActionPerformed
+
+    private void jInativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInativarActionPerformed
+        
+        if (func.isAtivo()) {
+            if (JOptionPane.showConfirmDialog(this, "Deseja mesmo inativar?", "Confirmação", 1) == 0) {
+                FuncionarioJpaController ctr = new FuncionarioJpaController();
+                try{
+                    ctr.setAtivo(func, false);
+                    new FuncionarioCadastro(func);
+                    this.dispose();
+                } catch (Exception ex){
+                    JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
+                }
+            }
+        } else {
+            FuncionarioJpaController ctr = new FuncionarioJpaController();
+            try {
+                ctr.setAtivo(func, true);
+                new FuncionarioCadastro(func);
+                this.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jInativarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

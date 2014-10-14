@@ -179,23 +179,29 @@ public class FuncionarioJpaController implements Serializable {
                 funcionario.setCodhab(codhabNew);
             }
             List<FuncionarioDoLote> attachedFuncionarioDoLoteListNew = new ArrayList<FuncionarioDoLote>();
-            for (FuncionarioDoLote funcionarioDoLoteListNewFuncionarioDoLoteToAttach : funcionarioDoLoteListNew) {
-                funcionarioDoLoteListNewFuncionarioDoLoteToAttach = em.getReference(funcionarioDoLoteListNewFuncionarioDoLoteToAttach.getClass(), funcionarioDoLoteListNewFuncionarioDoLoteToAttach.getFuncionarioDoLotePK());
-                attachedFuncionarioDoLoteListNew.add(funcionarioDoLoteListNewFuncionarioDoLoteToAttach);
+            if (funcionarioDoLoteListNew != null) {
+                for (FuncionarioDoLote funcionarioDoLoteListNewFuncionarioDoLoteToAttach : funcionarioDoLoteListNew) {
+                    funcionarioDoLoteListNewFuncionarioDoLoteToAttach = em.getReference(funcionarioDoLoteListNewFuncionarioDoLoteToAttach.getClass(), funcionarioDoLoteListNewFuncionarioDoLoteToAttach.getFuncionarioDoLotePK());
+                    attachedFuncionarioDoLoteListNew.add(funcionarioDoLoteListNewFuncionarioDoLoteToAttach);
+                }
             }
             funcionarioDoLoteListNew = attachedFuncionarioDoLoteListNew;
             funcionario.setFuncionarioDoLoteList(funcionarioDoLoteListNew);
             List<ProducaoDiaria> attachedProducaoDiariaListNew = new ArrayList<ProducaoDiaria>();
-            for (ProducaoDiaria producaoDiariaListNewProducaoDiariaToAttach : producaoDiariaListNew) {
-                producaoDiariaListNewProducaoDiariaToAttach = em.getReference(producaoDiariaListNewProducaoDiariaToAttach.getClass(), producaoDiariaListNewProducaoDiariaToAttach.getProducaoDiariaPK());
-                attachedProducaoDiariaListNew.add(producaoDiariaListNewProducaoDiariaToAttach);
+            if (producaoDiariaListNew != null) {
+                for (ProducaoDiaria producaoDiariaListNewProducaoDiariaToAttach : producaoDiariaListNew) {
+                    producaoDiariaListNewProducaoDiariaToAttach = em.getReference(producaoDiariaListNewProducaoDiariaToAttach.getClass(), producaoDiariaListNewProducaoDiariaToAttach.getProducaoDiariaPK());
+                    attachedProducaoDiariaListNew.add(producaoDiariaListNewProducaoDiariaToAttach);
+                }
             }
             producaoDiariaListNew = attachedProducaoDiariaListNew;
             funcionario.setProducaoDiariaList(producaoDiariaListNew);
             List<LancamentoPagfunc> attachedLancamentoPagfuncListNew = new ArrayList<LancamentoPagfunc>();
-            for (LancamentoPagfunc lancamentoPagfuncListNewLancamentoPagfuncToAttach : lancamentoPagfuncListNew) {
-                lancamentoPagfuncListNewLancamentoPagfuncToAttach = em.getReference(lancamentoPagfuncListNewLancamentoPagfuncToAttach.getClass(), lancamentoPagfuncListNewLancamentoPagfuncToAttach.getCodlanc());
-                attachedLancamentoPagfuncListNew.add(lancamentoPagfuncListNewLancamentoPagfuncToAttach);
+            if (lancamentoPagfuncListNew != null) {
+                for (LancamentoPagfunc lancamentoPagfuncListNewLancamentoPagfuncToAttach : lancamentoPagfuncListNew) {
+                    lancamentoPagfuncListNewLancamentoPagfuncToAttach = em.getReference(lancamentoPagfuncListNewLancamentoPagfuncToAttach.getClass(), lancamentoPagfuncListNewLancamentoPagfuncToAttach.getCodlanc());
+                    attachedLancamentoPagfuncListNew.add(lancamentoPagfuncListNewLancamentoPagfuncToAttach);
+                }
             }
             lancamentoPagfuncListNew = attachedLancamentoPagfuncListNew;
             funcionario.setLancamentoPagfuncList(lancamentoPagfuncListNew);
@@ -371,5 +377,10 @@ public class FuncionarioJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public void setAtivo(Funcionario func, boolean b) throws Exception {
+        func.setAtivo(b);
+        this.edit(func);
+    }
+
 }
