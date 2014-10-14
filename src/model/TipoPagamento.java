@@ -106,7 +106,7 @@ public class TipoPagamento implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TipoPagamento[ tipopag=" + tipopag + " ]";
+        return this.descricao;
     }
     
 }

@@ -55,7 +55,7 @@
                           <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                           <Component id="lote" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="data" min="-2" pref="149" max="-2" attributes="0"/>
+                              <Component id="campoData" min="-2" pref="149" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -71,7 +71,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                  <Component id="data" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="campoData" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="15" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -154,7 +154,10 @@
         <Property name="text" type="java.lang.String" value="Data"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="data">
+    <Component class="javax.swing.JTextField" name="campoData">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="valorTotal">
     </Component>
