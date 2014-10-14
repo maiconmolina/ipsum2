@@ -6,6 +6,7 @@
 package view;
 
 import controller.FornecedorJpaController;
+import controller.LoteJpaController;
 import controller.PagamentoLoteJpaController;
 import controller.TipoPagamentoJpaController;
 import java.text.DateFormat;
@@ -13,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import model.Fornecedor;
+import model.Lote;
 import model.TipoPagamento;
 
 /**
@@ -30,6 +32,9 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         campoData.setText(dateFormat.format(date));
+       
+           
+
     }
 
     public PagamentoLote(PagamentoLote paglote) {
@@ -87,17 +92,18 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         List<PagamentoLote> paglote;
         PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
         paglote = pagamentoLoteController.getEntityManager().createNamedQuery("PagamentoLote.findAll").getResultList();
-        for (PagamentoLote p : paglote) {
 
-            // this.lote.addItem(p + " " + );
-
-        }
+        List<Lote> Listlote;
+        LoteJpaController LoteController = new LoteJpaController(ipsum2.Ipsum2.getFactory());
+        Listlote = LoteController.getEntityManager().createNamedQuery("Lote.findAll").getResultList();
 
         List<Fornecedor> forn;
         FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
-        for (Fornecedor f: forn){
-            //this.fornecedor.addItem(f);
+        for (Lote l:Listlote){
+            if (l.getPagamentoLoteList()==null){
+                this.lote.addItem(l.getDescricao()+" "+l.getCodfornec().getRazao());
+            }
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -105,14 +111,9 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(cancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(confirmarPagamento))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel7)
                             .addComponent(jLabel6)
@@ -127,12 +128,16 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(valorTotal)
-                                    .addComponent(tipoPagamento, 0, 166, Short.MAX_VALUE)))
+                                    .addComponent(tipoPagamento, 0, 185, Short.MAX_VALUE)))
                             .addComponent(jScrollPane2)
                             .addComponent(lote, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(campoData, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(confirmarPagamento)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -142,15 +147,15 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addComponent(campoData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(lote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(56, 56, 56)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(26, 26, 26)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(tipoPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -162,7 +167,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(confirmarPagamento)
                     .addComponent(cancelar))
-                .addGap(18, 18, 18))
+                .addContainerGap())
         );
 
         List<TipoPagamento> tipopag;

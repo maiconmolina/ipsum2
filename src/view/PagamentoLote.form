@@ -24,15 +24,9 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="cancelar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="confirmarPagamento" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -49,7 +43,7 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="valorTotal" max="32767" attributes="0"/>
-                                  <Component id="tipoPagamento" pref="166" max="32767" attributes="0"/>
+                                  <Component id="tipoPagamento" pref="185" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
@@ -59,6 +53,11 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="cancelar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="confirmarPagamento" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -73,17 +72,17 @@
                   <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                   <Component id="campoData" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <EmptySpace pref="31" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lote" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane2" min="-2" pref="67" max="-2" attributes="0"/>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="tipoPagamento" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -98,7 +97,7 @@
                   <Component id="confirmarPagamento" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -178,7 +177,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="List&lt;PagamentoLote&gt; paglote;&#xa;PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());&#xa;paglote = pagamentoLoteController.getEntityManager().createNamedQuery(&quot;PagamentoLote.findAll&quot;).getResultList();&#xa;for (PagamentoLote p : paglote) {&#xa;   &#xa;   // this.lote.addItem(p + &quot; &quot; + );&#xa;&#xa;}&#xa;&#xa;List&lt;Fornecedor&gt; forn;&#xa;FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());&#xa;forn = lancamentoController.getEntityManager().createNamedQuery(&quot;Fornecedor.findAll&quot;).getResultList();&#xa;for (Fornecedor f: forn){&#xa;    //this.fornecedor.addItem(f);&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="List&lt;PagamentoLote&gt; paglote;&#xa;PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());&#xa;paglote = pagamentoLoteController.getEntityManager().createNamedQuery(&quot;PagamentoLote.findAll&quot;).getResultList();&#xa;&#xa;List&lt;Lote&gt; Listlote;&#xa;LoteJpaController LoteController = new LoteJpaController(ipsum2.Ipsum2.getFactory());&#xa;Listlote = LoteController.getEntityManager().createNamedQuery(&quot;Lote.findAll&quot;).getResultList();&#xa;&#xa;List&lt;Fornecedor&gt; forn;&#xa;FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());&#xa;forn = lancamentoController.getEntityManager().createNamedQuery(&quot;Fornecedor.findAll&quot;).getResultList();&#xa;for (Lote l:Listlote){&#xa;    if (l.getPagamentoLoteList()==null){&#xa;        this.lote.addItem(l.getDescricao()+&quot; &quot;+l.getCodfornec().getRazao());&#xa;    }&#xa;}"/>
       </AuxValues>
     </Component>
   </SubComponents>

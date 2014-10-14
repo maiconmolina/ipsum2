@@ -71,6 +71,10 @@ public class Lote implements Serializable {
     private List<ProducaoDiaria> producaoDiariaList;
 
     public Lote() {
+        this.pagamentoLoteList = null;
+        this.funcionarioDoLoteList = null;
+        this.produtoDoLoteList = null;
+        this.codfornec = null;
     }
 
     public Lote(Integer codlote) {
