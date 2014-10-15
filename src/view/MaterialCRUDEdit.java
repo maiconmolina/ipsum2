@@ -26,7 +26,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
      * Creates new form MaterialCRUD
      */
     private FornecedorJpaController fctr;
-    private Boolean isEditing;
+    private Boolean isEditing = null;
     private Material mobj;
 
     public MaterialCRUDEdit() {
@@ -69,6 +69,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jativo = new javax.swing.JCheckBox();
+        invativar = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -89,6 +90,13 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
 
         jativo.setSelected(true);
         jativo.setText("Ativo");
+
+        invativar.setText("Inativar");
+        invativar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                invativarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,7 +124,10 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(comboFor, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(invativar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -135,8 +146,10 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboFor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(invativar))
                 .addContainerGap())
         );
 
@@ -145,7 +158,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         MaterialJpaController matct = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
-        if (!isEditing) {
+        if (this.isEditing == null) {
             try {
                 Material novo = new Material();
 
@@ -154,7 +167,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
                 novo.setCodfornec((Fornecedor) comboFor.getSelectedItem());
                 novo.setDescricao(desc.getText());
                 novo.setQtde(Integer.parseInt(qtde.getText()));
-                
+
                 matct.create(novo);
             } catch (Exception ex) {
                 Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
@@ -178,6 +191,10 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
         this.dispose();
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void invativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invativarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_invativarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -217,6 +234,7 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox comboFor;
     private javax.swing.JTextField desc;
+    private javax.swing.JButton invativar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

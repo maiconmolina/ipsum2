@@ -313,5 +313,19 @@ public class ProdutoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public int ultimoId() {
+        List<Produto> listProd;
+        Produto prod;
+        ProdutoJpaController produtoController = new ProdutoJpaController(ipsum2.Ipsum2.getFactory());
+        listProd = produtoController.getEntityManager().createNamedQuery("Produto.findAll").getResultList();
+        if (!listProd.isEmpty()) {
+            prod = listProd.get(listProd.size() - 1);
+            if (prod.getCodprod() > 0) {
+                return prod.getCodprod() + 1;
+            }
+        }
+        return 1;
+    }
+
 }

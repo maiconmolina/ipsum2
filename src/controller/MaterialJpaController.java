@@ -234,5 +234,23 @@ public class MaterialJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public int ultimoId() {
+        List<Material> list;
+        Material prod;
+        MaterialJpaController materialController = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
+        list = materialController.getEntityManager().createNamedQuery("Material.findAll").getResultList();
+        if (!list.isEmpty()) {
+            prod = list.get(list.size() - 1);
+            if (prod.getCodmat() > 0) {
+                return prod.getCodmat() + 1;
+            }
+        }
+        return 1;
+    }
+
+    public List<Material> getAll() {
+        MaterialJpaController ctrl = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
+        return ctrl.getEntityManager().createNamedQuery("Material.findAll").getResultList();
+    }
 }

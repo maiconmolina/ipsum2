@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Produto.findByAtivo", query = "SELECT p FROM Produto p WHERE p.ativo = :ativo"),
     @NamedQuery(name = "Produto.findByPreco", query = "SELECT p FROM Produto p WHERE p.preco = :preco")})
 public class Produto implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -54,6 +55,9 @@ public class Produto implements Serializable {
     private List<MaterialDoProduto> materialDoProdutoList;
 
     public Produto() {
+        this.produtoDoLoteList = null;
+        this.producaoDiariaList = null;
+        this.materialDoProdutoList = null;
     }
 
     public Produto(Integer codprod) {
@@ -141,7 +145,7 @@ public class Produto implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Produto[ codprod=" + codprod + " ]";
+        return this.descricao;
     }
-    
+
 }
