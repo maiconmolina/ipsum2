@@ -208,9 +208,12 @@ public class Util {
         retorno.append(date.getDate());
         retorno.append("/");
         int mes = date.getMonth() + 1;
+        if (mes < 10) {
+            retorno.append("0");
+        }
         retorno.append(mes);
         retorno.append("/");
-        retorno.append(date.getYear());
+        retorno.append(date.getYear() - 100);
 
         return retorno.toString();
     }

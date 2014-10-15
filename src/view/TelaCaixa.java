@@ -28,6 +28,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
     public static Caixa caixa = null;
     public static List<Lancamento> listLancamentosAtivos = null;
     public static List<Lancamento> listLancamentos = null;
+    public static double saldoFinal = 0.0;
 
     /**
      * Creates new form TelaCaixa
@@ -35,8 +36,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
     public TelaCaixa() {
         initComponents();
         InterfaceUtils.preparaTela(this);
-        Caixa caixa = InitCaixa();
-        this.caixa = caixa;
+
         statusCaixa.setText("Aberto");
         alterar.setEnabled(true);
         novoLanc.setEnabled(true);
@@ -46,6 +46,19 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         this.listLancamentos = lancamentos;
         lancamentos = lancamentoController.getEntityManager().createNamedQuery("Lancamento.findByEstorno").setParameter("estorno", (short) 0).getResultList();
         this.listLancamentosAtivos = lancamentos;
+        double saldoCaixa = 0.0;
+        for (Lancamento l : lancamentos) {
+            if (l.getLancamentoEntrada() != null && l.getEstorno() == 0) {
+                saldoCaixa += l.getValor();
+            }
+            if (l.getLancamentoSaida() != null && l.getEstorno() == 0) {
+                saldoCaixa -= l.getValor();
+            }
+        }
+        saldo.setText("R$ " + String.valueOf(saldoCaixa).replace(".", ","));
+        this.saldoFinal = saldoCaixa;
+        Caixa caixa = InitCaixa();
+        this.caixa = caixa;
         this.insereTabela(lancamentos);
 
     }
@@ -63,7 +76,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         }
         caixa = new Caixa();
         caixa.setCodcaixa(1);
-        caixa.setSaldo(0.0);
+        caixa.setSaldo(this.saldoFinal);
         caixa.setStatus(Short.parseShort("1"));
         try {
             caixaController.create(caixa);
@@ -95,10 +108,10 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 dados.add("Estornado");
             }
             if (o.getLancamentoEntrada() != null) {
-//                dados.add(DateToString(o.getLancamentoEntrada().getData()));
+                dados.add(DateToString(o.getLancamentoEntrada().getData()));
             }
             if (o.getLancamentoSaida() != null) {
-//                dados.add(DateToString(o.getLancamentoSaida().getData()));
+                dados.add(DateToString(o.getLancamentoSaida().getData()));
             }
 
             model.addRow(dados.toArray());
