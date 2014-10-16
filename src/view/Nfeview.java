@@ -71,7 +71,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Prestador de Serviços");
 
-        jLabel2.setText("Cnpj:");
+        jLabel2.setText("CNPJ:");
 
         jLabel3.setText("Razao Social:");
 
@@ -83,7 +83,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Tomador de Serviços");
 
-        jLabel10.setText("Cnpj:");
+        jLabel10.setText("CNPJ:");
 
         jLabel12.setText("Endereço:");
 
@@ -93,7 +93,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
 
         jLabel15.setText("Email:");
 
-        jLabel16.setText("Descrição do Produto:");
+        jLabel16.setText("Descrição do Lote:");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);

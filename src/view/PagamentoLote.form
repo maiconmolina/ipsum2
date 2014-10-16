@@ -117,6 +117,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
@@ -173,9 +176,14 @@
     <Component class="javax.swing.JComboBox" name="lote">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="0"/>
+          <StringArray count="1">
+            <StringItem index="0" value="&gt;&gt; SELECIONE &lt;&lt;"/>
+          </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loteActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="List&lt;PagamentoLote&gt; paglote;&#xa;        PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());&#xa;        paglote = pagamentoLoteController.getEntityManager().createNamedQuery(&quot;PagamentoLote.findAll&quot;).getResultList();&#xa;&#xa;        List&lt;Lote&gt; Listlote;&#xa;        LoteJpaController LoteController = new LoteJpaController(ipsum2.Ipsum2.getFactory());&#xa;        Listlote = LoteController.getEntityManager().createNamedQuery(&quot;Lote.findAll&quot;).getResultList();&#xa;&#xa;        List&lt;Fornecedor&gt; forn;&#xa;        FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());&#xa;        forn = lancamentoController.getEntityManager().createNamedQuery(&quot;Fornecedor.findAll&quot;).getResultList();&#xa;&#xa;        for (Lote l : Listlote) {&#xa;            boolean achou = false;&#xa;            for (model.PagamentoLote pgL : l.getPagamentoLoteList()) {&#xa;                if (pgL.getCodlote() == l) {&#xa;                    achou = true;&#xa;                }&#xa;            }&#xa;            if (achou == false) {&#xa;                this.lote.addItem(l);&#xa;//                this.lote.addItem(ll.getDescricao() + &quot; &quot; + l.getCodfornec().getRazao());&#xa;            }&#xa;        }"/>
       </AuxValues>

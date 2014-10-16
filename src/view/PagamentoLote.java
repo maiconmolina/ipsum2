@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import model.Fornecedor;
 import model.Lote;
+import model.ProdutoDoLote;
 import model.TipoPagamento;
 
 /**
@@ -80,6 +81,11 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         confirmarPagamento.setText("Confirmar Pagamento");
 
         cancelar.setText("Cancelar");
+        cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Valor Total");
 
@@ -95,6 +101,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
         campoData.setEditable(false);
 
+        lote.setModel(new javax.swing.DefaultComboBoxModel(new String[] { ">> SELECIONE <<" }));
         List<PagamentoLote> paglote;
         PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
         paglote = pagamentoLoteController.getEntityManager().createNamedQuery("PagamentoLote.findAll").getResultList();
@@ -119,6 +126,11 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                 //                this.lote.addItem(ll.getDescricao() + " " + l.getCodfornec().getRazao());
             }
         }
+        lote.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -193,6 +205,21 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void loteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loteActionPerformed
+        Lote l = (Lote)lote.getSelectedItem();
+        descricao.setText(l.getDescricao());
+        List<ProdutoDoLote> lpl =  l.getProdutoDoLoteList();
+        Double vlr = new Double(2);
+        for(ProdutoDoLote pl : lpl){
+            vlr = pl.getProduto().getPreco() * pl.getQtde();
+        }
+        valorTotal.setText(vlr.toString());
+    }//GEN-LAST:event_loteActionPerformed
+
+    private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_cancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
