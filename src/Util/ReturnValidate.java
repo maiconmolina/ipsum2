@@ -1,12 +1,12 @@
-
 package Util;
 
 public class ReturnValidate {
+
     private String message;
     private boolean valid;
-    
-    public ReturnValidate(String message){
-        if (message == null || message.equals("")){
+
+    public ReturnValidate(String message) {
+        if (message == null || message.equals("")) {
             this.valid = true;
             this.message = "";
         } else {
@@ -21,6 +21,6 @@ public class ReturnValidate {
 
     public boolean isValid() {
         return valid;
-    }   
-    
+    }
+
 }

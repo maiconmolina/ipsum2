@@ -136,7 +136,6 @@ public class FuncaoListagem extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jVisualizarActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JPanel jPanel1;

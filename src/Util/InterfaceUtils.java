@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Luis
  */
 public class InterfaceUtils {
+
     public static void insereTable(JTable table, Object[][] dados) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         for (Object[] linha : dados) {

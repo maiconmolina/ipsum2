@@ -6,6 +6,7 @@
 package model;
 
 import Util.Util;
+import controller.UsuarioJpaController;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -43,50 +44,68 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Funcionario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @Column(name = "CODFUNC")
     private Integer codfunc;
+
     @Column(name = "ATIVO")
     private Short ativo;
+
     @Lob
     @Column(name = "CPF")
     private String cpf;
+
     @Column(name = "DATANASC")
     @Temporal(TemporalType.DATE)
     private Date datanasc;
+
     @Lob
     @Column(name = "ENDERECO")
     private String endereco;
+
     @Lob
     @Column(name = "NOME")
     private String nome;
+
     @Lob
     @Column(name = "RG")
     private String rg;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Column(name = "SALARIO")
     private Double salario;
+
     @Lob
     @Column(name = "TELEFONE")
     private String telefone;
+
     @Column(name = "TEMPORARIO")
     private Short temporario;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private List<FuncionarioDoLote> funcionarioDoLoteList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionario")
     private List<ProducaoDiaria> producaoDiariaList;
+
     @JoinColumn(name = "CODFUNCAO", referencedColumnName = "CODFUNCAO")
     @ManyToOne
     private Funcao codfuncao;
+
     @JoinColumn(name = "CODHAB", referencedColumnName = "CODHAB")
     @ManyToOne
     private Habilidade codhab;
+
     @OneToMany(mappedBy = "codfunc")
     private List<LancamentoPagfunc> lancamentoPagfuncList;
 
+    @Column(name = "usuario")
+    private Integer codUsuario;
+
     public Funcionario() {
         this.ativo = 1;
+        this.codUsuario = null;
     }
 
     public Funcionario(Integer codfunc) {
@@ -138,7 +157,7 @@ public class Funcionario implements Serializable {
     }
 
     public void setNome(String nome) throws Exception {
-        if (Util.isNullOrEmpty(nome)){
+        if (Util.isNullOrEmpty(nome)) {
             throw new Exception("Nome não pode ser vazio");
         }
         this.nome = nome;
@@ -241,10 +260,7 @@ public class Funcionario implements Serializable {
             return false;
         }
         Funcionario other = (Funcionario) object;
-        if ((this.codfunc == null && other.codfunc != null) || (this.codfunc != null && !this.codfunc.equals(other.codfunc))) {
-            return false;
-        }
-        return true;
+        return (this.codfunc != null || other.codfunc == null) && (this.codfunc == null || this.codfunc.equals(other.codfunc));
     }
 
     @Override
@@ -257,11 +273,28 @@ public class Funcionario implements Serializable {
     }
 
     public void setAtivo(boolean ativo) {
-        if (ativo) {
-            this.ativo = 1;
-        } else {
-            this.ativo = 0;
-        }
+        this.ativo = ativo ? (short) 1 : 0;
     }
 
+    public Integer getCodUsuario() {
+        return codUsuario;
+    }
+
+    public void setUsuario(Usuario usuario) throws Exception {
+        if (usuario == null || usuario.getCodigo() == null) {
+            throw new Exception("Não foi possível salvar o usuário.");
+        }
+        this.codUsuario = usuario.getCodigo();
+    }
+
+    public Usuario getUsuario() throws Exception {
+        if (this.codUsuario == null) {
+            throw new Exception("Usuário não cadastrado");
+        }
+        UsuarioJpaController ctr = new UsuarioJpaController();
+        return (Usuario) ctr.getEntityManager()
+                .createNamedQuery("Usuario.findByCodigo")
+                .setParameter("codigo", this.codUsuario)
+                .getSingleResult();
+    }
 }

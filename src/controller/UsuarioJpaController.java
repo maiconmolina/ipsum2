@@ -28,6 +28,10 @@ public class UsuarioJpaController implements Serializable {
     }
     private EntityManagerFactory emf = null;
 
+    public UsuarioJpaController() {
+        this.emf = ipsum2.Ipsum2.getFactory();
+    }
+
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
@@ -140,5 +144,5 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

@@ -5,6 +5,7 @@
  */
 package model;
 
+import Util.Util;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Usuario.findByCodigo", query = "SELECT u FROM Usuario u WHERE u.codigo = :codigo"),
     @NamedQuery(name = "Usuario.findByTipo", query = "SELECT u FROM Usuario u WHERE u.tipo = :tipo")})
 public class Usuario implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -43,6 +45,17 @@ public class Usuario implements Serializable {
     private Integer tipo;
 
     public Usuario() {
+        this.tipo = 0;
+    }
+
+    public Usuario(Class tipo) throws Exception {
+        if (tipo.equals(Funcionario.class)) {
+            this.tipo = 0;
+        } else if (tipo.equals(Fornecedor.class)) {
+            this.tipo = 1;
+        } else {
+            throw new Exception("Usuários só podem ser Funcionários ou Fornecedores");
+        }
     }
 
     public Usuario(String login) {
@@ -53,7 +66,10 @@ public class Usuario implements Serializable {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(String login) throws Exception {
+        if (Util.isNullOrEmpty(login)) {
+            throw new Exception("Login não pode ser vazio");
+        }
         this.login = login;
     }
 
@@ -61,7 +77,10 @@ public class Usuario implements Serializable {
         return senha;
     }
 
-    public void setSenha(String senha) {
+    public void setSenha(String senha) throws Exception {
+        if (Util.isNullOrEmpty(senha)) {
+            throw new Exception("Senha não pode ser vazio");
+        }
         this.senha = senha;
     }
 
@@ -73,12 +92,14 @@ public class Usuario implements Serializable {
         this.codigo = codigo;
     }
 
-    public Integer getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
+    public Class getTipo() throws Exception {
+        if (tipo.equals(0)) {
+            return Funcionario.class;
+        } else if (tipo.equals(1)) {
+            return Fornecedor.class;
+        } else {
+            throw new Exception("Falha de dados.");
+        }
     }
 
     @Override
@@ -105,5 +126,5 @@ public class Usuario implements Serializable {
     public String toString() {
         return "model.Usuario[ login=" + login + " ]";
     }
-    
+
 }

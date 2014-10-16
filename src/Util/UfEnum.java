@@ -1,6 +1,7 @@
 package Util;
 
 public enum UfEnum {
+
     AC("Acre"),
     AL("Alagoas"),
     AP("Amapá"),
@@ -27,20 +28,20 @@ public enum UfEnum {
     SC("Santa Catarina"),
     SE("Sergipe"),
     SP("São Paulo"),
-    TO("Tocantins");   
-    
+    TO("Tocantins");
+
     private final String nomeEstado;
-    
-    UfEnum(String nomeEstado){
+
+    UfEnum(String nomeEstado) {
         this.nomeEstado = nomeEstado;
     }
-    
-    public String getNomeEstado(){
+
+    public String getNomeEstado() {
         return this.nomeEstado;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return this.nomeEstado;
     }
 }

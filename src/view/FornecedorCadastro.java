@@ -56,8 +56,12 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         UsuarioJpaController usucontroller = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
         usu = usucontroller.getEntityManager().createNamedQuery("Usuario.findByCodigo").setParameter("codigo", forn.getCodfornec()).getResultList();
         for (Usuario usuario : usu) {
-            if (usuario.getTipo() == 0) {
-                usua = usuario;
+            try {
+                if (usuario.getTipo() == Fornecedor.class) {
+                    usua = usuario;
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Usuário só pode ser Funcionário ou Fornecedor");
             }
         }
 
@@ -280,7 +284,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_campoUFActionPerformed
 
     private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalvarActionPerformed
-        if (senha.getText().equals(confirmaSenha.getText())){
+        if (senha.getText().equals(confirmaSenha.getText())) {
             if (this.editaFornecedor == null) {
                 List<Fornecedor> listForn;
 
@@ -329,17 +333,14 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                 } else {
                     ProxCodigo2 = 1;
                 }
-                usu = new Usuario();
-                usu.setCodigo(forn.getCodfornec());
-                usu.setLogin(login.getText());
-                usu.setSenha(senha.getText());
-                usu.setTipo(0);
                 try {
+                    usu = new Usuario(Fornecedor.class);
+                    usu.setCodigo(forn.getCodfornec());
+                    usu.setLogin(login.getText());
+                    usu.setSenha(senha.getText());
                     controllerUsu.create(usu);
-                } catch (PreexistingEntityException ex) {
-                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
-                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
 
             } else {
@@ -368,23 +369,34 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                 UsuarioJpaController usuController = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
                 usuList = usuController.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
                 for (Usuario u : usuList) {
-                    if (u.getCodigo() == forn.getCodfornec() && u.getTipo() == 0) {
-                        usu = u;
+                    try {
+                        if (u.getCodigo() == forn.getCodfornec() && u.getTipo() == Fornecedor.class) {
+                            usu = u;
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                usu.setLogin(title);
-                usu.setLogin(login.getText());
-                usu.setSenha(senha.getText());
+                try {
+                    usu.setLogin(login.getText());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+                try {
+                    usu.setSenha(senha.getText());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
 
                 try {
                     usuController.edit(usu);
                 } catch (Exception ex) {
-                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, "Usuário só pode ser Funcionário ou Fornecedor");
                 }
             }
             this.dispose();
             new FornecedorListagem();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "As senhas não conferem!");
         }
     }//GEN-LAST:event_SalvarActionPerformed

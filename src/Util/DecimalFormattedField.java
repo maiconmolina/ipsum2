@@ -217,6 +217,4 @@ public class DecimalFormattedField extends JFormattedTextField {
         }
     }
 
-   
-
 }

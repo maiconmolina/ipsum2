@@ -241,7 +241,7 @@ public class Util {
         }
     }
 
-    public static Object CharArrayToString(char[] array) {
+    public static String CharArrayToString(char[] array) {
         if (array == null) {
             throw new NullPointerException("Nulo...");
         }

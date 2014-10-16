@@ -135,7 +135,6 @@ public class FuncionarioListagem extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jVisualizarActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox jAtivo;
     private javax.swing.JPanel jPanel1;

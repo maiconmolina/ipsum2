@@ -12,16 +12,11 @@ import javax.swing.JOptionPane;
 import model.Funcao;
 import model.Funcionario;
 import Util.Constante;
+import controller.UsuarioJpaController;
+import model.Usuario;
 
-/**
- *
- * @author Usuario
- */
 public class FuncionarioCadastro extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form FuncionarioCadastro
-     */
     public FuncionarioCadastro() {
         initComponents();
         InterfaceUtils.preparaTela(this);
@@ -53,6 +48,15 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
             jPasswordField1.setText("");
             jLogin.setText("");
             jTemporario.setSelected(func.getTemporario() != 0);
+
+            try {
+                Usuario usu = func.getUsuario();
+                jLogin.setText(usu.getLogin());
+                jSenha1.setText(usu.getSenha());
+                jPasswordField1.setText(usu.getSenha());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
 
             this.jInativar.setText(func.isAtivo() ? "Inativar" : "Reativar");
             this.jSalvar.setVisible(func.isAtivo());
@@ -276,6 +280,7 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                 Util.CharArrayToString(jPasswordField1.getPassword()))) {
             try {
                 Funcionario f = new Funcionario();
+                Usuario u = new Usuario(Funcionario.class);
                 f.setNome(jNome.getText());
                 f.setDatanasc(Util.StringToDate(jDataNasc.getText()));
                 if (Util.ValidateCpf(jCPF.getText())) {
@@ -295,13 +300,27 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                 f.setSalario(jSalario.getText());
                 f.setCodfuncao((Funcao) jComboBox1.getSelectedItem());
                 f.setTemporario(jTemporario.isSelected() ? (short) 1 : 0);
+                u.setLogin(jLogin.getText());
+                u.setSenha(Util.CharArrayToString(jSenha1.getPassword()));
 
+                UsuarioJpaController ctrUsu = new UsuarioJpaController();
                 FuncionarioJpaController ctr = new FuncionarioJpaController();
                 if (this.func == null) {
+                    int handle = ctrUsu.getUsuarioCount() + 1;
+                    u.setCodigo(handle);
                     f.setCodfunc(ctr.getFuncionarioCount() + 1);
+                    ctrUsu.create(u);
+                    f.setUsuario(u);
                     ctr.create(f);
                 } else {
+                    ctrUsu.destroy(func.getUsuario().getLogin());
+                    Usuario editado = new Usuario(Funcionario.class);
+                    editado.setLogin(jLogin.getText());
+                    editado.setSenha(Util.CharArrayToString(jSenha1.getPassword()));
+                    editado.setCodigo(ctrUsu.getUsuarioCount() + 1);
                     f.setCodfunc(func.getCodfunc());
+                    f.setUsuario(editado);
+                    ctrUsu.create(editado);
                     ctr.edit(f);
                 }
                 this.dispose();
@@ -315,15 +334,15 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jSalvarActionPerformed
 
     private void jInativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInativarActionPerformed
-        
+
         if (func.isAtivo()) {
             if (JOptionPane.showConfirmDialog(this, "Deseja mesmo inativar?", "Confirmação", 1) == 0) {
                 FuncionarioJpaController ctr = new FuncionarioJpaController();
-                try{
+                try {
                     ctr.setAtivo(func, false);
                     new FuncionarioCadastro(func);
                     this.dispose();
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
                 }
             }
@@ -338,7 +357,6 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_jInativarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Labels;
