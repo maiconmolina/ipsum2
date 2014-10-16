@@ -406,5 +406,19 @@ public class LancamentoJpaController implements Serializable {
             em.close();
         }
     }
-    
+//     public int getLastId() {
+//        List<MaterialDoProduto> list;
+//        MaterialDoProduto obj;
+//        MaterialDoProdutoJpaController c = new MaterialDoProdutoJpaController(ipsum2.Ipsum2.getFactory());
+//
+//        list = c.getEntityManager().createNamedQuery("MaterialDoProduto.findAll").getResultList();
+//        if (!list.isEmpty()) {
+//            obj = list.get(list.size() - 1);
+//            if (obj.get() > 0) {
+//                return obj.getCodprod() + 1;
+//            }
+//        }
+//        return 1;
+//    }
+
 }

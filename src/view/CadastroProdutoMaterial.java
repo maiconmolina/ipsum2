@@ -5,12 +5,18 @@
  */
 package view;
 
+import controller.MaterialDoProdutoJpaController;
 import controller.MaterialJpaController;
 import controller.ProdutoJpaController;
+import controller.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Material;
+import model.MaterialDoProduto;
 import model.Produto;
 
 /**
@@ -21,6 +27,7 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
 
     private ProdutoJpaController produtoController = new ProdutoJpaController(ipsum2.Ipsum2.getFactory());
     private MaterialJpaController materialController = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
+    private MaterialDoProdutoJpaController materialProdController = new MaterialDoProdutoJpaController(ipsum2.Ipsum2.getFactory());
     private Produto prod = null;
 
     /**
@@ -164,7 +171,32 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        MaterialDoProduto matProd = new MaterialDoProduto();
+        DefaultTableModel model = (DefaultTableModel) Tabela.getModel();
+        List<MaterialDoProduto> listMatProd = this.materialProdController.getMateriaisDoProduto(this.prod);
+        if (listMatProd != null) {
+            for (MaterialDoProduto mp : listMatProd) {
+                try {
+                    this.materialProdController.destroy(mp.getMaterialDoProdutoPK());
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(CadastroProdutoMaterial.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        int i;
+        matProd.setProduto(this.prod);
+        for (i = 0; i < model.getRowCount(); i++) {
+            matProd.setMaterial(this.materialController.getById((Integer) model.getValueAt(i, 0)));
+            matProd.setQtde((Integer) model.getValueAt(i, 2));
+            try {
+                this.materialProdController.create(matProd);
+//            JOptionPane.showMessageDialog(this, String.valueOf((int) model.getValueAt(i, 2)));
+            } catch (Exception ex) {
+                Logger.getLogger(CadastroProdutoMaterial.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+//        matProd.setQ
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -209,7 +241,26 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
         for (Material o : data) {
             dados.add(o.getCodmat());
             dados.add(o);
-//            dados.add();
+            boolean selecionado = false;
+            int quantidade = 0;
+            List<MaterialDoProduto> listMatP = this.materialProdController.getMateriaisDoProduto(this.prod);
+            for (MaterialDoProduto lm : listMatP) {
+//                JOptionPane.showMessageDialog(this, lm.getMaterial().getDescricao() + " " + lm.getProduto().getDescricao() + " QDE: " + lm.getQtde().toString());
+                if (lm.getMaterial().getCodmat() == o.getCodmat()) {
+                    JOptionPane.showMessageDialog(this, "Quantidade" + o.getQtde().toString());
+                    selecionado = true;
+                    quantidade = lm.getQtde();
+                }
+            }
+            if (selecionado == true) {
+                dados.add(quantidade);
+                dados.add(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "false");
+
+                dados.add(null);
+                dados.add(false);
+            }
             model.addRow(dados.toArray());
             dados.clear();
         }

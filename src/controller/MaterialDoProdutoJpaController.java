@@ -8,6 +8,7 @@ package controller;
 import controller.exceptions.NonexistentEntityException;
 import controller.exceptions.PreexistingEntityException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,6 +16,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.swing.JOptionPane;
 import model.Material;
 import model.MaterialDoProduto;
 import model.MaterialDoProdutoPK;
@@ -207,5 +209,22 @@ public class MaterialDoProdutoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
+    public List<MaterialDoProduto> getMateriaisDoProduto(Produto p) {
+        MaterialDoProdutoJpaController c = new MaterialDoProdutoJpaController(ipsum2.Ipsum2.getFactory());
+        List<MaterialDoProduto> list = c.getEntityManager().createNamedQuery("MaterialDoProduto.findAll").getResultList();
+        List<MaterialDoProduto> retorno = new ArrayList<MaterialDoProduto>();
+        for (MaterialDoProduto mp : list) {
+            if (mp.getProduto().equals(p)) {
+                retorno.add(mp);
+            }
+        }
+        return retorno;
+
+    }
+//
+//    public List<MaterialDoProduto> getAll() {
+//        MaterialJpaController ctrl = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
+//        return ctrl.getEntityManager().createNamedQuery("Material.findAll").getResultList();
+//    }
 }
