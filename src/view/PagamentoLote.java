@@ -11,8 +11,11 @@ import controller.PagamentoLoteJpaController;
 import controller.TipoPagamentoJpaController;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Fornecedor;
 import model.Lote;
@@ -79,6 +82,11 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         jLabel1.setText("Lote");
 
         confirmarPagamento.setText("Confirmar Pagamento");
+        confirmarPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmarPagamentoActionPerformed(evt);
+            }
+        });
 
         cancelar.setText("Cancelar");
         cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +101,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Descrição");
 
+        descricao.setEditable(false);
         descricao.setColumns(20);
         descricao.setRows(5);
         jScrollPane2.setViewportView(descricao);
@@ -100,6 +109,8 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         jLabel7.setText("Data");
 
         campoData.setEditable(false);
+
+        valorTotal.setEditable(false);
 
         lote.setModel(new javax.swing.DefaultComboBoxModel(new String[] { ">> SELECIONE <<" }));
         List<PagamentoLote> paglote;
@@ -220,6 +231,25 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
     private void cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_cancelarActionPerformed
+
+    private void confirmarPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPagamentoActionPerformed
+        PagamentoLoteJpaController jpgl = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
+        model.PagamentoLote salvap = new model.PagamentoLote();
+        salvap.setTipopag((TipoPagamento)tipoPagamento.getSelectedItem());
+        salvap.setDatpag(new Date());
+        salvap.setNfeList(null);
+        salvap.setCodpaglote(jpgl.getPagamentoLoteCount() + 1);
+        salvap.setCodlote((Lote)lote.getSelectedItem());
+        
+        try {
+            jpgl.create(salvap);
+        } catch (Exception ex) {
+            Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+        
+        
+    }//GEN-LAST:event_confirmarPagamentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
