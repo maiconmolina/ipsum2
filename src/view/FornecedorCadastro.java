@@ -26,7 +26,7 @@ import model.Usuario;
 public class FornecedorCadastro extends javax.swing.JInternalFrame {
 
     private Fornecedor editaFornecedor = null;
-
+    
     /**
      * Creates new form FornecedorCadastro
      */
@@ -111,7 +111,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         Salvar = new javax.swing.JButton();
-        Inativar = new javax.swing.JButton();
+        jInativar = new javax.swing.JButton();
         senha = new javax.swing.JPasswordField();
         confirmaSenha = new javax.swing.JPasswordField();
 
@@ -157,7 +157,12 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
             }
         });
 
-        Inativar.setText("Inativar");
+        jInativar.setText("Inativar");
+        jInativar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jInativarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -212,7 +217,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Inativar)
+                .addComponent(jInativar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Salvar)
                 .addContainerGap())
@@ -265,7 +270,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Salvar)
-                    .addComponent(Inativar))
+                    .addComponent(jInativar))
                 .addContainerGap())
         );
 
@@ -401,9 +406,32 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_SalvarActionPerformed
 
+    private void jInativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInativarActionPerformed
+        /*if (editaFornecedor.) {
+            if (JOptionPane.showConfirmDialog(this, "Deseja mesmo inativar?", "Confirmação", 1) == 0) {
+                FornecedorJpaController ctr = new FornecedorJpaController();
+                try {
+                    ctr.setAtivo(forn, false);
+                    new FuncionarioCadastro(forn);
+                    this.dispose();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
+                }
+            }
+        } else {
+            FòrnecedorJpaController ctr = new FornecedorJpaController();
+            try {
+                ctr.setAtivo(forn, true);
+                new FuncionarioCadastro(forn);
+                this.dispose();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
+            }
+        }*/
+    }//GEN-LAST:event_jInativarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Inativar;
     private javax.swing.JButton Salvar;
     private javax.swing.JComboBox campoUF;
     private javax.swing.JFormattedTextField cep;
@@ -413,6 +441,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     private javax.swing.JTextField email;
     private javax.swing.JTextField endereco;
     private javax.swing.JTextField fantasia;
+    private javax.swing.JButton jInativar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

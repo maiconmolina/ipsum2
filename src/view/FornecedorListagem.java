@@ -30,7 +30,26 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
         this.insereTabela(forn);
         
     }
-
+    
+     private void atualizaLista() {
+       /* List<Fornecedor> forn = new FornecedorJpaController()
+                .getEntityManager()
+                .createNamedQuery("Fornecedor.findByAtivo")
+                .setParameter("ativo", jAtivo.isSelected() ? 1 : 0)
+                .getResultList();
+        DefaultTableModel table = (DefaultTableModel) TabelaBusca.getModel();
+        table.setRowCount(0);
+        List<Object> buffer = new ArrayList<>();
+        for (Fornecedor funcionario : forn) {//PAU NESSA LINHA
+            buffer.clear();
+            buffer.add(fornecedor.get());
+            buffer.add(fornecedor.get());
+            buffer.add(fornecedor.get());
+            table.addRow(buffer.toArray());
+        }
+         */
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,6 +63,7 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
         TabelaBusca = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         Visualizar = new javax.swing.JButton();
+        jAtivo = new javax.swing.JCheckBox();
 
         setClosable(true);
         setTitle("Listagem Fornedor");
@@ -72,6 +92,8 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
             }
         });
 
+        jAtivo.setText("Ativo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,7 +103,8 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Visualizar)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jAtivo))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,7 +113,8 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Visualizar)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jAtivo))
                 .addGap(0, 0, 0))
         );
 
@@ -130,6 +154,7 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TabelaBusca;
     private javax.swing.JButton Visualizar;
+    private javax.swing.JCheckBox jAtivo;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

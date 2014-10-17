@@ -82,7 +82,7 @@
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="Inativar" min="-2" max="-2" attributes="0"/>
+              <Component id="jInativar" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="Salvar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -145,7 +145,7 @@
               <EmptySpace pref="19" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="Salvar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="Inativar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jInativar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -259,10 +259,13 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SalvarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="Inativar">
+    <Component class="javax.swing.JButton" name="jInativar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Inativar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jInativarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="senha">
     </Component>

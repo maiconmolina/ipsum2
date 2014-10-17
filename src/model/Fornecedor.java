@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Fornecedor.findAll", query = "SELECT f FROM Fornecedor f"),
     @NamedQuery(name = "Fornecedor.findByCodfornec", query = "SELECT f FROM Fornecedor f WHERE f.codfornec = :codfornec"),
+    @NamedQuery(name = "Funcionario.findByAtivo", query = "SELECT f FROM Funcionario f WHERE f.ativo = :ativo"),
     @NamedQuery(name = "Fornecedor.findByNumero", query = "SELECT f FROM Fornecedor f WHERE f.numero = :numero")})
 public class Fornecedor implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -38,6 +39,8 @@ public class Fornecedor implements Serializable {
     @Basic(optional = false)
     @Column(name = "CODFORNEC")
     private Integer codfornec;
+    @Column(name = "ATIVO")
+    private Short ativo;
     @Lob
     @Column(name = "CEP")
     private String cep;
@@ -77,6 +80,7 @@ public class Fornecedor implements Serializable {
     private Uf coduf;
 
     public Fornecedor() {
+        this.ativo = 1;
     }
 
     public Fornecedor(Integer codfornec) {
@@ -89,6 +93,14 @@ public class Fornecedor implements Serializable {
 
     public void setCodfornec(Integer codfornec) {
         this.codfornec = codfornec;
+    }
+    
+     public Short getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Short ativo) {
+        this.ativo = ativo;
     }
 
     public String getCep() {
@@ -230,6 +242,14 @@ public class Fornecedor implements Serializable {
     @Override
     public String toString() {
         return this.razao;
+    }
+    
+    public boolean isAtivo() {
+        return ativo != 0;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo ? (short) 1 : 0;
     }
     
 }
