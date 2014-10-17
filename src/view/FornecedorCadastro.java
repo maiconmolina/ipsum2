@@ -407,27 +407,27 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_SalvarActionPerformed
 
     private void jInativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInativarActionPerformed
-        /*if (editaFornecedor.) {
+        if (editaFornecedor.isAtivo()) {
             if (JOptionPane.showConfirmDialog(this, "Deseja mesmo inativar?", "Confirmação", 1) == 0) {
-                FornecedorJpaController ctr = new FornecedorJpaController();
+                FornecedorJpaController ctr = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
                 try {
-                    ctr.setAtivo(forn, false);
-                    new FuncionarioCadastro(forn);
+                    //ctr.setAtivo(editaFornecedor, false);
+                    //new FuncionarioCadastro(editaFornecedor);
                     this.dispose();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
                 }
             }
         } else {
-            FòrnecedorJpaController ctr = new FornecedorJpaController();
+            FornecedorJpaController ctr = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
             try {
-                ctr.setAtivo(forn, true);
-                new FuncionarioCadastro(forn);
+                //ctr.setAtivo(editaFornecedor, true);
+                //new FuncionarioCadastro(editaFornecedor);
                 this.dispose();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
             }
-        }*/
+        }
     }//GEN-LAST:event_jInativarActionPerformed
 
 

@@ -32,7 +32,7 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
     }
     
      private void atualizaLista() {
-       /* List<Fornecedor> forn = new FornecedorJpaController()
+       List<Fornecedor> forn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory())
                 .getEntityManager()
                 .createNamedQuery("Fornecedor.findByAtivo")
                 .setParameter("ativo", jAtivo.isSelected() ? 1 : 0)
@@ -42,12 +42,12 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
         List<Object> buffer = new ArrayList<>();
         for (Fornecedor funcionario : forn) {//PAU NESSA LINHA
             buffer.clear();
-            buffer.add(fornecedor.get());
-            buffer.add(fornecedor.get());
-            buffer.add(fornecedor.get());
+            //buffer.add(fornecedor.get());
+            //buffer.add(fornecedor.get());
+           // buffer.add(fornecedor.get());
             table.addRow(buffer.toArray());
         }
-         */
+         
     }
     
     /**
