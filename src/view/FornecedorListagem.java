@@ -18,21 +18,30 @@ import model.Fornecedor;
  */
 public class FornecedorListagem extends javax.swing.JInternalFrame {
 
+    private List<Fornecedor> fornecedores = null;
+    private List<Fornecedor> fornecedoresAtivos = new ArrayList<Fornecedor>();
+
     /**
      * Creates new form FornecedorListagem
      */
     public FornecedorListagem() {
         initComponents();
         InterfaceUtils.preparaTela(this);
-        List<Fornecedor> forn;
         FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
-        forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
-        this.insereTabela(forn);
-        
+        this.fornecedores = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
+        this.insereTabela(this.fornecedores);
+        if (this.fornecedores.size() > 0) {
+            for (Fornecedor f : this.fornecedores) {
+                if (f.getAtivo() == 1) {
+                    fornecedoresAtivos.add(f);
+                }
+            }
+        }
+
     }
-    
-     private void atualizaLista() {
-       List<Fornecedor> forn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory())
+
+    private void atualizaLista() {
+        List<Fornecedor> forn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory())
                 .getEntityManager()
                 .createNamedQuery("Fornecedor.findByAtivo")
                 .setParameter("ativo", jAtivo.isSelected() ? 1 : 0)
@@ -44,12 +53,12 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
             buffer.clear();
             //buffer.add(fornecedor.get());
             //buffer.add(fornecedor.get());
-           // buffer.add(fornecedor.get());
+            // buffer.add(fornecedor.get());
             table.addRow(buffer.toArray());
         }
-         
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,7 +82,7 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "CNPJ", "Razão", "Telefone"
+                "CNPJ", "Razão", "Telefone","Ativo"
             }
         ));
         jScrollPane1.setViewportView(TabelaBusca);
@@ -92,7 +101,12 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
             }
         });
 
-        jAtivo.setText("Ativo");
+        jAtivo.setText("Ativos");
+        jAtivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jAtivoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,7 +137,7 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
 
     private void VisualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VisualizarActionPerformed
         try {
-            DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();  
+            DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();
             Fornecedor forn = (Fornecedor) model.getValueAt(TabelaBusca.getSelectedRow(), 1); //Pega o objeto na tabela
             new FornecedorCadastro(forn); //Abre a tela de cadastro com os dados do objeto pesquisado 
             this.dispose();
@@ -138,14 +152,29 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
         new FornecedorCadastro();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
+    private void jAtivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jAtivoActionPerformed
+        if (jAtivo.isSelected() == true) {
+            this.insereTabela(this.fornecedoresAtivos);
+        } else {
+            this.insereTabela(this.fornecedores);
+        }
+    }//GEN-LAST:event_jAtivoActionPerformed
+
     private void insereTabela(List<Fornecedor> data) {
         DefaultTableModel model = (DefaultTableModel) TabelaBusca.getModel();
+        model.setRowCount(0);
         List<Object> dados = new ArrayList<>();
         for (Fornecedor o : data) {
             dados.add(o.getCnpj());
             dados.add(o);
             dados.add(o.getTelefone());
+            if (o.getAtivo()==1){
+                dados.add("Ativo");
+            }else{
+                
+                dados.add("Inativo");
+            }
             model.addRow(dados.toArray());
             dados.clear();
         }

@@ -26,13 +26,14 @@ import model.Usuario;
 public class FornecedorCadastro extends javax.swing.JInternalFrame {
 
     private Fornecedor editaFornecedor = null;
-    
+
     /**
      * Creates new form FornecedorCadastro
      */
     public FornecedorCadastro() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        jInativar.setEnabled(false);
     }
 
     public FornecedorCadastro(Fornecedor forn) {
@@ -50,7 +51,12 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         endereco.setText(forn.getEndereco());
         campoUF.setSelectedItem(forn.getCoduf());
         cep.setText(forn.getCep());
+        if (forn.getAtivo() == 0) {
+            jInativar.setText("Ativar");
+        } else {
+            jInativar.setText("Inativar");
 
+        }
         List<Usuario> usu;
         Usuario usua = null;
         UsuarioJpaController usucontroller = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
@@ -320,7 +326,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                 forn.setEndereco(endereco.getText());
                 forn.setCoduf((Uf) campoUF.getSelectedItem());
                 forn.setCep(cep.getText());
-
+                forn.setAtivo((short) 1);
                 try {
                     controllerForn.create(forn);
                 } catch (Exception ex) {
@@ -407,13 +413,12 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_SalvarActionPerformed
 
     private void jInativarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jInativarActionPerformed
-        if (editaFornecedor.isAtivo()) {
+        if (editaFornecedor.getAtivo() == 1) {
             if (JOptionPane.showConfirmDialog(this, "Deseja mesmo inativar?", "Confirmação", 1) == 0) {
                 FornecedorJpaController ctr = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
                 try {
-                    //ctr.setAtivo(editaFornecedor, false);
-                    //new FuncionarioCadastro(editaFornecedor);
-                    this.dispose();
+                    editaFornecedor.setAtivo((short) 0);
+                    ctr.edit(editaFornecedor);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
                 }
@@ -421,13 +426,15 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         } else {
             FornecedorJpaController ctr = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
             try {
-                //ctr.setAtivo(editaFornecedor, true);
-                //new FuncionarioCadastro(editaFornecedor);
-                this.dispose();
+                editaFornecedor.setAtivo((short) 1);
+                ctr.edit(editaFornecedor);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Um erro ocorreu: " + ex.getMessage());
             }
         }
+        new FornecedorListagem();
+        this.dispose();
+
     }//GEN-LAST:event_jInativarActionPerformed
 
 

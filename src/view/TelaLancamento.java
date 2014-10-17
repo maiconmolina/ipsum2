@@ -328,7 +328,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 lanc.setLancamentoEntrada(null);
             }
             if (lanc.getLancamentoSaida() != null) {
-                gambData = lanc.getLancamentoEntrada().getData();
+                gambData = lanc.getLancamentoSaida().getData();
                 try {
                     lancSaidController.destroy(lanc.getLancamentoSaida().getCodlanc());
                 } catch (NonexistentEntityException ex) {
