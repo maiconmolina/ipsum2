@@ -6,7 +6,7 @@
 package view;
 
 import Util.DecimalFormattedField;
-import static Util.Util.DateToString;
+import static Util.Util.DateToString2;
 import static Util.Util.doubleDuasCasasDecimais;
 import controller.CaixaJpaController;
 import controller.LancamentoJpaController;
@@ -98,6 +98,10 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 dados.add(o.getLancamentoSaida());
             } else if (o.getLancamentoEntrada() != null) {
                 dados.add(o.getLancamentoEntrada());
+            } else if (o.getLancamentoPagfunc() != null) {
+                dados.add(o.getLancamentoPagfunc());
+            } else if (o.getLancamentoRecforn() != null) {
+                dados.add(o.getLancamentoRecforn());
             }
             DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
 
@@ -108,10 +112,10 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 dados.add("Estornado");
             }
             if (o.getLancamentoEntrada() != null) {
-                dados.add(DateToString(o.getLancamentoEntrada().getData()));
+                dados.add(DateToString2(o.getLancamentoEntrada().getData()));
             }
             if (o.getLancamentoSaida() != null) {
-                dados.add(DateToString(o.getLancamentoSaida().getData()));
+                dados.add(DateToString2(o.getLancamentoSaida().getData()));
             }
 
             model.addRow(dados.toArray());
@@ -261,7 +265,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(382, Short.MAX_VALUE)
+                .addContainerGap(383, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(statusCaixa)
@@ -278,7 +282,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(92, Short.MAX_VALUE)))
+                    .addContainerGap(93, Short.MAX_VALUE)))
         );
 
         pack();

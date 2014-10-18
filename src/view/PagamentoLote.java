@@ -133,7 +133,9 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
             boolean achou = false;
             for (model.PagamentoLote pgL : l.getPagamentoLoteList()) {
                 if (pgL.getCodlote() == l) {
-                    achou = true;
+                    if (pgL.getAtivo() == 0){
+                        achou = true;
+                    }
                 }
             }
             if (achou == false) {
@@ -244,6 +246,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         pagLote.setNfeList(null);
         pagLote.setCodpaglote(jpgl.getPagamentoLoteCount() + 1);
         pagLote.setCodlote((Lote) lote.getSelectedItem());
+        pagLote.setAtivo((short) 1);
         
         try {
             jpgl.create(pagLote);

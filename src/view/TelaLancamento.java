@@ -9,7 +9,11 @@ import Util.DecimalFormattedField;
 import controller.CaixaJpaController;
 import controller.LancamentoEntradaJpaController;
 import controller.LancamentoJpaController;
+import controller.LancamentoPagfuncJpaController;
+import controller.LancamentoRecfornJpaController;
 import controller.LancamentoSaidaJpaController;
+import controller.LoteJpaController;
+import controller.PagamentoLoteJpaController;
 import controller.exceptions.NonexistentEntityException;
 import controller.exceptions.PreexistingEntityException;
 import enuns.EnumTipoDeLancamento;
@@ -54,10 +58,14 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     public TelaLancamento(Lancamento lanc) {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        if (lanc.getLancamentoPagfunc() != null || lanc.getLancamentoRecforn() != null) {
+            descricao.setEditable(false);
+            valor.setEditable(false);
+            tipo.setEnabled(false);
+        }
 
         this.editandoLanc = lanc;
         estorno.setEnabled(true);
-
         descricao.setText(lanc.getDescricao());
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
@@ -68,6 +76,14 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         if (lanc.getLancamentoSaida() != null) {
             date = lanc.getLancamentoSaida().getData();
             tipo.setSelectedIndex(1);
+        }
+        if (lanc.getLancamentoPagfunc() != null) {
+            date = lanc.getLancamentoPagfunc().getData();
+            tipo.setSelectedIndex(2);
+        }
+        if (lanc.getLancamentoRecforn() != null) {
+            date = lanc.getLancamentoRecforn().getData();
+            tipo.setSelectedIndex(3);
         }
 
         dataAgora.setText(dateFormat.format(date));
@@ -276,7 +292,6 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_excluirActionPerformed
 
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
-
         List<Caixa> caixa = null;
         CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
         caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
@@ -294,6 +309,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         for (Caixa c : caixa) {
             lanc.setCodcaixa(c);
         }
+
         lanc.setDescricao(descricao.getText());
 
         lanc.setCodlanc(Integer.parseInt(codigo.getText()));
@@ -303,6 +319,8 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
         LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
         LancamentoSaidaJpaController lancSaidController = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
+        LancamentoRecfornJpaController lancRecFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+        LancamentoPagfuncJpaController lancPagFuncController = new LancamentoPagfuncJpaController(ipsum2.Ipsum2.getFactory());
         Date gambData = null;
 
         if (this.editandoLanc != null) {
@@ -336,6 +354,21 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 }
                 lanc.setLancamentoSaida(null);
             }
+            if (lanc.getLancamentoPagfunc() != null) {
+            }
+            if (lanc.getLancamentoRecforn() != null) {
+                //FAZER LOTE
+                model.PagamentoLote pagLote = null;
+                PagamentoLoteJpaController loteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
+                pagLote = (model.PagamentoLote) loteController.getEntityManager().createNamedQuery("PagamentoLote.findByCodpaglote").setParameter("CODPAGLOTE", lanc.getLancamentoRecforn().getCodpaglote()).getSingleResult();
+                if (estorno.getSelectedIndex() == 0) {
+                    pagLote.setAtivo((short) 0);
+                } else {
+
+                    pagLote.setAtivo((short) 1);
+                }
+            }
+
         } else {
             gambData = new Date();
             try {

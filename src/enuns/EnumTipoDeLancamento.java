@@ -2,7 +2,7 @@ package enuns;
 
 public enum EnumTipoDeLancamento {
 
-    ENTRADA("Entrada comum"), SAIDA("Saída comum"), PAGAMENTO("Pagamento de Funcionário"), RECEBIMENTO("Recebimento do Fornecedor/Cliente");
+    ENTRADA("Entrada comum"), SAIDA("Saída comum"), PAGAMENTO("Pagamento de Funcionário"), RECEBIMENTO("Recebimento do Fornecedor/Pagamento do Lote");
 
     private final String label;
 

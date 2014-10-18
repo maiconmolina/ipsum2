@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PagamentoLote.findByCodpaglote", query = "SELECT p FROM PagamentoLote p WHERE p.codpaglote = :codpaglote"),
     @NamedQuery(name = "PagamentoLote.findByDatpag", query = "SELECT p FROM PagamentoLote p WHERE p.datpag = :datpag")})
 public class PagamentoLote implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -51,8 +52,11 @@ public class PagamentoLote implements Serializable {
     private TipoPagamento tipopag;
     @OneToMany(mappedBy = "codpaglote")
     private List<Nfe> nfeList;
+    @Column(name = "ATIVO")
+    private Short ativo;
 
     public PagamentoLote() {
+        this.ativo = (short) 1;
     }
 
     public PagamentoLote(Integer codpaglote) {
@@ -124,5 +128,13 @@ public class PagamentoLote implements Serializable {
     public String toString() {
         return "model.PagamentoLote[ codpaglote=" + codpaglote + " ]";
     }
-    
+
+    public Short getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Short ativo) {
+        this.ativo = ativo;
+    }
+
 }

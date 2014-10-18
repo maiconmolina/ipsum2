@@ -213,6 +213,24 @@ public class Util {
         }
         retorno.append(mes);
         retorno.append("/");
+        retorno.append(date.getYear());
+
+        return retorno.toString();
+    }
+    public static String DateToString2(Date date) {//dd/MM/yyyy
+        StringBuilder retorno = new StringBuilder();
+        if (date == null) {
+            return retorno.toString();
+        }
+
+        retorno.append(date.getDate());
+        retorno.append("/");
+        int mes = date.getMonth() + 1;
+        if (mes < 10) {
+            retorno.append("0");
+        }
+        retorno.append(mes);
+        retorno.append("/");
         retorno.append(date.getYear() - 100);
 
         return retorno.toString();

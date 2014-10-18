@@ -112,7 +112,7 @@ public class LancamentoRecforn implements Serializable {
 
     @Override
     public String toString() {
-        return "model.LancamentoRecforn[ codlanc=" + codlanc + " ]";
+        return "Recebimento do Fornecedor / Pagamento do lote";
     }
 
     public Integer getCodpaglote() {

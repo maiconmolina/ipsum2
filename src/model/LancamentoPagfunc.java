@@ -121,7 +121,7 @@ public class LancamentoPagfunc implements Serializable {
 
     @Override
     public String toString() {
-        return "model.LancamentoPagfunc[ codlanc=" + codlanc + " ]";
+        return "Pagamento de Funcionário";
     }
     
 }
