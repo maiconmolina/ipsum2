@@ -117,7 +117,7 @@ public class SituacaoLote implements Serializable {
 
     @Override
     public String toString() {
-        return "model.SituacaoLote[ sitlote=" + sitlote + " ]";
+        return getDescricao();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

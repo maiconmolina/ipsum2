@@ -5,6 +5,21 @@
  */
 package view;
 
+import controller.FornecedorJpaController;
+import controller.LoteJpaController;
+import controller.SituacaoLoteJpaController;
+import controller.exceptions.NonexistentEntityException;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import model.Fornecedor;
+import model.Lote;
+import model.SituacaoLote;
+
 /**
  *
  * @author Maicon
@@ -14,12 +29,51 @@ public class CadastroLote extends javax.swing.JInternalFrame {
     /**
      * Creates new form CadastroLote
      */
+    private LoteJpaController jpa;
+    private Lote lote;
+    private Boolean error;
+
     public CadastroLote() {
+        error = Boolean.FALSE;
         initComponents();
-        ListaProdutos lp = new ListaProdutos();
-        Start.addFrame(lp);
-        lp.setLocation(10, 10);
-        lp.setVisible(true);
+        loadSit();
+        initFornec();
+        this.lote = null;
+        jpa = new LoteJpaController(ipsum2.Ipsum2.getFactory());
+        if (error) bsalvar.setEnabled(false);
+    }
+
+    public CadastroLote(Lote plote) {
+        initComponents();
+        loadSit();
+        initFornec();
+        this.lote = plote;
+        jpa = new LoteJpaController(ipsum2.Ipsum2.getFactory());
+        descricao.setText(lote.getDescricao());
+        cliente.setSelectedItem(lote.getCodfornec());
+        situacao.setSelectedItem(lote.getSitlote());
+    }
+
+    private void loadSit() {
+        SituacaoLoteJpaController sitc = new SituacaoLoteJpaController(ipsum2.Ipsum2.getFactory());
+        List<SituacaoLote> listSit = sitc.findSituacaoLoteEntities();
+        if (listSit.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Situações do lote não cadastradas");
+            this.error = Boolean.TRUE;
+        }
+        ComboBoxModel combo = new DefaultComboBoxModel(listSit.toArray());
+        situacao.setModel(combo);
+    }
+
+    private void initFornec() {
+        FornecedorJpaController fctr = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+        List<Fornecedor> lstfnc = fctr.findFornecedorEntities();
+        if (lstfnc.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nenhum fornecedor cadastrado");
+            this.error = Boolean.TRUE;
+        }
+        ComboBoxModel combofnc = new DefaultComboBoxModel(lstfnc.toArray());
+        cliente.setModel(combofnc);
     }
 
     /**
@@ -31,24 +85,126 @@ public class CadastroLote extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        descricao = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        cliente = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
+        situacao = new javax.swing.JComboBox();
+        bsalvar = new javax.swing.JButton();
+
         setClosable(true);
         setTitle("Cadastra/Altera Lote");
+
+        jLabel1.setText("Descrição:");
+
+        descricao.setColumns(20);
+        descricao.setRows(5);
+        jScrollPane1.setViewportView(descricao);
+
+        jLabel2.setText("Cliente:");
+
+        jLabel3.setText("Situação:");
+
+        bsalvar.setText("Salvar");
+        bsalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bsalvarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 539, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(situacao, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(bsalvar)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(situacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(bsalvar)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void bsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsalvarActionPerformed
+        if (this.lote == null) {
+            lote.setCancelado(Short.parseShort("0"));
+            lote.setDataent(new Date());
+            lote.setDescricao(descricao.getText());
+            lote.setSitlote((SituacaoLote) situacao.getSelectedItem());
+            lote.setCodlote(jpa.getLoteCount() + 1);
+            lote.setCodfornec((Fornecedor) cliente.getSelectedItem());
+            lote.setDatasai(null);
+            try {
+                jpa.create(lote);
+            } catch (Exception ex) {
+                Logger.getLogger(CadastroLote.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            lote.setDescricao(descricao.getText());
+            lote.setSitlote((SituacaoLote) situacao.getSelectedItem());
+            lote.setCodfornec((Fornecedor) cliente.getSelectedItem());
+            try {
+                jpa.edit(lote);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(CadastroLote.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(CadastroLote.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        ListaLote ll = new ListaLote();
+        Start.addFrame(ll);
+        ll.setLocation(10, 10);
+        ll.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_bsalvarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bsalvar;
+    private javax.swing.JComboBox cliente;
+    private javax.swing.JTextArea descricao;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox situacao;
     // End of variables declaration//GEN-END:variables
 }
