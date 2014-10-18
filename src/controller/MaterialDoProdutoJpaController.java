@@ -220,7 +220,18 @@ public class MaterialDoProdutoJpaController implements Serializable {
             }
         }
         return retorno;
+    }
 
+    public List<MaterialDoProduto> getMateriaisAtivosDoProduto(Produto p) {
+        MaterialDoProdutoJpaController c = new MaterialDoProdutoJpaController(ipsum2.Ipsum2.getFactory());
+        List<MaterialDoProduto> list = c.getEntityManager().createNamedQuery("MaterialDoProduto.findAll").getResultList();
+        List<MaterialDoProduto> retorno = new ArrayList<MaterialDoProduto>();
+        for (MaterialDoProduto mp : list) {
+            if (mp.getProduto().equals(p)) {
+                retorno.add(mp);
+            }
+        }
+        return retorno;
     }
 //
 //    public List<MaterialDoProduto> getAll() {

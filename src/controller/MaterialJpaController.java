@@ -254,6 +254,11 @@ public class MaterialJpaController implements Serializable {
         return ctrl.getEntityManager().createNamedQuery("Material.findAll").getResultList();
     }
 
+    public List<Material> getAtivos() {
+        MaterialJpaController ctrl = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
+        return ctrl.getEntityManager().createNamedQuery("Material.findByAtivo").setParameter("ativo", 1).getResultList();
+    }
+
     public Material getById(int Id) {
         MaterialJpaController ctrl = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
         return (Material) ctrl.getEntityManager().createNamedQuery("Material.findByCodmat").setParameter("codmat", Id).getSingleResult();

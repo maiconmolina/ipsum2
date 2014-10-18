@@ -8,6 +8,7 @@ package view;
 import Util.DecimalFormattedField;
 import Util.Util;
 import controller.ProdutoJpaController;
+import controller.exceptions.NonexistentEntityException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,11 +21,21 @@ import model.Produto;
 public class CadastroProdutos extends javax.swing.JInternalFrame {
 
     private ProdutoJpaController produtoController = new ProdutoJpaController(ipsum2.Ipsum2.getFactory());
+    private Produto prod = null;
 
     public CadastroProdutos() {
         initComponents();
         InterfaceUtils.preparaTela(this);
 
+    }
+
+    public CadastroProdutos(Produto p) {
+        initComponents();
+        this.prod = p;
+        InterfaceUtils.preparaTela(this);
+        descricao.setText(p.getDescricao());
+        valor.setText(p.getPreco().toString());
+        jativo.setSelected(p.getAtivo() == 1);
     }
 
     @SuppressWarnings("unchecked")
@@ -139,16 +150,32 @@ public class CadastroProdutos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_valorActionPerformed
 
     private void salvar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvar1ActionPerformed
-        Produto prod = new Produto();
-        prod.setAtivo((Util.boolToShort(jativo.isSelected())));
-        prod.setDescricao(descricao.getText());
-        DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
-        prod.setPreco(val.converteDouble(valor.getText()));
-        prod.setCodprod(this.produtoController.ultimoId());
-        try {
-            this.produtoController.create(prod);
-        } catch (Exception ex) {
-            Logger.getLogger(CadastroProdutos.class.getName()).log(Level.SEVERE, null, ex);
+        if (this.prod == null) {
+            Produto prod = new Produto();
+            prod.setAtivo((Util.boolToShort(jativo.isSelected())));
+            prod.setDescricao(descricao.getText());
+            DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
+            prod.setPreco(val.converteDouble(valor.getText()));
+            prod.setCodprod(this.produtoController.ultimoId());
+            try {
+                this.produtoController.create(prod);
+            } catch (Exception ex) {
+                Logger.getLogger(CadastroProdutos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            Produto prod = this.prod;
+            prod.setAtivo((Util.boolToShort(jativo.isSelected())));
+            prod.setDescricao(descricao.getText());
+            DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
+            prod.setPreco(val.converteDouble(valor.getText()));
+            try {
+                this.produtoController.edit(prod);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(CadastroProdutos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(CadastroProdutos.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.dispose();
         new ListaProdutos();

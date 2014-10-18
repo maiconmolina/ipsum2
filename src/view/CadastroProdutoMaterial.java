@@ -45,7 +45,7 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
         this.prod = prod;
 
         produto.setText(prod.getDescricao());
-        List<Material> listMat = this.materialController.getAll();
+        List<Material> listMat = this.materialController.getAtivos();
         insereTabela(listMat);
     }
 
@@ -63,8 +63,9 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabela = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -106,14 +107,21 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Salvar");
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Materiais");
+
+        jButton2.setText("Voltar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jLabel2.setText("Materiais");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,8 +141,10 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
                                 .addComponent(produto)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 436, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(440, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSalvar)))
                 .addGap(20, 20, 20))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -154,7 +164,9 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
-                .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSalvar)
+                    .addComponent(jButton2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -170,7 +182,7 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         MaterialDoProduto matProd = new MaterialDoProduto();
         DefaultTableModel model = (DefaultTableModel) Tabela.getModel();
         List<MaterialDoProduto> listMatProd = this.materialProdController.getMateriaisDoProduto(this.prod);
@@ -186,17 +198,23 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
         int i;
         matProd.setProduto(this.prod);
         for (i = 0; i < model.getRowCount(); i++) {
-            matProd.setMaterial(this.materialController.getById((Integer) model.getValueAt(i, 0)));
-            matProd.setQtde((Integer) model.getValueAt(i, 2));
-            try {
-                this.materialProdController.create(matProd);
-//            JOptionPane.showMessageDialog(this, String.valueOf((int) model.getValueAt(i, 2)));
-            } catch (Exception ex) {
-                Logger.getLogger(CadastroProdutoMaterial.class.getName()).log(Level.SEVERE, null, ex);
+            if ((boolean) model.getValueAt(i, 3) == true) {
+                matProd.setMaterial(this.materialController.getById((Integer) model.getValueAt(i, 0)));
+                matProd.setQtde(Integer.valueOf(model.getValueAt(i, 2).toString()));
+                try {
+                    this.materialProdController.create(matProd);
+                } catch (Exception ex) {
+                    Logger.getLogger(CadastroProdutoMaterial.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
+        this.dispose();
+        new ListaProdutos();
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
-//        matProd.setQ
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+        new ListaProdutos();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -242,23 +260,17 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
             dados.add(o.getCodmat());
             dados.add(o);
             boolean selecionado = false;
-            int quantidade = 0;
-            List<MaterialDoProduto> listMatP = this.materialProdController.getMateriaisDoProduto(this.prod);
+            List<MaterialDoProduto> listMatP = this.materialProdController.getMateriaisAtivosDoProduto(this.prod);
             for (MaterialDoProduto lm : listMatP) {
-//                JOptionPane.showMessageDialog(this, lm.getMaterial().getDescricao() + " " + lm.getProduto().getDescricao() + " QDE: " + lm.getQtde().toString());
-                if (lm.getMaterial().getCodmat() == o.getCodmat()) {
-                    JOptionPane.showMessageDialog(this, "Quantidade" + o.getQtde().toString());
+                if (lm.getMaterial().equals(o)) {
+                    dados.add(lm.getQtde().toString());
+                    dados.add(true);
                     selecionado = true;
-                    quantidade = lm.getQtde();
+                    break;
                 }
             }
-            if (selecionado == true) {
-                dados.add(quantidade);
-                dados.add(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "false");
-
-                dados.add(null);
+            if (selecionado != true) {
+                dados.add(0);
                 dados.add(false);
             }
             model.addRow(dados.toArray());
@@ -267,6 +279,7 @@ public class CadastroProdutoMaterial extends javax.swing.JInternalFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Tabela;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
