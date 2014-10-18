@@ -108,7 +108,7 @@ public class Fornecedor implements Serializable {
     }
 
     public void setCep(String cep) {
-        this.cep = cep;
+        this.cep = cep.replace("-", "");
     }
 
     public String getCidade() {
@@ -124,7 +124,7 @@ public class Fornecedor implements Serializable {
     }
 
     public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
+        this.cnpj = cnpj.replace(".", "").replace("-", "").replace("/", "");
     }
 
     public String getEmail() {
@@ -172,7 +172,7 @@ public class Fornecedor implements Serializable {
     }
 
     public void setTelefone(String telefone) {
-        this.telefone = telefone;
+        this.telefone = telefone.replace("(", "").replace(")", "").replace("-", "");
     }
 
     @XmlTransient

@@ -173,6 +173,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="cnpj">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Constante.CnpjMask)"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
@@ -180,6 +183,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="telefone">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Constante.TelefoneMask)"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
@@ -238,6 +244,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="cep">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(Constante.CepMask)"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="login">
     </Component>

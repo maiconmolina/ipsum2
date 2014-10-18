@@ -5,6 +5,9 @@
  */
 package view;
 
+import Util.Constante;
+import Util.ReturnValidate;
+import Util.Util;
 import controller.FornecedorJpaController;
 import controller.UfJpaController;
 import controller.UsuarioJpaController;
@@ -97,9 +100,9 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         fantasia = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        cnpj = new javax.swing.JFormattedTextField();
+        cnpj = new javax.swing.JFormattedTextField(Constante.CnpjMask);
         jLabel4 = new javax.swing.JLabel();
-        telefone = new javax.swing.JFormattedTextField();
+        telefone = new javax.swing.JFormattedTextField(Constante.TelefoneMask);
         jLabel5 = new javax.swing.JLabel();
         email = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -112,7 +115,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         campoUF = new javax.swing.JComboBox();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        cep = new javax.swing.JFormattedTextField();
+        cep = new javax.swing.JFormattedTextField(Constante.CepMask);
         login = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -295,120 +298,129 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_campoUFActionPerformed
 
     private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalvarActionPerformed
-        if (senha.getText().equals(confirmaSenha.getText())) {
-            if (this.editaFornecedor == null) {
-                List<Fornecedor> listForn;
+        if (!razao.getText().isEmpty()){
+            if (senha.getText().equals(confirmaSenha.getText())) {
+                if (this.editaFornecedor == null) {
+                    List<Fornecedor> listForn;
 
-                Fornecedor forn;
-                FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
-                listForn = controllerForn.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
+                    Fornecedor forn;
+                    FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+                    listForn = controllerForn.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
 
-                int ProxCodigo;
-                if (!listForn.isEmpty()) {
-                    forn = listForn.get(listForn.size() - 1);
-                    ProxCodigo = forn.getCodfornec();
-                    ProxCodigo++;
-                } else {
-                    ProxCodigo = 1;
-                }
-                List<Usuario> listUsu;
+                    int ProxCodigo;
+                    if (!listForn.isEmpty()) {
+                        forn = listForn.get(listForn.size() - 1);
+                        ProxCodigo = forn.getCodfornec();
+                        ProxCodigo++;
+                    } else {
+                        ProxCodigo = 1;
+                    }
+                    List<Usuario> listUsu;
 
-                forn = new Fornecedor();
-                forn.setCodfornec(ProxCodigo);
+                    forn = new Fornecedor();
+                    forn.setCodfornec(ProxCodigo);
 
-                forn.setRazao(razao.getText());
-                forn.setFantasia(fantasia.getText());
-                forn.setCnpj(cnpj.getText());
-                forn.setTelefone(telefone.getText());
-                forn.setEmail(email.getText());
-                forn.setCidade(cidade.getText());
-                forn.setNumero(Integer.parseInt(numero.getText()));
-                forn.setEndereco(endereco.getText());
-                forn.setCoduf((Uf) campoUF.getSelectedItem());
-                forn.setCep(cep.getText());
-                forn.setAtivo((short) 1);
-                try {
-                    controllerForn.create(forn);
-                } catch (Exception ex) {
-                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                Usuario usu;
-                UsuarioJpaController controllerUsu = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
-                listUsu = controllerUsu.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
-                int ProxCodigo2;
-                if (!listUsu.isEmpty()) {
-                    usu = listUsu.get(listUsu.size() - 1);
-                    ProxCodigo2 = usu.getCodigo();
-                    ProxCodigo2++;
-                } else {
-                    ProxCodigo2 = 1;
-                }
-                try {
-                    usu = new Usuario(Fornecedor.class);
-                    usu.setCodigo(forn.getCodfornec());
-                    usu.setLogin(login.getText());
-                    usu.setSenha(senha.getText());
-                    controllerUsu.create(usu);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                }
-
-            } else {
-                Fornecedor forn;
-                forn = this.editaFornecedor;
-                FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
-
-                forn.setRazao(razao.getText());
-                forn.setFantasia(fantasia.getText());
-                forn.setCnpj(cnpj.getText());
-                forn.setTelefone(telefone.getText());
-                forn.setEmail(email.getText());
-                forn.setCidade(cidade.getText());
-                forn.setNumero(Integer.parseInt(numero.getText()));
-                forn.setEndereco(endereco.getText());
-                forn.setCoduf((Uf) campoUF.getSelectedItem());
-                forn.setCep(cep.getText());
-
-                try {
-                    controllerForn.edit(forn);
-                } catch (Exception ex) {
-                    Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                Usuario usu = null;
-                List<Usuario> usuList = null;
-                UsuarioJpaController usuController = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
-                usuList = usuController.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
-                for (Usuario u : usuList) {
+                    forn.setRazao(razao.getText());
+                    forn.setFantasia(fantasia.getText());
+                    if (Util.ValidateCnpj(cnpj.getText())) {
+                        forn.setCnpj(cnpj.getText());
+                    } else {
+                        JOptionPane.showMessageDialog(this, "CNPJ inválido");
+                        return;
+                    }
+                    forn.setTelefone(telefone.getText());
+                    forn.setEmail(email.getText());
+                    forn.setCidade(cidade.getText());
+                    forn.setNumero(Integer.parseInt(numero.getText()));
+                    forn.setEndereco(endereco.getText());
+                    forn.setCoduf((Uf) campoUF.getSelectedItem());
+                    forn.setCep(cep.getText());
+                    forn.setAtivo((short) 1);
                     try {
-                        if (u.getCodigo() == forn.getCodfornec() && u.getTipo() == Fornecedor.class) {
-                            usu = u;
-                        }
+                        controllerForn.create(forn);
                     } catch (Exception ex) {
                         Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                try {
-                    usu.setLogin(login.getText());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                }
-                try {
-                    usu.setSenha(senha.getText());
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                }
 
-                try {
-                    usuController.edit(usu);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Usuário só pode ser Funcionário ou Fornecedor");
+                    Usuario usu;
+                    UsuarioJpaController controllerUsu = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
+                    listUsu = controllerUsu.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
+                    int ProxCodigo2;
+                    if (!listUsu.isEmpty()) {
+                        usu = listUsu.get(listUsu.size() - 1);
+                        ProxCodigo2 = usu.getCodigo();
+                        ProxCodigo2++;
+                    } else {
+                        ProxCodigo2 = 1;
+                    }
+                    try {
+                        usu = new Usuario(Fornecedor.class);
+                        usu.setCodigo(forn.getCodfornec());
+                        usu.setLogin(login.getText());
+                        usu.setSenha(senha.getText());
+                        controllerUsu.create(usu);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage());
+                    }
+
+                } else {
+                    Fornecedor forn;
+                    forn = this.editaFornecedor;
+                    FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+
+                    forn.setRazao(razao.getText());
+                    forn.setFantasia(fantasia.getText());
+                    forn.setCnpj(cnpj.getText());
+                    forn.setTelefone(telefone.getText());
+                    forn.setEmail(email.getText());
+                    forn.setCidade(cidade.getText());
+                    forn.setNumero(Integer.parseInt(numero.getText()));
+                    forn.setEndereco(endereco.getText());
+                    forn.setCoduf((Uf) campoUF.getSelectedItem());
+                    forn.setCep(cep.getText());
+
+                    try {
+                        controllerForn.edit(forn);
+                    } catch (Exception ex) {
+                        Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    Usuario usu = null;
+                    List<Usuario> usuList = null;
+                    UsuarioJpaController usuController = new UsuarioJpaController(ipsum2.Ipsum2.getFactory());
+                    usuList = usuController.getEntityManager().createNamedQuery("Usuario.findAll").getResultList();
+                    for (Usuario u : usuList) {
+                        try {
+                            if (u.getCodigo() == forn.getCodfornec() && u.getTipo() == Fornecedor.class) {
+                                usu = u;
+                            }
+                        } catch (Exception ex) {
+                            Logger.getLogger(FornecedorCadastro.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    try {
+                        usu.setLogin(login.getText());
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage());
+                    }
+                    try {
+                        usu.setSenha(senha.getText());
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage());
+                    }
+
+                    try {
+                        usuController.edit(usu);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Usuário só pode ser Funcionário ou Fornecedor");
+                    }
                 }
+                this.dispose();
+                new FornecedorListagem();
+            } else {
+                JOptionPane.showMessageDialog(this, "As senhas não conferem!");
             }
-            this.dispose();
-            new FornecedorListagem();
-        } else {
-            JOptionPane.showMessageDialog(this, "As senhas não conferem!");
+        }else{  
+            JOptionPane.showMessageDialog(this, "Existe um campo obrigatorio vazio!");
         }
     }//GEN-LAST:event_SalvarActionPerformed
 
@@ -434,9 +446,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         }
         new FornecedorListagem();
         this.dispose();
-
     }//GEN-LAST:event_jInativarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Salvar;
