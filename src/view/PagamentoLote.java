@@ -5,17 +5,25 @@
  */
 package view;
 
+import controller.CaixaJpaController;
 import controller.FornecedorJpaController;
+import controller.LancamentoJpaController;
+import controller.LancamentoRecfornJpaController;
 import controller.LoteJpaController;
 import controller.PagamentoLoteJpaController;
 import controller.TipoPagamentoJpaController;
+import controller.exceptions.PreexistingEntityException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Caixa;
 import model.Fornecedor;
+import model.Lancamento;
+import model.LancamentoRecforn;
 import model.Lote;
 import model.ProdutoDoLote;
 import model.TipoPagamento;
@@ -36,19 +44,17 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         Date date = new Date();
         campoData.setText(dateFormat.format(date));
 
-        
-
 //        PagamentoLote pagLote = new PagamentoLote();
 //        int i;
 //        for (i = 0; i <= pagLote.size(); i++) {
 //
 //        }
     }
-
+    
     public PagamentoLote(PagamentoLote paglote) {
         initComponents();
         InterfaceUtils.preparaTela(this);
-
+        
     }
 
     /**
@@ -216,11 +222,11 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loteActionPerformed
-        Lote l = (Lote)lote.getSelectedItem();
+        Lote l = (Lote) lote.getSelectedItem();
         descricao.setText(l.getDescricao());
-        List<ProdutoDoLote> lpl =  l.getProdutoDoLoteList();
-        Double vlr = new Double(2);
-        for(ProdutoDoLote pl : lpl){
+        List<ProdutoDoLote> lpl = l.getProdutoDoLoteList();
+        Double vlr = new Double(0);
+        for (ProdutoDoLote pl : lpl) {
             vlr = pl.getProduto().getPreco() * pl.getQtde();
         }
         valorTotal.setText(vlr.toString());
@@ -232,21 +238,83 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
     private void confirmarPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPagamentoActionPerformed
         PagamentoLoteJpaController jpgl = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
-        model.PagamentoLote salvap = new model.PagamentoLote();
-        salvap.setTipopag((TipoPagamento)tipoPagamento.getSelectedItem());
-        salvap.setDatpag(new Date());
-        salvap.setNfeList(null);
-        salvap.setCodpaglote(jpgl.getPagamentoLoteCount() + 1);
-        salvap.setCodlote((Lote)lote.getSelectedItem());
+        model.PagamentoLote pagLote = new model.PagamentoLote();
+        pagLote.setTipopag((TipoPagamento) tipoPagamento.getSelectedItem());
+        pagLote.setDatpag(new Date());
+        pagLote.setNfeList(null);
+        pagLote.setCodpaglote(jpgl.getPagamentoLoteCount() + 1);
+        pagLote.setCodlote((Lote) lote.getSelectedItem());
         
         try {
-            jpgl.create(salvap);
+            jpgl.create(pagLote);
         } catch (Exception ex) {
             Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
         }
+        {
+            List<Caixa> caixas;
+            Caixa caixa = null;
+            CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+            caixas = caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getResultList();
+            for (Caixa c : caixas) {
+                if (c.getCodcaixa() == 1) {
+                    caixa = c;
+                    break;
+                }
+            }
+            if (caixa == null) {
+                caixa = new Caixa();
+                try {
+                    caixaController.create(caixa);
+                } catch (Exception ex) {
+                    Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            int codLanc = 1;
+            Lancamento l;
+            LancamentoJpaController LancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+            List<Lancamento> lanc1 = LancController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
+            if (!lanc1.isEmpty()) {
+                l = lanc1.get(lanc1.size() - 1);
+                if (l.getCodlanc() > 0) {
+                    codLanc = l.getCodlanc() + 1;
+                }
+            }
+            Lancamento lanc = new Lancamento();
+            LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+            lanc.setAtivo((short) 1);
+            lanc.setCodcaixa(caixa);
+            lanc.setDescricao("Pagamento Lote: " + pagLote.getCodlote().getCodlote().toString() + " - " + pagLote.getCodlote().getDescricao());
+            lanc.setEstorno((short) 0);
+            lanc.setCodlanc(codLanc);
+            double valor = Double.parseDouble(valorTotal.getText());
+            lanc.setValor(valor);
+            try {
+                lancController.create(lanc);
+            } catch (Exception ex) {
+                Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            LancamentoRecfornJpaController recFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+            LancamentoRecforn recForn = new LancamentoRecforn();
+            Lote lot = (Lote) lote.getSelectedItem();
+            recForn.setLancamento(lanc);
+            recForn.setCodfornec(lot.getCodfornec());
+            recForn.setCodpaglote(pagLote.getCodpaglote());
+            recForn.setCodlanc(codLanc);
+            recForn.setData(new Date());
+            try {
+                recFornController.create(recForn);
+            } catch (PreexistingEntityException ex) {
+                Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
         this.dispose();
         
-        
+
     }//GEN-LAST:event_confirmarPagamentoActionPerformed
 
 

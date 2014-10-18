@@ -33,11 +33,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "LancamentoRecforn.findByCodlanc", query = "SELECT l FROM LancamentoRecforn l WHERE l.codlanc = :codlanc"),
     @NamedQuery(name = "LancamentoRecforn.findByData", query = "SELECT l FROM LancamentoRecforn l WHERE l.data = :data")})
 public class LancamentoRecforn implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @Column(name = "CODLANC")
     private Integer codlanc;
+    @Column(name = "CODPAGLOTE")
+    private Integer codpaglote;
     @Column(name = "DATA")
     @Temporal(TemporalType.DATE)
     private Date data;
@@ -111,5 +114,13 @@ public class LancamentoRecforn implements Serializable {
     public String toString() {
         return "model.LancamentoRecforn[ codlanc=" + codlanc + " ]";
     }
-    
+
+    public Integer getCodpaglote() {
+        return codpaglote;
+    }
+
+    public void setCodpaglote(Integer codpaglote) {
+        this.codpaglote = codpaglote;
+    }
+
 }
