@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -16,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "SituacaoLote.findBySitlote", query = "SELECT s FROM SituacaoLote s WHERE s.sitlote = :sitlote"),
     @NamedQuery(name = "SituacaoLote.findByAtivo", query = "SELECT s FROM SituacaoLote s WHERE s.ativo = :ativo")})
 public class SituacaoLote implements Serializable {
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -56,7 +61,9 @@ public class SituacaoLote implements Serializable {
     }
 
     public void setSitlote(Integer sitlote) {
+        Integer oldSitlote = this.sitlote;
         this.sitlote = sitlote;
+        changeSupport.firePropertyChange("sitlote", oldSitlote, sitlote);
     }
 
     public Short getAtivo() {
@@ -64,7 +71,9 @@ public class SituacaoLote implements Serializable {
     }
 
     public void setAtivo(Short ativo) {
+        Short oldAtivo = this.ativo;
         this.ativo = ativo;
+        changeSupport.firePropertyChange("ativo", oldAtivo, ativo);
     }
 
     public String getDescricao() {
@@ -72,7 +81,9 @@ public class SituacaoLote implements Serializable {
     }
 
     public void setDescricao(String descricao) {
+        String oldDescricao = this.descricao;
         this.descricao = descricao;
+        changeSupport.firePropertyChange("descricao", oldDescricao, descricao);
     }
 
     @XmlTransient
@@ -107,6 +118,14 @@ public class SituacaoLote implements Serializable {
     @Override
     public String toString() {
         return "model.SituacaoLote[ sitlote=" + sitlote + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

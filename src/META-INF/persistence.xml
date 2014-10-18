@@ -27,12 +27,13 @@
     <class>model.ProducaoDiaria</class>
     <class>model.Lote</class>
     <class>model.Lancamento</class>
+    <class>model.PermissoesFuncao</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/teste"/>
       <property name="javax.persistence.jdbc.user" value="teste"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
       <property name="javax.persistence.jdbc.password" value="teste"/>
-      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
 </persistence>

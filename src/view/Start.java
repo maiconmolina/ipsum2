@@ -55,6 +55,7 @@ public class Start extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -71,6 +72,7 @@ public class Start extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
 
         jMenuItem6.setText("jMenuItem6");
 
@@ -123,6 +125,14 @@ public class Start extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem13);
+
+        jMenuItem15.setText("Lotes");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem15);
 
         menuBar.add(jMenu1);
 
@@ -228,6 +238,14 @@ public class Start extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem9);
 
+        jMenuItem14.setText("Situação Lote");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem14);
+
         menuBar.add(jMenu4);
 
         setJMenuBar(menuBar);
@@ -308,6 +326,20 @@ public class Start extends javax.swing.JFrame {
         new ListaProdutos();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        TelaSitLoteView tsit = new TelaSitLoteView();
+        addFrame(tsit);
+        tsit.setLocation(10, 10);
+        tsit.setVisible(true);
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        ListaLote ll = new ListaLote();
+        addFrame(ll);
+        ll.setLocation(10, 10);
+        ll.setVisible(true);
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -359,6 +391,8 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
