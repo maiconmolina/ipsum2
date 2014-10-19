@@ -5,14 +5,17 @@
  */
 package view;
 
+import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import controller.LoteJpaController;
 import controller.SituacaoLoteJpaController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.event.PrintJobEvent;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Lote;
 import model.SituacaoLote;
@@ -32,29 +35,39 @@ public class ListaLote extends javax.swing.JInternalFrame {
     public ListaLote() {
         initComponents();
         jpa = new LoteJpaController(ipsum2.Ipsum2.getFactory());
-
         loadSit();
         loadLotes();
-
     }
 
     private void loadLotes() {
         List<Lote> llotes = jpa.findLoteEntities();
         DefaultTableModel model = (DefaultTableModel) lotes.getModel();
+        int i;
+        for (i = 0; i < model.getRowCount(); i++){
+            model.removeRow(i);
+        }
+        
         List<Object> dados = new ArrayList<>();
         for (Lote lote : llotes) {
-            dados.add(lote.getCodlote());
-            dados.add(lote.getCodfornec().getRazao());
-            dados.add(lote.getSitlote());
+            if (lote.getSitlote().equals((SituacaoLote) situacoes.getSelectedItem())) {
+                dados.add(lote.getCodlote());
+                dados.add(lote.getCodfornec().getRazao());
+                dados.add(lote.getSitlote());
 
-            model.addRow(dados.toArray());
-            dados.clear();
+                model.addRow(dados.toArray());
+                dados.clear();
+            }
+
         }
     }
 
     private void loadSit() {
         SituacaoLoteJpaController sitc = new SituacaoLoteJpaController(ipsum2.Ipsum2.getFactory());
         List<SituacaoLote> listSit = sitc.findSituacaoLoteEntities();
+        if (listSit.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Situações do lote não foram cadastradas!");
+            bnovo.setEnabled(false);
+        }
         ComboBoxModel combo = new DefaultComboBoxModel(listSit.toArray());
         situacoes.setModel(combo);
     }
@@ -138,6 +151,22 @@ public class ListaLote extends javax.swing.JInternalFrame {
             }
         });
 
+        situacoes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                situacoesMouseClicked(evt);
+            }
+        });
+        situacoes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                situacoesItemStateChanged(evt);
+            }
+        });
+        situacoes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                situacoesKeyReleased(evt);
+            }
+        });
+
         jLabel1.setText("Situação:");
 
         bprodutos.setText("Produtos");
@@ -206,7 +235,9 @@ public class ListaLote extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_bnovoActionPerformed
 
     private void balteraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_balteraActionPerformed
-        if (this.lote == null) return;
+        if (this.lote == null) {
+            return;
+        }
         CadastroLote cl = new CadastroLote(lote);
         Start.addFrame(cl);
         cl.setLocation(10, 10);
@@ -223,8 +254,28 @@ public class ListaLote extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_lotesMouseClicked
 
     private void bprodutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bprodutosActionPerformed
-        if (this.lote == null) return;
+        if (this.lote == null) {
+            return;
+        }
+        CadastroProdutosLote cpl = new CadastroProdutosLote(lote);
+        Start.addFrame(cpl);
+        cpl.setLocation(10, 10);
+        cpl.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_bprodutosActionPerformed
+
+    private void situacoesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_situacoesItemStateChanged
+        loadLotes();
+    }//GEN-LAST:event_situacoesItemStateChanged
+
+    private void situacoesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_situacoesKeyReleased
+        loadLotes();
+    }//GEN-LAST:event_situacoesKeyReleased
+
+    private void situacoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_situacoesMouseClicked
+        loadLotes();
+    }//GEN-LAST:event_situacoesMouseClicked
+
 
     /**
      * @param args the command line arguments

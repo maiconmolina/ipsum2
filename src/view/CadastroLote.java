@@ -163,6 +163,7 @@ public class CadastroLote extends javax.swing.JInternalFrame {
 
     private void bsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsalvarActionPerformed
         if (this.lote == null) {
+            this.lote = new Lote();
             lote.setCancelado(Short.parseShort("0"));
             lote.setDataent(new Date());
             lote.setDescricao(descricao.getText());
