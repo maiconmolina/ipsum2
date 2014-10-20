@@ -148,42 +148,65 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         MaterialJpaController matct = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
-        if (this.isEditing == null) {
-            try {
-                Material novo = new Material();
-
-                novo.setCodmat(matct.getMaterialCount() + 1);
-                novo.setAtivo(Util.boolToShort(jativo.isSelected()));
-                novo.setCodfornec((Fornecedor) comboFor.getSelectedItem());
-                novo.setDescricao(desc.getText());
-                novo.setQtde(Integer.parseInt(qtde.getText()));
-
-                matct.create(novo);
-            } catch (Exception ex) {
-                Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            if (!Funcionario.permite(Permissoes.ALTERAR_MATERIAL)) {
-                JOptionPane.showMessageDialog(this, "Você não possui permissão para editar.");
-                return;
-            }
-            mobj.setQtde(Integer.parseInt(qtde.getText()));
-            mobj.setDescricao(desc.getText());
-            mobj.setCodfornec((Fornecedor) comboFor.getSelectedItem());
-            mobj.setAtivo(Util.boolToShort(jativo.isSelected()));
-
-            try {
-                matct.edit(mobj);
-            } catch (Exception ex) {
-                Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        boolean passou = true;
+        String mensagem = "Não foi possível cadastrar material pois: ";
+        if (Util.isNullOrEmpty(desc.getText())) {
+            passou = false;
+            mensagem = mensagem + "\n Descrição nula";
         }
-        MaterialCRUD reload = new MaterialCRUD();
-        Start.addFrame(reload);
-        reload.setLocation(10, 10);
-        reload.setVisible(true);
-        this.dispose();
+        if (!Util.VerificaTamanhoStr(desc.getText())) {
+            passou = false;
+            mensagem = mensagem + "\n Descrição muito pequena";
+        }
+        try {
+            if (!Util.VerificaQuantidade(Integer.parseInt(qtde.getText()))) {
+                passou = false;
+                mensagem = mensagem + "\n Valor inválido";
+            }
+        } catch (Exception e) {
+            passou = false;
+            mensagem = mensagem + "\n Valor inválido";
+        }
+        if (passou == false) {
+            JOptionPane.showMessageDialog(this, mensagem);
+        } else {
+            if (this.isEditing == null) {
+                try {
+                    Material novo = new Material();
 
+                    novo.setCodmat(matct.getMaterialCount() + 1);
+                    novo.setAtivo(Util.boolToShort(jativo.isSelected()));
+                    novo.setCodfornec((Fornecedor) comboFor.getSelectedItem());
+                    novo.setDescricao(desc.getText());
+                    novo.setQtde(Integer.parseInt(qtde.getText()));
+
+                    matct.create(novo);
+                } catch (Exception ex) {
+                    Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                if (!Funcionario.permite(Permissoes.ALTERAR_MATERIAL)) {
+                    JOptionPane.showMessageDialog(this, "Você não possui permissão para editar.");
+                    return;
+                }
+                mobj.setQtde(Integer.parseInt(qtde.getText()));
+                mobj.setDescricao(desc.getText());
+                mobj.setCodfornec((Fornecedor) comboFor.getSelectedItem());
+                mobj.setAtivo(Util.boolToShort(jativo.isSelected()));
+
+                try {
+                    matct.edit(mobj);
+                } catch (Exception ex) {
+                    Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            MaterialCRUD reload = new MaterialCRUD();
+            Start.addFrame(reload);
+            reload.setLocation(10, 10);
+            reload.setVisible(true);
+            this.dispose();
+
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
