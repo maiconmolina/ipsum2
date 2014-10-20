@@ -308,6 +308,10 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             textoSaida = textoSaida + "\nValor inválido";
             entra = false;
         }
+        if (Util.VerificaValorNumerico(valorInput)) {
+            textoSaida = textoSaida + "\nValor inválido";
+            entra = false;
+        }
         if (entra == false) {
             JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
 
@@ -429,16 +433,6 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 }
             }
 
-//        if (tipo.getSelectedItem().toString() == "Pagamento de Funcionário") {
-//            LancamentoPagfunc pagFunc = new LancamentoPagfunc();
-//            pagFunc.setLancamento(lanc);
-//            lanc.setLancamentoPagfunc(pagFunc);
-//        }
-//        if (tipo.getSelectedItem().toString() == "Recebimento do Fornecedor/Cliente") {
-//            LancamentoRecforn recForn = new LancamentoRecforn();
-//            recForn.setLancamento(lanc);
-//            lanc.setLancamentoRecforn(recForn);
-//        }
             this.dispose();
 
             new TelaCaixa();

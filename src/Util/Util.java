@@ -291,7 +291,7 @@ public class Util {
     }
 
     public static boolean VerificaTamanhoStr(String s) {
-        return s.length() < 500;
+        return s.length() > 4;
     }
     //Luis
     //Lucas
