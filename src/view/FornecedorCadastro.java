@@ -320,7 +320,11 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
             textoSaida = textoSaida + "\nEmail vazio";
             entra = false;
         }
-        if (isNullOrEmpty(cidade.getText())) {
+        if (Util.VerificaEmail(email.getText())) {
+            textoSaida = textoSaida + "\nEmail inválido";
+            entra = false;
+        }
+        if (Util.VerificaCidade(cidade.getText())) {
             textoSaida = textoSaida + "\nCidade vazio";
             entra = false;
         }
@@ -347,7 +351,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         if (entra == false) {
             JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
         } else {
-            if (senha.getText().equals(confirmaSenha.getText())) {
+            if (Util.ComparaSenhas(senha.getText(), confirmaSenha.getText())) {
                 if (this.editaFornecedor == null) {
                     List<Fornecedor> listForn;
 

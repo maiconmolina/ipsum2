@@ -1,7 +1,9 @@
 package Util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.swing.text.MaskFormatter;
 
 public class Util {
@@ -276,10 +278,22 @@ public class Util {
         return v.contains("-");
     }
 
+    public static boolean VerificaValorNumerico(String v) {
+        return v.matches("[0-9]+");
+    }
+
     public static boolean VerificaValorLancValido(String v) {
         return "Valorinválido".equals(v);
     }
-//Luis
+
+    public static boolean VerificaValorLancValido(Double d) {
+        return 1000000.00 >= d;
+    }
+
+    public static boolean VerificaTamanhoStr(String s) {
+        return s.length() < 500;
+    }
+    //Luis
     //Lucas
 
     public static boolean VerificaCep(String s) {
@@ -289,5 +303,37 @@ public class Util {
     public static boolean VerificaTelefone(String s) {
         return Util.isNullOrEmpty(s.replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
     }
-}
+
+    public static boolean VerificaEmail(String s) {
+        return !(s.contains("@") && s.contains("."));
+    }
+
+    public static boolean VerificaCidade(String s) {
+        return Util.isNullOrEmpty(s);
+    }
+
+    public static boolean ComparaSenhas(String s1, String s2) {
+        if (!Util.isNullOrEmpty(s1) && !Util.isNullOrEmpty(s2)) {
+            return false;
+        }
+        return s1.equals(s2);
+    }
     //Lucas
+//Maicon
+
+    public static boolean VerificaQuantidade(Integer i) {
+        if (i < 0 || i > 1000000) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean VerificaQuantidade(String s) {
+        return false;
+    }
+
+    public static boolean VerificaQuantidade(Double d) {
+        return (d % 1) == 0;
+    }
+//Maicon
+}
