@@ -6,6 +6,7 @@
 package view;
 
 import Util.DecimalFormattedField;
+import static Util.Util.isNullOrEmpty;
 import controller.CaixaJpaController;
 import controller.LancamentoEntradaJpaController;
 import controller.LancamentoJpaController;
@@ -290,122 +291,144 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_excluirActionPerformed
 
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
-        List<Caixa> caixa = null;
-        CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
-        caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
+        boolean entra = true;
+        String textoSaida = "";
+        String valorInput = valor.getText().replace("R", "").replace("$", "").replace(" ", "").replace(".", "");
+        valorInput.replace(",", ".");
+        if (isNullOrEmpty(descricao.getText())) {
+            textoSaida = textoSaida + "\nDescrição vazia";
+            entra = false;
+        }
+        if (valorInput.contains("-")) {
+            textoSaida = textoSaida + "\nValor menor que zero";
+            entra = false;
+        }
+        if ("Valorinválido".equals(valorInput)) {
+            textoSaida = textoSaida + "\nValor inválido";
+            entra = false;
+        }
 
-        //Consulta pra ver se nao esta editando
-        Lancamento lanc = null;
-        if (this.editandoLanc != null) {
-            lanc = this.editandoLanc;
+        if (entra == false) {
+            JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
 
         } else {
-            lanc = new Lancamento();
-        }
-        //Consulta pra ver se nao esta editando
 
-        for (Caixa c : caixa) {
-            lanc.setCodcaixa(c);
-        }
+            List<Caixa> caixa = null;
+            CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+            caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
 
-        lanc.setDescricao(descricao.getText());
+            //Consulta pra ver se nao esta editando
+            Lancamento lanc = null;
+            if (this.editandoLanc != null) {
+                lanc = this.editandoLanc;
 
-        lanc.setCodlanc(Integer.parseInt(codigo.getText()));
-        DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
-        lanc.setValor(val.converteDouble(valor.getText()));
-
-        LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
-        LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
-        LancamentoSaidaJpaController lancSaidController = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
-        LancamentoRecfornJpaController lancRecFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
-        LancamentoPagfuncJpaController lancPagFuncController = new LancamentoPagfuncJpaController(ipsum2.Ipsum2.getFactory());
-        Date gambData = null;
-
-        if (this.editandoLanc != null) {
-            if (!Funcionario.permite(Permissoes.ALTERAR_CAIXA)) {
-                JOptionPane.showMessageDialog(this, "Você não tem permissão.");
-            }
-
-            if (estorno.getSelectedIndex() == 0) {
-                lanc.setEstorno((short) 1);
             } else {
-                lanc.setEstorno((short) 0);
+                lanc = new Lancamento();
             }
-            try {
-                lancController.edit(lanc);
-            } catch (NonexistentEntityException ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            //Consulta pra ver se nao esta editando
+
+            for (Caixa c : caixa) {
+                lanc.setCodcaixa(c);
             }
-            if (lanc.getLancamentoEntrada() != null) {
-                gambData = lanc.getLancamentoEntrada().getData();
-                try {
-                    lancEntrController.destroy(lanc.getLancamentoEntrada().getCodlanc());
-                } catch (NonexistentEntityException ex) {
-                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+
+            lanc.setDescricao(descricao.getText());
+
+            lanc.setCodlanc(Integer.parseInt(codigo.getText()));
+            DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
+            lanc.setValor(val.converteDouble(valor.getText()));
+
+            LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+            LancamentoEntradaJpaController lancEntrController = new LancamentoEntradaJpaController(ipsum2.Ipsum2.getFactory());
+            LancamentoSaidaJpaController lancSaidController = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
+            LancamentoRecfornJpaController lancRecFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+            LancamentoPagfuncJpaController lancPagFuncController = new LancamentoPagfuncJpaController(ipsum2.Ipsum2.getFactory());
+            Date gambData = null;
+
+            if (this.editandoLanc != null) {
+                if (!Funcionario.permite(Permissoes.ALTERAR_CAIXA)) {
+                    JOptionPane.showMessageDialog(this, "Você não tem permissão.");
                 }
-                lanc.setLancamentoEntrada(null);
-            }
-            if (lanc.getLancamentoSaida() != null) {
-                gambData = lanc.getLancamentoSaida().getData();
-                try {
-                    lancSaidController.destroy(lanc.getLancamentoSaida().getCodlanc());
-                } catch (NonexistentEntityException ex) {
-                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                lanc.setLancamentoSaida(null);
-            }
-            if (lanc.getLancamentoPagfunc() != null) {
-            }
-            if (lanc.getLancamentoRecforn() != null) {
-                //FAZER LOTE
-                model.PagamentoLote pagLote = null;
-                PagamentoLoteJpaController loteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
-                pagLote = (model.PagamentoLote) loteController.getEntityManager().createNamedQuery("PagamentoLote.findByCodpaglote").setParameter("CODPAGLOTE", lanc.getLancamentoRecforn().getCodpaglote()).getSingleResult();
+
                 if (estorno.getSelectedIndex() == 0) {
-                    pagLote.setAtivo((short) 0);
+                    lanc.setEstorno((short) 1);
                 } else {
+                    lanc.setEstorno((short) 0);
+                }
+                try {
+                    lancController.edit(lanc);
+                } catch (NonexistentEntityException ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (lanc.getLancamentoEntrada() != null) {
+                    gambData = lanc.getLancamentoEntrada().getData();
+                    try {
+                        lancEntrController.destroy(lanc.getLancamentoEntrada().getCodlanc());
+                    } catch (NonexistentEntityException ex) {
+                        Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    lanc.setLancamentoEntrada(null);
+                }
+                if (lanc.getLancamentoSaida() != null) {
+                    gambData = lanc.getLancamentoSaida().getData();
+                    try {
+                        lancSaidController.destroy(lanc.getLancamentoSaida().getCodlanc());
+                    } catch (NonexistentEntityException ex) {
+                        Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    lanc.setLancamentoSaida(null);
+                }
+                if (lanc.getLancamentoPagfunc() != null) {
+                }
+                if (lanc.getLancamentoRecforn() != null) {
+                    //FAZER LOTE
+                    model.PagamentoLote pagLote = null;
+                    PagamentoLoteJpaController loteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
+                    pagLote = (model.PagamentoLote) loteController.getEntityManager().createNamedQuery("PagamentoLote.findByCodpaglote").setParameter("CODPAGLOTE", lanc.getLancamentoRecforn().getCodpaglote()).getSingleResult();
+                    if (estorno.getSelectedIndex() == 0) {
+                        pagLote.setAtivo((short) 0);
+                    } else {
 
-                    pagLote.setAtivo((short) 1);
+                        pagLote.setAtivo((short) 1);
+                    }
+                }
+
+            } else {
+                gambData = new Date();
+                try {
+                    lancController.create(lanc);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (tipo.getSelectedItem().toString() == "Entrada comum") {
+                LancamentoEntrada entrada = new LancamentoEntrada();
+                entrada.setCodlanc(lanc.getCodlanc());
+                entrada.setData(gambData);
+                entrada.setLancamento(lanc);
+                try {
+                    lancEntrController.create(entrada);
+                } catch (PreexistingEntityException ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
-        } else {
-            gambData = new Date();
-            try {
-                lancController.create(lanc);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+            if (tipo.getSelectedItem().toString() == "Saída comum") {
+                LancamentoSaida saida = new LancamentoSaida();
+                saida.setCodlanc(lanc.getCodlanc());
+                saida.setLancamento(lanc);
+                saida.setData(gambData);
+                try {
+                    lancSaidController.create(saida);
+                } catch (PreexistingEntityException ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
-        if (tipo.getSelectedItem().toString() == "Entrada comum") {
-            LancamentoEntrada entrada = new LancamentoEntrada();
-            entrada.setCodlanc(lanc.getCodlanc());
-            entrada.setData(gambData);
-            entrada.setLancamento(lanc);
-            try {
-                lancEntrController.create(entrada);
-            } catch (PreexistingEntityException ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        if (tipo.getSelectedItem().toString() == "Saída comum") {
-            LancamentoSaida saida = new LancamentoSaida();
-            saida.setCodlanc(lanc.getCodlanc());
-            saida.setLancamento(lanc);
-            saida.setData(gambData);
-            try {
-                lancSaidController.create(saida);
-            } catch (PreexistingEntityException ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
 
 //        if (tipo.getSelectedItem().toString() == "Pagamento de Funcionário") {
 //            LancamentoPagfunc pagFunc = new LancamentoPagfunc();
@@ -417,9 +440,11 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
 //            recForn.setLancamento(lanc);
 //            lanc.setLancamentoRecforn(recForn);
 //        }
-        this.dispose();
+            this.dispose();
 
-        new TelaCaixa();
+            new TelaCaixa();
+        }
+
     }//GEN-LAST:event_salvarActionPerformed
 
     private void valorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valorActionPerformed
