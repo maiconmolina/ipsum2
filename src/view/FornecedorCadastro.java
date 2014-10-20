@@ -7,6 +7,7 @@ package view;
 
 import Util.Constante;
 import Util.Util;
+import static Util.Util.isNullOrEmpty;
 import controller.FornecedorJpaController;
 import controller.UfJpaController;
 import controller.UsuarioJpaController;
@@ -301,7 +302,51 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_campoUFActionPerformed
 
     private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalvarActionPerformed
-        if (!razao.getText().isEmpty()) {
+        boolean entra = true;
+        String textoSaida = "";
+        if (isNullOrEmpty(razao.getText())) {
+            textoSaida = textoSaida + "\nRazao vazio";
+            entra = false;
+        }
+        if (isNullOrEmpty(fantasia.getText())) {
+            textoSaida = textoSaida + "\nFantasia vazio";
+            entra = false;
+        }
+        if (telefone.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", "").equals("")) {
+            textoSaida = textoSaida + "\nTelefone vazio";
+            entra = false;
+        }
+        if (isNullOrEmpty(email.getText())) {
+            textoSaida = textoSaida + "\nEmail vazio";
+            entra = false;
+        }
+        if (isNullOrEmpty(cidade.getText())) {
+            textoSaida = textoSaida + "\nCidade vazio";
+            entra = false;
+        }
+        if (isNullOrEmpty(numero.getText())) {
+            textoSaida = textoSaida + "\nNumero vazio";
+            entra = false;
+        }
+        if (isNullOrEmpty(endereco.getText())) {
+            textoSaida = textoSaida + "\nEndereço vazio";
+            entra = false;
+        }
+        if (cep.getText().replace("-", "").replace(" ","").equals("")) {
+            textoSaida = textoSaida + "\nCEP vazio";
+            entra = false;
+        }
+        if (isNullOrEmpty(login.getText())) {
+            textoSaida = textoSaida + "\nLogin vazio";
+            entra = false;
+        }
+        if (isNullOrEmpty(senha.getText())) {
+            textoSaida = textoSaida + "\nSenha vazia";
+            entra = false;
+        }
+        if (entra == false) {
+            JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
+        } else {
             if (senha.getText().equals(confirmaSenha.getText())) {
                 if (this.editaFornecedor == null) {
                     List<Fornecedor> listForn;
@@ -331,6 +376,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                         JOptionPane.showMessageDialog(this, "CNPJ inválido");
                         return;
                     }
+
                     forn.setTelefone(telefone.getText());
                     forn.setEmail(email.getText());
                     forn.setCidade(cidade.getText());
@@ -426,8 +472,6 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "As senhas não conferem!");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Existe um campo obrigatorio vazio!");
         }
     }//GEN-LAST:event_SalvarActionPerformed
 
