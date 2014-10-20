@@ -36,13 +36,18 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "LOGIN")
     private String login;
+
     @Lob
     @Column(name = "SENHA")
     private String senha;
+
     @Column(name = "CODIGO")
     private Integer codigo;
+
     @Column(name = "TIPO")
     private Integer tipo;
+
+    private static Usuario usuarioLogado;
 
     public Usuario() {
         this.tipo = 0;
@@ -125,6 +130,14 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "model.Usuario[ login=" + login + " ]";
+    }
+
+    public static void setUsuarioLogado(Usuario logado) {
+        Usuario.usuarioLogado = logado;
+    }
+
+    public static Usuario getUsuarioLogado() {
+        return usuarioLogado;
     }
 
 }

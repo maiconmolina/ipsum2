@@ -10,6 +10,7 @@ import static Util.Util.DateToString2;
 import static Util.Util.doubleDuasCasasDecimais;
 import controller.CaixaJpaController;
 import controller.LancamentoJpaController;
+import enuns.Permissoes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Caixa;
+import model.Funcionario;
 import model.Lancamento;
 
 /**
@@ -284,6 +286,10 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(93, Short.MAX_VALUE)))
         );
+
+        if (!Funcionario.permite(Permissoes.LANCAMENTO_CAIXA)){
+            novoLanc.setVisible(false);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -9,6 +9,7 @@ import controller.FornecedorJpaController;
 import controller.LoteJpaController;
 import controller.SituacaoLoteJpaController;
 import controller.exceptions.NonexistentEntityException;
+import enuns.Permissoes;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import model.Fornecedor;
+import model.Funcionario;
 import model.Lote;
 import model.SituacaoLote;
 
@@ -40,7 +42,9 @@ public class CadastroLote extends javax.swing.JInternalFrame {
         initFornec();
         this.lote = null;
         jpa = new LoteJpaController(ipsum2.Ipsum2.getFactory());
-        if (error) bsalvar.setEnabled(false);
+        if (error) {
+            bsalvar.setEnabled(false);
+        }
     }
 
     public CadastroLote(Lote plote) {
@@ -57,7 +61,7 @@ public class CadastroLote extends javax.swing.JInternalFrame {
     private void loadSit() {
         SituacaoLoteJpaController sitc = new SituacaoLoteJpaController(ipsum2.Ipsum2.getFactory());
         List<SituacaoLote> listSit = sitc.findSituacaoLoteEntities();
-        if (listSit.isEmpty()){
+        if (listSit.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Situações do lote não cadastradas");
             this.error = Boolean.TRUE;
         }
@@ -68,7 +72,7 @@ public class CadastroLote extends javax.swing.JInternalFrame {
     private void initFornec() {
         FornecedorJpaController fctr = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         List<Fornecedor> lstfnc = fctr.findFornecedorEntities();
-        if (lstfnc.isEmpty()){
+        if (lstfnc.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Nenhum fornecedor cadastrado");
             this.error = Boolean.TRUE;
         }
@@ -163,6 +167,9 @@ public class CadastroLote extends javax.swing.JInternalFrame {
 
     private void bsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bsalvarActionPerformed
         if (this.lote == null) {
+            if (!Funcionario.permite(Permissoes.ALTERAR_LOTE)) {
+                JOptionPane.showMessageDialog(this, "Você não tem permissão.");
+            }
             this.lote = new Lote();
             lote.setCancelado(Short.parseShort("0"));
             lote.setDataent(new Date());
@@ -176,8 +183,7 @@ public class CadastroLote extends javax.swing.JInternalFrame {
             } catch (Exception ex) {
                 Logger.getLogger(CadastroLote.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else{
+        } else {
             lote.setDescricao(descricao.getText());
             lote.setSitlote((SituacaoLote) situacao.getSelectedItem());
             lote.setCodfornec((Fornecedor) cliente.getSelectedItem());

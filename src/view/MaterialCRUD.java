@@ -3,17 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package view;
 
 import controller.MaterialJpaController;
+import enuns.Permissoes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
-import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import model.Funcionario;
 import model.Material;
 
 /**
@@ -26,28 +24,25 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
      * Creates new form MaterialCRUD
      */
     private MaterialJpaController matcon;
+
     public MaterialCRUD() {
         initComponents();
         matcon = new MaterialJpaController(ipsum2.Ipsum2.getFactory());
-        
-        
+
         List<Material> lstmat;
         lstmat = matcon.findMaterialEntities();
         DefaultTableModel model = (DefaultTableModel) jtmat.getModel();
         List<Object> dados = new ArrayList<>();
-        for(Material mat : lstmat){
+        for (Material mat : lstmat) {
             dados.add(mat.getCodmat());
             dados.add(mat.toString());
             dados.add(mat.getQtde());
             dados.add((mat.getAtivo() == 1));
-            
+
             model.addRow(dados.toArray());
             dados.clear();
         }
-        
-        
-        
-        
+
     }
 
     /**
@@ -143,6 +138,10 @@ public class MaterialCRUD extends javax.swing.JInternalFrame {
                     .addComponent(btAltera))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        if (!Funcionario.permite(Permissoes.INSERIR_MATERIAL)){
+            btNovo.setVisible(false);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

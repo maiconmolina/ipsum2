@@ -8,6 +8,7 @@ package view;
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import controller.LoteJpaController;
 import controller.SituacaoLoteJpaController;
+import enuns.Permissoes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -17,6 +18,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.Funcionario;
 import model.Lote;
 import model.SituacaoLote;
 
@@ -43,10 +45,10 @@ public class ListaLote extends javax.swing.JInternalFrame {
         List<Lote> llotes = jpa.findLoteEntities();
         DefaultTableModel model = (DefaultTableModel) lotes.getModel();
         int i;
-        for (i = 0; i < model.getRowCount(); i++){
+        for (i = 0; i < model.getRowCount(); i++) {
             model.removeRow(i);
         }
-        
+
         List<Object> dados = new ArrayList<>();
         for (Lote lote : llotes) {
             if (lote.getSitlote().equals((SituacaoLote) situacoes.getSelectedItem())) {
@@ -221,6 +223,10 @@ public class ListaLote extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        if (!Funcionario.permite(Permissoes.INSERIR_LOTE)){
+            bnovo.setVisible(false);
+        }
+
         bindingGroup.bind();
 
         pack();
@@ -275,7 +281,6 @@ public class ListaLote extends javax.swing.JInternalFrame {
     private void situacoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_situacoesMouseClicked
         loadLotes();
     }//GEN-LAST:event_situacoesMouseClicked
-
 
     /**
      * @param args the command line arguments

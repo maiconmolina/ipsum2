@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PermissoesFuncao.findByPermissao", query = "SELECT p FROM PermissoesFuncao p WHERE p.permissao = :permissao"),
     @NamedQuery(name = "PermissoesFuncao.findByCodfuncao", query = "SELECT p FROM PermissoesFuncao p WHERE p.codfuncao = :codfuncao")})
 public class PermissoesFuncao implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -93,5 +94,5 @@ public class PermissoesFuncao implements Serializable {
     public String toString() {
         return "model.PermissoesFuncao[ codperm=" + codperm + " ]";
     }
-    
+
 }

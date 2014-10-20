@@ -3,10 +3,12 @@ package view;
 
 import static Util.Util.doubleDuasCasasDecimais;
 import controller.ProdutoJpaController;
+import enuns.Permissoes;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.Funcionario;
 import model.Produto;
 
 public class ListaProdutos extends javax.swing.JInternalFrame {
@@ -129,6 +131,13 @@ public class ListaProdutos extends javax.swing.JInternalFrame {
                     .addComponent(jAtivo2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        if (!Funcionario.permite(Permissoes.INSERIR_PRODUTO)){
+            btNovo.setVisible(false);
+        }
+        if (!Funcionario.permite(Permissoes.MATERIAIS_PRODUTO)){
+            btAltera1.setVisible(false);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

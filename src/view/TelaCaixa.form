@@ -131,6 +131,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="novoLancActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.LANCAMENTO_CAIXA)){&#xa;    novoLanc.setVisible(false);&#xa;}"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="alterar">
       <Properties>

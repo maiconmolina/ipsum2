@@ -94,6 +94,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.INSERIR_FORNECEDOR)){&#xa;    jButton1.setVisible(false);&#xa;}"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="Visualizar">
       <Properties>

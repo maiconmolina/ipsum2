@@ -9,9 +9,11 @@ import Util.DecimalFormattedField;
 import Util.Util;
 import controller.ProdutoJpaController;
 import controller.exceptions.NonexistentEntityException;
-import java.util.List;
+import enuns.Permissoes;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Funcionario;
 import model.Produto;
 
 /**
@@ -138,6 +140,13 @@ public class CadastroProdutos extends javax.swing.JInternalFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
+        if (!Funcionario.permite(Permissoes.INATIVAR_PRODUTO)){
+            jativo.setVisible(false);
+        }
+        if (!Funcionario.permite(Permissoes.ALTERAR_PRODUTO)){
+            salvar1.setVisible(false);
+        }
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -151,6 +160,11 @@ public class CadastroProdutos extends javax.swing.JInternalFrame {
 
     private void salvar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvar1ActionPerformed
         if (this.prod == null) {
+            if (!Funcionario.permite(Permissoes.ALTERAR_PRODUTO)) {
+                JOptionPane.showMessageDialog(this, "Você não tem permissão.");
+                return;
+            }
+
             Produto prod = new Produto();
             prod.setAtivo((Util.boolToShort(jativo.isSelected())));
             prod.setDescricao(descricao.getText());

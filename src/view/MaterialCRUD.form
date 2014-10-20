@@ -117,6 +117,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btNovoActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.INSERIR_MATERIAL)){&#xa;    btNovo.setVisible(false);&#xa;}"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

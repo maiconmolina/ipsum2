@@ -6,11 +6,13 @@
 package view;
 
 import controller.FornecedorJpaController;
+import enuns.Permissoes;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Fornecedor;
+import model.Funcionario;
 
 /**
  *
@@ -132,6 +134,10 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0))
         );
 
+        if (!Funcionario.permite(Permissoes.INSERIR_FORNECEDOR)){
+            jButton1.setVisible(false);
+        }
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -169,10 +175,10 @@ public class FornecedorListagem extends javax.swing.JInternalFrame {
             dados.add(o.getCnpj());
             dados.add(o);
             dados.add(o.getTelefone());
-            if (o.getAtivo()==1){
+            if (o.getAtivo() == 1) {
                 dados.add("Ativo");
-            }else{
-                
+            } else {
+
                 dados.add("Inativo");
             }
             model.addRow(dados.toArray());

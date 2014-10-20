@@ -15,6 +15,9 @@ import javax.swing.DefaultComboBoxModel;
 import model.Fornecedor;
 import model.Material;
 import Util.*;
+import enuns.Permissoes;
+import javax.swing.JOptionPane;
+import model.Funcionario;
 
 /**
  *
@@ -160,6 +163,10 @@ public class MaterialCRUDEdit extends javax.swing.JInternalFrame {
                 Logger.getLogger(MaterialCRUDEdit.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
+            if (!Funcionario.permite(Permissoes.ALTERAR_MATERIAL)) {
+                JOptionPane.showMessageDialog(this, "Você não possui permissão para editar.");
+                return;
+            }
             mobj.setQtde(Integer.parseInt(qtde.getText()));
             mobj.setDescricao(desc.getText());
             mobj.setCodfornec((Fornecedor) comboFor.getSelectedItem());

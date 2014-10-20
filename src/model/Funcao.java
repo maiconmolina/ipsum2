@@ -5,7 +5,11 @@
  */
 package model;
 
+import controller.FuncionarioJpaController;
+import controller.PermissoesFuncaoJpaController;
+import enuns.Permissoes;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -96,6 +100,46 @@ public class Funcao implements Serializable {
 
     public void setFuncionarioList(List<Funcionario> funcionarioList) {
         this.funcionarioList = funcionarioList;
+    }
+
+    public List<Permissoes> getPermissoesList() {
+        PermissoesFuncaoJpaController ctr = new PermissoesFuncaoJpaController();
+        if (this.codfuncao == null) {
+            return null;
+        }
+        List<PermissoesFuncao> permissoes = ctr.getEntityManager()
+                .createNamedQuery("PermissoesFuncao.findByCodfuncao")
+                .setParameter("codfuncao", this.codfuncao)
+                .getResultList();
+        List<Permissoes> retorno = new ArrayList<>();
+        for (PermissoesFuncao p : permissoes) {
+            retorno.add(Permissoes.getByValue(p.getPermissao()));
+        }
+        return retorno;
+    }
+
+    public void addPermissao(Permissoes perm) throws Exception {
+        PermissoesFuncao permFunc = new PermissoesFuncao();
+        PermissoesFuncaoJpaController ctr = new PermissoesFuncaoJpaController();
+        permFunc.setCodperm(ctr.getPermissoesFuncaoCount() + 1);
+        permFunc.setCodfuncao(this.codfuncao);
+        permFunc.setPermissao(perm.getValue());
+        ctr.create(permFunc);
+    }
+
+    public void removeAllPermissoes() throws Exception {
+        PermissoesFuncaoJpaController ctr = new PermissoesFuncaoJpaController();
+        List<PermissoesFuncao> permFuncs = ctr.getEntityManager()
+                .createNamedQuery("PermissoesFuncao.findByCodfuncao")
+                .setParameter("codfuncao", this.codfuncao)
+                .getResultList();
+        for (PermissoesFuncao perms : permFuncs) {
+            try {
+                ctr.destroy(perms.getCodperm());
+            } catch (Exception ex) {
+                throw new Exception("Permissão não existe!");
+            }
+        }
     }
 
     @Override

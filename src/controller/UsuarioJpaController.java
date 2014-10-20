@@ -7,14 +7,19 @@ package controller;
 
 import controller.exceptions.NonexistentEntityException;
 import controller.exceptions.PreexistingEntityException;
+import enuns.Permissoes;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import model.Funcao;
+import model.Funcionario;
+import model.PermissoesFuncao;
 import model.Usuario;
 
 /**
@@ -22,20 +27,20 @@ import model.Usuario;
  * @author Luis
  */
 public class UsuarioJpaController implements Serializable {
-
+    
     public UsuarioJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = null;
-
+    
     public UsuarioJpaController() {
         this.emf = ipsum2.Ipsum2.getFactory();
     }
-
+    
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-
+    
     public void create(Usuario usuario) throws PreexistingEntityException, Exception {
         EntityManager em = null;
         try {
@@ -54,7 +59,7 @@ public class UsuarioJpaController implements Serializable {
             }
         }
     }
-
+    
     public void edit(Usuario usuario) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
@@ -77,7 +82,7 @@ public class UsuarioJpaController implements Serializable {
             }
         }
     }
-
+    
     public void destroy(String id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
@@ -98,15 +103,15 @@ public class UsuarioJpaController implements Serializable {
             }
         }
     }
-
+    
     public List<Usuario> findUsuarioEntities() {
         return findUsuarioEntities(true, -1, -1);
     }
-
+    
     public List<Usuario> findUsuarioEntities(int maxResults, int firstResult) {
         return findUsuarioEntities(false, maxResults, firstResult);
     }
-
+    
     private List<Usuario> findUsuarioEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
@@ -122,7 +127,7 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-
+    
     public Usuario findUsuario(String id) {
         EntityManager em = getEntityManager();
         try {
@@ -131,7 +136,7 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-
+    
     public int getUsuarioCount() {
         EntityManager em = getEntityManager();
         try {
@@ -144,5 +149,51 @@ public class UsuarioJpaController implements Serializable {
             em.close();
         }
     }
-
+    
+    public void loginDesktop(String login, String senha) throws Exception {
+        List<Usuario> usuarios = this.getEntityManager()
+                .createNamedQuery("Usuario.findAll")
+                .getResultList();
+        for (Usuario u : usuarios) {
+            if (u.getLogin().equals(login)) {
+                if (u.getSenha().equals(senha)) {
+                    if (u.getTipo() == Funcionario.class) {
+                        Usuario.setUsuarioLogado(u);
+                        return;
+                    }
+                } else {
+                    throw new Exception("Senha incorreta.");
+                }
+            }
+        }
+        throw new Exception("Login não cadastrado.");
+    }
+    
+    public List<Permissoes> getPermissoesUsuario() {
+        List<Permissoes> retorno = new ArrayList<>();
+        
+        List<Funcionario> func = new FuncionarioJpaController()
+                .getEntityManager()
+                .createNamedQuery("Funcionario.findByCodfunc")
+                .setParameter("codfunc", Usuario.getUsuarioLogado().getCodigo())
+                .getResultList();
+        
+        List<Funcao> funcao = new FuncaoJpaController()
+                .getEntityManager()
+                .createNamedQuery("Funcao.findByCodfuncao")
+                .setParameter("codfuncao", func.get(0).getCodfuncao().getCodfuncao())
+                .getResultList();
+        
+        List<PermissoesFuncao> permFuncs = this.getEntityManager()
+                .createNamedQuery("PermissoesFuncao.findByCodfuncao")
+                .setParameter("codfuncao", funcao.get(0).getCodfuncao())
+                .getResultList();
+        
+        for (PermissoesFuncao p : permFuncs) {
+            retorno.add(Permissoes.getByValue(p.getPermissao()));
+        }
+        
+        return retorno;
+    }
+    
 }

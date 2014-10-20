@@ -6,12 +6,11 @@
 package view;
 
 import Util.Constante;
-import Util.ReturnValidate;
 import Util.Util;
 import controller.FornecedorJpaController;
 import controller.UfJpaController;
 import controller.UsuarioJpaController;
-import controller.exceptions.PreexistingEntityException;
+import enuns.Permissoes;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +18,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import model.Fornecedor;
+import model.Funcionario;
 import model.Uf;
 import model.Usuario;
 
@@ -289,6 +289,9 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         for (Uf estados: UF){
             this.campoUF.addItem(estados);
         }
+        if (!Funcionario.permite(Permissoes.INATIVAR_FUNCAO)){
+            jInativar.setVisible(false);
+        }
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -298,7 +301,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_campoUFActionPerformed
 
     private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalvarActionPerformed
-        if (!razao.getText().isEmpty()){
+        if (!razao.getText().isEmpty()) {
             if (senha.getText().equals(confirmaSenha.getText())) {
                 if (this.editaFornecedor == null) {
                     List<Fornecedor> listForn;
@@ -364,6 +367,10 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
                     }
 
                 } else {
+                    if (!Funcionario.permite(Permissoes.ALTERAR_FORNECEDOR)) {
+                        JOptionPane.showMessageDialog(this, "Você não tem permissão.");
+                        return;
+                    }
                     Fornecedor forn;
                     forn = this.editaFornecedor;
                     FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
@@ -419,7 +426,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "As senhas não conferem!");
             }
-        }else{  
+        } else {
             JOptionPane.showMessageDialog(this, "Existe um campo obrigatorio vazio!");
         }
     }//GEN-LAST:event_SalvarActionPerformed

@@ -28,6 +28,10 @@ public class PermissoesFuncaoJpaController implements Serializable {
     }
     private EntityManagerFactory emf = null;
 
+    public PermissoesFuncaoJpaController() {
+        this(ipsum2.Ipsum2.getFactory());
+    }
+
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
@@ -140,5 +144,5 @@ public class PermissoesFuncaoJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

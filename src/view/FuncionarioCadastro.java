@@ -5,14 +5,15 @@
  */
 package view;
 
+import Util.Constante;
 import Util.Util;
 import controller.FuncaoJpaController;
 import controller.FuncionarioJpaController;
+import controller.UsuarioJpaController;
+import enuns.Permissoes;
 import javax.swing.JOptionPane;
 import model.Funcao;
 import model.Funcionario;
-import Util.Constante;
-import controller.UsuarioJpaController;
 import model.Usuario;
 
 public class FuncionarioCadastro extends javax.swing.JInternalFrame {
@@ -252,6 +253,9 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        if (!Funcionario.permite(Permissoes.INATIVAR_FUNCAO)){
+            jInativar.setVisible(false);
+        }
         FuncaoJpaController ctr = new FuncaoJpaController();
         for (Funcao f : ctr.getAllActive()){
             jComboBox1.addItem(f);
@@ -313,6 +317,10 @@ public class FuncionarioCadastro extends javax.swing.JInternalFrame {
                     f.setUsuario(u);
                     ctr.create(f);
                 } else {
+                    if (!Funcionario.permite(Permissoes.ALTERAR_FUNCAO)) {
+                        JOptionPane.showMessageDialog(this, "Você não tem permissão.");
+                        return;
+                    }
                     ctrUsu.destroy(func.getUsuario().getLogin());
                     Usuario editado = new Usuario(Funcionario.class);
                     editado.setLogin(jLogin.getText());

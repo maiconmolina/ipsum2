@@ -85,6 +85,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btNovoActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.INSERIR_PRODUTO)){&#xa;    btNovo.setVisible(false);&#xa;}"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btAltera">
       <Properties>
@@ -101,6 +104,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btAltera1ActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.MATERIAIS_PRODUTO)){&#xa;    btAltera1.setVisible(false);&#xa;}"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jAtivo2">
       <Properties>

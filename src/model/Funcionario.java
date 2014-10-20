@@ -7,6 +7,7 @@ package model;
 
 import Util.Util;
 import controller.UsuarioJpaController;
+import enuns.Permissoes;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -102,6 +103,8 @@ public class Funcionario implements Serializable {
 
     @Column(name = "usuario")
     private Integer codUsuario;
+
+    private static List<Permissoes> permissoesFuncionarioLogado = null;
 
     public Funcionario() {
         this.ativo = 1;
@@ -296,5 +299,13 @@ public class Funcionario implements Serializable {
                 .createNamedQuery("Usuario.findByCodigo")
                 .setParameter("codigo", this.codUsuario)
                 .getSingleResult();
+    }
+
+    public static void atualizaPermissoes() {
+        Funcionario.permissoesFuncionarioLogado = new UsuarioJpaController().getPermissoesUsuario();
+    }
+
+    public static boolean permite(Permissoes p) {
+        return Funcionario.permissoesFuncionarioLogado.contains(p);
     }
 }

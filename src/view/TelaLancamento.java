@@ -12,24 +12,22 @@ import controller.LancamentoJpaController;
 import controller.LancamentoPagfuncJpaController;
 import controller.LancamentoRecfornJpaController;
 import controller.LancamentoSaidaJpaController;
-import controller.LoteJpaController;
 import controller.PagamentoLoteJpaController;
 import controller.exceptions.NonexistentEntityException;
 import controller.exceptions.PreexistingEntityException;
 import enuns.EnumTipoDeLancamento;
+import enuns.Permissoes;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import model.Caixa;
+import model.Funcionario;
 import model.Lancamento;
 import model.LancamentoEntrada;
-import model.LancamentoPagfunc;
-import model.LancamentoRecforn;
 import model.LancamentoSaida;
 
 /**
@@ -324,6 +322,10 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         Date gambData = null;
 
         if (this.editandoLanc != null) {
+            if (!Funcionario.permite(Permissoes.ALTERAR_CAIXA)) {
+                JOptionPane.showMessageDialog(this, "Você não tem permissão.");
+            }
+
             if (estorno.getSelectedIndex() == 0) {
                 lanc.setEstorno((short) 1);
             } else {

@@ -1,9 +1,14 @@
 package view;
 
-import controller.FuncaoJpaController;
-import javax.swing.JOptionPane;
-import model.Funcao;
 import Util.Util;
+import controller.FuncaoJpaController;
+import enuns.Permissoes;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Funcao;
+import model.Funcionario;
 
 public class FuncaoCadastro extends javax.swing.JInternalFrame {
 
@@ -14,14 +19,32 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
         InterfaceUtils.preparaTela(this);
         this.setEditando(false);
         funcao = null;
+
+        DefaultTableModel model = (DefaultTableModel) jPermissoes.getModel();
+        List<Object> buffer = new ArrayList<>();
+        for (Permissoes p : Permissoes.values()) {
+            buffer.add(p);
+            buffer.add(false);
+            model.addRow(buffer.toArray());
+            buffer.clear();
+        }
     }
 
     public FuncaoCadastro(Funcao func) {
         initComponents();
         this.funcao = func;
         InterfaceUtils.preparaTela(this);
-        this.setEditando(true);
+        DefaultTableModel model = (DefaultTableModel) jPermissoes.getModel();
+        List<Permissoes> permissoes = func.getPermissoesList();
 
+        List<Object> buffer = new ArrayList<>();
+        for (Permissoes p : Permissoes.values()) {
+            buffer.add(p);
+            buffer.add(permissoes.contains(p));
+            model.addRow(buffer.toArray());
+            buffer.clear();
+        }
+        this.setEditando(true);
     }
 
     private void setEditando(boolean edit) {
@@ -46,12 +69,61 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jFuncao = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPermissoes = new javax.swing.JTable();
         jSalvar = new javax.swing.JButton();
         jInativar = new javax.swing.JButton();
 
         setTitle("Cadastro");
 
         jLabel1.setText("Função:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jFuncao)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jFuncao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPermissoes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Permissões", ""
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jPermissoes);
 
         jSalvar.setText("Salvar");
         jSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -67,47 +139,52 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jFuncao))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 234, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jInativar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSalvar)))
+                        .addComponent(jSalvar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jFuncao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jSalvar)
                     .addComponent(jInativar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        if (!Funcionario.permite(Permissoes.INATIVAR_FUNCAO)){
+            jInativar.setVisible(false);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -120,11 +197,35 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
             func.setDescricao(jFuncao.getText());
             try {
                 if (funcao == null) {
-                    func.setCodfuncao(controller.getFuncaoCount() + 1);
+                    int count = controller.getFuncaoCount() + 1;
+                    func.setCodfuncao(count);
                     controller.create(func);
+
+                    DefaultTableModel model = (DefaultTableModel) jPermissoes.getModel();
+                    int linhas = model.getRowCount();
+                    for (int i = 0; i < linhas; i++) {
+                        if (((Boolean) jPermissoes.getValueAt(i, 1)).booleanValue()) {
+                            Permissoes perm = (Permissoes) model.getValueAt(i, 0);
+                            func.addPermissao(perm);
+                        }
+                    }
                 } else {
+                    if (!Funcionario.permite(Permissoes.ALTERAR_FUNCAO)) {
+                        JOptionPane.showMessageDialog(this, "Você não tem permissão.");
+                        return;
+                    }
                     func.setCodfuncao(funcao.getCodfuncao());
                     controller.edit(func);
+                    func.removeAllPermissoes();
+
+                    DefaultTableModel model = (DefaultTableModel) jPermissoes.getModel();
+                    int linhas = model.getRowCount();
+                    for (int i = 0; i < linhas; i++) {
+                        if (((Boolean) jPermissoes.getValueAt(i, 1)).booleanValue()) {
+                            Permissoes perm = (Permissoes) model.getValueAt(i, 0);
+                            func.addPermissao(perm);
+                        }
+                    }
                 }
                 this.dispose();
             } catch (Exception ex) {
@@ -166,6 +267,9 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
     private javax.swing.JButton jInativar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTable jPermissoes;
     private javax.swing.JButton jSalvar;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

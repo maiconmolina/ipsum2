@@ -7,27 +7,19 @@ package ipsum2;
 
 import javax.persistence.*;
 import persistencia.ConexaoBanco;
+import view.Login;
 import view.Splash;
-import view.Start;
 
-/**
- *
- * @author Maicon
- */
 public class Ipsum2 {
 
-    /**
-     * @param args the command line arguments
-     */
     private static ConexaoBanco con;
-    private static Start st;
+    private static Login st;
 
     public static void main(String[] args) {
-        // TODO code application logic here
         Splash sp = new Splash();
         sp.setVisible(true);
         con = new ConexaoBanco();  // iniciar banco
-        st = new Start();
+        st = new Login();
         sp.dispose();
         st.setVisible(true);
     }

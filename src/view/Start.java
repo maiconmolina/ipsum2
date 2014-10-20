@@ -5,21 +5,16 @@
  */
 package view;
 
+import enuns.Permissoes;
 import java.awt.Component;
-import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Funcionario;
 
-/**
- *
- * @author Maicon
- */
 public class Start extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Start
-     */
     public Start() {
+        Funcionario.atualizaPermissoes();
         initComponents();
         setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -53,26 +48,26 @@ public class Start extends javax.swing.JFrame {
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
+        jMaterial = new javax.swing.JMenuItem();
+        jProduto = new javax.swing.JMenuItem();
+        jLotes = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jCaixa = new javax.swing.JMenuItem();
+        jPagarFunc = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem12 = new javax.swing.JMenuItem();
+        jFuncaoMenu = new javax.swing.JMenu();
+        jFuncaoInserir = new javax.swing.JMenuItem();
+        jFuncaoListagem = new javax.swing.JMenuItem();
+        jFuncioMenu = new javax.swing.JMenu();
+        jFuncioCadastro = new javax.swing.JMenuItem();
+        jFuncioListagem = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        jFornMenu = new javax.swing.JMenuItem();
+        jFornPagamentoLote = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem14 = new javax.swing.JMenuItem();
+        jCadastroUF = new javax.swing.JMenuItem();
+        jTipoPagamento = new javax.swing.JMenuItem();
+        jSituacaoLote = new javax.swing.JMenuItem();
 
         jMenuItem6.setText("jMenuItem6");
 
@@ -110,141 +105,183 @@ public class Start extends javax.swing.JFrame {
 
         jMenu1.setText("Produção");
 
-        jMenuItem1.setText("Material");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMaterial.setText("Material");
+        jMaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                jMaterialActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(jMaterial);
+        if (!Funcionario.permite(Permissoes.MENU_MATERIAL)){
+            jMaterial.setVisible(false);
+        }
 
-        jMenuItem13.setText("Produto");
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+        jProduto.setText("Produto");
+        jProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
+                jProdutoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem13);
+        jMenu1.add(jProduto);
+        if (!Funcionario.permite(Permissoes.MENU_PRODUTO)){
+            jProduto.setVisible(false);
+        }
 
-        jMenuItem15.setText("Lotes");
-        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+        jLotes.setText("Lotes");
+        jLotes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem15ActionPerformed(evt);
+                jLotesActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem15);
+        jMenu1.add(jLotes);
+        if (!Funcionario.permite(Permissoes.MENU_LOTE)){
+            jLotes.setVisible(false);
+        }
 
         menuBar.add(jMenu1);
 
         jMenu2.setText("Financeiro");
 
-        jMenuItem2.setText("Caixa");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jCaixa.setText("Caixa");
+        jCaixa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jCaixaActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem2);
+        jMenu2.add(jCaixa);
+        if (!Funcionario.permite(Permissoes.MENU_CAIXA)){
+            jCaixa.setVisible(false);
+        }
 
-        jMenuItem3.setText("Pagar Funcionário");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jPagarFunc.setText("Pagar Funcionário");
+        jPagarFunc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                jPagarFuncActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem3);
+        jMenu2.add(jPagarFunc);
+        if (!Funcionario.permite(Permissoes.PAGAR_FUNCIONARIO)){
+            jPagarFunc.setVisible(false);
+        }
 
         menuBar.add(jMenu2);
 
         jMenu5.setText("Funcionário");
 
-        jMenu6.setText("Função");
+        jFuncaoMenu.setText("Função");
 
-        jMenuItem5.setText("Cadastro");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        jFuncaoInserir.setText("Cadastro");
+        jFuncaoInserir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                jFuncaoInserirActionPerformed(evt);
             }
         });
-        jMenu6.add(jMenuItem5);
+        jFuncaoMenu.add(jFuncaoInserir);
+        if (!Funcionario.permite(Permissoes.INSERIR_FUNCAO)){
+            jFuncaoInserir.setVisible(false);
+        }
 
-        jMenuItem10.setText("Listagem");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+        jFuncaoListagem.setText("Listagem");
+        jFuncaoListagem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
+                jFuncaoListagemActionPerformed(evt);
             }
         });
-        jMenu6.add(jMenuItem10);
+        jFuncaoMenu.add(jFuncaoListagem);
 
-        jMenu5.add(jMenu6);
+        jMenu5.add(jFuncaoMenu);
+        if (!Funcionario.permite(Permissoes.MENU_FUNCAO)){
+            jFuncaoMenu.setVisible(false);
+        }
 
-        jMenu7.setText("Funcionário");
+        jFuncioMenu.setText("Funcionário");
 
-        jMenuItem11.setText("Cadastro");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+        jFuncioCadastro.setText("Cadastro");
+        jFuncioCadastro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
+                jFuncioCadastroActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem11);
+        jFuncioMenu.add(jFuncioCadastro);
+        if (!Funcionario.permite(Permissoes.INSERIR_FUNCIONARIO)){
+            jFuncioCadastro.setVisible(false);
+        }
 
-        jMenuItem12.setText("Listagem");
-        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+        jFuncioListagem.setText("Listagem");
+        jFuncioListagem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem12ActionPerformed(evt);
+                jFuncioListagemActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem12);
+        jFuncioMenu.add(jFuncioListagem);
 
-        jMenu5.add(jMenu7);
+        jMenu5.add(jFuncioMenu);
+        if (!Funcionario.permite(Permissoes.MENU_FUNCIONARIO)){
+            jFuncioMenu.setVisible(false);
+        }
 
         menuBar.add(jMenu5);
 
         jMenu3.setText("Fornecedor");
 
-        jMenuItem4.setText("Visualizar");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jFornMenu.setText("Visualizar");
+        jFornMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jFornMenuActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem4);
+        jMenu3.add(jFornMenu);
+        if (!Funcionario.permite(Permissoes.MENU_FORNECEDOR)){
+            jFornMenu.setVisible(false);
+        }
 
-        jMenuItem8.setText("Pagamento do Lote");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+        jFornPagamentoLote.setText("Pagamento do Lote");
+        jFornPagamentoLote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
+                jFornPagamentoLoteActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem8);
+        jMenu3.add(jFornPagamentoLote);
+        if (!Funcionario.permite(Permissoes.PAGAR_LOTE)){
+            jFornPagamentoLote.setVisible(false);
+        }
 
         menuBar.add(jMenu3);
 
         jMenu4.setText("Geral");
 
-        jMenuItem7.setText("Cadastro UF");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+        jCadastroUF.setText("Cadastro UF");
+        jCadastroUF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
+                jCadastroUFActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem7);
+        jMenu4.add(jCadastroUF);
+        if (!Funcionario.permite(Permissoes.MENU_CADASTRO_UF)){
+            jCadastroUF.setVisible(false);
+        }
 
-        jMenuItem9.setText("Tipo de Pagamento");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+        jTipoPagamento.setText("Tipo de Pagamento");
+        jTipoPagamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
+                jTipoPagamentoActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem9);
+        jMenu4.add(jTipoPagamento);
+        if (!Funcionario.permite(Permissoes.MENU_TIPO_PAGAMENTO)){
+            jTipoPagamento.setVisible(false);
+        }
 
-        jMenuItem14.setText("Situação Lote");
-        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+        jSituacaoLote.setText("Situação Lote");
+        jSituacaoLote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem14ActionPerformed(evt);
+                jSituacaoLoteActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem14);
+        jMenu4.add(jSituacaoLote);
+        if (!Funcionario.permite(Permissoes.MENU_SITUACAO_LOTE)){
+            jSituacaoLote.setVisible(false);
+        }
 
         menuBar.add(jMenu4);
 
@@ -268,77 +305,77 @@ public class Start extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void jMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMaterialActionPerformed
         MaterialCRUD tela = new MaterialCRUD();
         addFrame(tela);
         tela.setLocation(10, 10);
         tela.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_jMaterialActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCaixaActionPerformed
         new TelaCaixa();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jCaixaActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void jPagarFuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPagarFuncActionPerformed
         new PagamentoFuncionario();
 
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_jPagarFuncActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void jFornMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFornMenuActionPerformed
         new FornecedorListagem();
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    }//GEN-LAST:event_jFornMenuActionPerformed
 
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+    private void jCadastroUFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCadastroUFActionPerformed
         TelaUFView tela = new TelaUFView();
         addFrame(tela);
         tela.setLocation(10, 10);
         tela.setVisible(true);
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
+    }//GEN-LAST:event_jCadastroUFActionPerformed
 
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+    private void jFornPagamentoLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFornPagamentoLoteActionPerformed
         new PagamentoLote();
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
+    }//GEN-LAST:event_jFornPagamentoLoteActionPerformed
 
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+    private void jTipoPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTipoPagamentoActionPerformed
         CadastroTipoPagamentoView tela = new CadastroTipoPagamentoView();
         addFrame(tela);
         tela.setLocation(10, 10);
         tela.setVisible(true);
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
+    }//GEN-LAST:event_jTipoPagamentoActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void jFuncaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFuncaoInserirActionPerformed
         new FuncaoCadastro();
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_jFuncaoInserirActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+    private void jFuncaoListagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFuncaoListagemActionPerformed
         new FuncaoListagem();
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
+    }//GEN-LAST:event_jFuncaoListagemActionPerformed
 
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+    private void jFuncioCadastroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFuncioCadastroActionPerformed
         new FuncionarioCadastro();
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
+    }//GEN-LAST:event_jFuncioCadastroActionPerformed
 
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+    private void jFuncioListagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFuncioListagemActionPerformed
         new FuncionarioListagem();
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
+    }//GEN-LAST:event_jFuncioListagemActionPerformed
 
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+    private void jProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jProdutoActionPerformed
         new ListaProdutos();
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
+    }//GEN-LAST:event_jProdutoActionPerformed
 
-    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+    private void jSituacaoLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSituacaoLoteActionPerformed
         TelaSitLoteView tsit = new TelaSitLoteView();
         addFrame(tsit);
         tsit.setLocation(10, 10);
         tsit.setVisible(true);
-    }//GEN-LAST:event_jMenuItem14ActionPerformed
+    }//GEN-LAST:event_jSituacaoLoteActionPerformed
 
-    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+    private void jLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLotesActionPerformed
         ListaLote ll = new ListaLote();
         addFrame(ll);
         ll.setLocation(10, 10);
         ll.setVisible(true);
-    }//GEN-LAST:event_jMenuItem15ActionPerformed
+    }//GEN-LAST:event_jLotesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,28 +416,28 @@ public class Start extends javax.swing.JFrame {
     private static javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem jCadastroUF;
+    private javax.swing.JMenuItem jCaixa;
+    private javax.swing.JMenuItem jFornMenu;
+    private javax.swing.JMenuItem jFornPagamentoLote;
+    private javax.swing.JMenuItem jFuncaoInserir;
+    private javax.swing.JMenuItem jFuncaoListagem;
+    private javax.swing.JMenu jFuncaoMenu;
+    private javax.swing.JMenuItem jFuncioCadastro;
+    private javax.swing.JMenuItem jFuncioListagem;
+    private javax.swing.JMenu jFuncioMenu;
+    private javax.swing.JMenuItem jLotes;
+    private javax.swing.JMenuItem jMaterial;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JMenuItem jPagarFunc;
+    private javax.swing.JMenuItem jProduto;
+    private javax.swing.JMenuItem jSituacaoLote;
+    private javax.swing.JMenuItem jTipoPagamento;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
