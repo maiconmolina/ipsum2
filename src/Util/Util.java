@@ -273,24 +273,21 @@ public class Util {
 //Luis
 
     public static boolean VerificaValorLancPositivo(String v) {
-        return !v.contains("-");
+        return v.contains("-");
     }
 
     public static boolean VerificaValorLancValido(String v) {
-        return !"Valorinválido".equals(v);
+        return "Valorinválido".equals(v);
     }
 //Luis
     //Lucas
 
     public static boolean VerificaCep(String s) {
-        return !Util.isNullOrEmpty(s.replace("-", "").replace(" ", ""));
+        return Util.isNullOrEmpty(s.replace("-", "").replace(" ", ""));
     }
 
     public static boolean VerificaTelefone(String s) {
-        if (Util.isNullOrEmpty(s.replace("(", "").replace(")", "").replace("-", "").replace(" ", ""))) {
-            return false;
-        }
-        return true;
+        return Util.isNullOrEmpty(s.replace("(", "").replace(")", "").replace("-", "").replace(" ", ""));
     }
 }
     //Lucas
