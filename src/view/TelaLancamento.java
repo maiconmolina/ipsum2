@@ -6,6 +6,7 @@
 package view;
 
 import Util.DecimalFormattedField;
+import Util.Util;
 import static Util.Util.isNullOrEmpty;
 import controller.CaixaJpaController;
 import controller.LancamentoEntradaJpaController;
@@ -295,24 +296,22 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         String textoSaida = "";
         String valorInput = valor.getText().replace("R", "").replace("$", "").replace(" ", "").replace(".", "");
         valorInput.replace(",", ".");
-        if (isNullOrEmpty(descricao.getText())) {
+        if (Util.isNullOrEmpty(descricao.getText())) {
             textoSaida = textoSaida + "\nDescrição vazia";
             entra = false;
         }
-        if (valorInput.contains("-")) {
+        if (Util.VerificaValorLancPositivo(valorInput)) {
             textoSaida = textoSaida + "\nValor menor que zero";
             entra = false;
         }
-        if ("Valorinválido".equals(valorInput)) {
+        if (Util.VerificaValorLancValido(valorInput)) {
             textoSaida = textoSaida + "\nValor inválido";
             entra = false;
         }
-
         if (entra == false) {
             JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
 
         } else {
-
             List<Caixa> caixa = null;
             CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
             caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();

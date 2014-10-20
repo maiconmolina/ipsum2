@@ -217,6 +217,7 @@ public class Util {
 
         return retorno.toString();
     }
+
     public static String DateToString2(Date date) {//dd/MM/yyyy
         StringBuilder retorno = new StringBuilder();
         if (date == null) {
@@ -269,4 +270,27 @@ public class Util {
         }
         return sb.toString();
     }
+//Luis
+
+    public static boolean VerificaValorLancPositivo(String v) {
+        return !v.contains("-");
+    }
+
+    public static boolean VerificaValorLancValido(String v) {
+        return !"Valorinválido".equals(v);
+    }
+//Luis
+    //Lucas
+
+    public static boolean VerificaCep(String s) {
+        return !Util.isNullOrEmpty(s.replace("-", "").replace(" ", ""));
+    }
+
+    public static boolean VerificaTelefone(String s) {
+        if (Util.isNullOrEmpty(s.replace("(", "").replace(")", "").replace("-", "").replace(" ", ""))) {
+            return false;
+        }
+        return true;
+    }
 }
+    //Lucas

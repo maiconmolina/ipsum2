@@ -312,7 +312,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
             textoSaida = textoSaida + "\nFantasia vazio";
             entra = false;
         }
-        if (telefone.getText().replace("(", "").replace(")", "").replace("-", "").replace(" ", "").equals("")) {
+        if (Util.VerificaTelefone(telefone.getText())) {
             textoSaida = textoSaida + "\nTelefone vazio";
             entra = false;
         }
@@ -332,7 +332,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
             textoSaida = textoSaida + "\nEndereço vazio";
             entra = false;
         }
-        if (cep.getText().replace("-", "").replace(" ","").equals("")) {
+        if (Util.VerificaCep(cep.getText())) {
             textoSaida = textoSaida + "\nCEP vazio";
             entra = false;
         }
