@@ -294,8 +294,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
         boolean entra = true;
         String textoSaida = "";
-        String valorInput = valor.getText().replace("R", "").replace("$", "").replace(" ", "").replace(".", "");
-        valorInput.replace(",", ".");
+        String valorInput = valor.getText().replace("R", "").replace("$", "").replace(" ", "").replace(".", "").replace(",", ".");
         if (Util.isNullOrEmpty(descricao.getText())) {
             textoSaida = textoSaida + "\nDescrição vazia";
             entra = false;
@@ -314,13 +313,10 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
         }
         if (entra == false) {
             JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
-
         } else {
-            List<Caixa> caixa = null;
+            Caixa caixa = null;
             CaixaJpaController CC = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
-            caixa = CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getResultList();
-
-            //Consulta pra ver se nao esta editando
+            caixa = (Caixa) CC.getEntityManager().createNamedQuery("Caixa.findByCodcaixa").setParameter("codcaixa", 1).getSingleResult();
             Lancamento lanc = null;
             if (this.editandoLanc != null) {
                 lanc = this.editandoLanc;
@@ -328,14 +324,8 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             } else {
                 lanc = new Lancamento();
             }
-            //Consulta pra ver se nao esta editando
-
-            for (Caixa c : caixa) {
-                lanc.setCodcaixa(c);
-            }
-
+            lanc.setCodcaixa(caixa);
             lanc.setDescricao(descricao.getText());
-
             lanc.setCodlanc(Integer.parseInt(codigo.getText()));
             DecimalFormattedField val = new DecimalFormattedField(DecimalFormattedField.REAL);
             lanc.setValor(val.converteDouble(valor.getText()));
@@ -345,7 +335,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             LancamentoSaidaJpaController lancSaidController = new LancamentoSaidaJpaController(ipsum2.Ipsum2.getFactory());
             LancamentoRecfornJpaController lancRecFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
             LancamentoPagfuncJpaController lancPagFuncController = new LancamentoPagfuncJpaController(ipsum2.Ipsum2.getFactory());
-            Date gambData = null;
+            Date novaData = null;
 
             if (this.editandoLanc != null) {
                 if (!Funcionario.permite(Permissoes.ALTERAR_CAIXA)) {
@@ -365,7 +355,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                     Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (lanc.getLancamentoEntrada() != null) {
-                    gambData = lanc.getLancamentoEntrada().getData();
+                    novaData = lanc.getLancamentoEntrada().getData();
                     try {
                         lancEntrController.destroy(lanc.getLancamentoEntrada().getCodlanc());
                     } catch (NonexistentEntityException ex) {
@@ -374,7 +364,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                     lanc.setLancamentoEntrada(null);
                 }
                 if (lanc.getLancamentoSaida() != null) {
-                    gambData = lanc.getLancamentoSaida().getData();
+                    novaData = lanc.getLancamentoSaida().getData();
                     try {
                         lancSaidController.destroy(lanc.getLancamentoSaida().getCodlanc());
                     } catch (NonexistentEntityException ex) {
@@ -398,7 +388,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 }
 
             } else {
-                gambData = new Date();
+                novaData = new Date();
                 try {
                     lancController.create(lanc);
                 } catch (Exception ex) {
@@ -408,7 +398,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             if (tipo.getSelectedItem().toString() == "Entrada comum") {
                 LancamentoEntrada entrada = new LancamentoEntrada();
                 entrada.setCodlanc(lanc.getCodlanc());
-                entrada.setData(gambData);
+                entrada.setData(novaData);
                 entrada.setLancamento(lanc);
                 try {
                     lancEntrController.create(entrada);
@@ -423,7 +413,7 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 LancamentoSaida saida = new LancamentoSaida();
                 saida.setCodlanc(lanc.getCodlanc());
                 saida.setLancamento(lanc);
-                saida.setData(gambData);
+                saida.setData(novaData);
                 try {
                     lancSaidController.create(saida);
                 } catch (PreexistingEntityException ex) {
