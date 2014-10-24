@@ -144,25 +144,27 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
             int anoCompara;
             boolean achou = false;
             for (LancamentoPagfunc pagFunc : listPagFunc) {
-                if (pagFunc.getCodfunc() == funcionario.getSelectedItem()) {
+                if (pagFunc.getCodfunc() == funcionario.getSelectedItem() && pagFunc.getLancamento().getEstorno() == 0) {
                     cal.setTime(pagFunc.getData());
                     mesCompara = cal.get(Calendar.MONTH);
                     anoCompara = cal.get(Calendar.YEAR);
                     if (mesCompara == mes && anoCompara == ano) {
                         achou = true;
                     }
-
                 }
             }
             if (achou == false) {
-
+                this.dispose();
+                new FinalizarPagamentoFuncionario((Funcionario) funcionario.getSelectedItem(), data);
             } else {
-
+                JOptionPane.showMessageDialog(this, "O funcionário já foi pago nesta data.");
+                this.dispose();
+                new PagamentoFuncionario();
             }
-            new FinalizarPagamentoFuncionario((Funcionario) funcionario.getSelectedItem(), data);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Data inválida");
-//            Logger.getLogger(PagamentoFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Data inválida.");
+            this.dispose();
+            new PagamentoFuncionario();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

@@ -57,7 +57,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 saldoCaixa -= l.getValor();
             }
             if (l.getLancamentoRecforn() != null && l.getEstorno() == 0) {
-                saldoCaixa -= l.getValor();
+                saldoCaixa += l.getValor();
             }
             if (l.getLancamentoPagfunc() != null && l.getEstorno() == 0) {
                 saldoCaixa -= l.getValor();

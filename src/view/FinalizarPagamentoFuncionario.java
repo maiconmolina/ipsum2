@@ -5,6 +5,7 @@
  */
 package view;
 
+import Util.Util;
 import java.util.Date;
 import model.Funcionario;
 
@@ -19,12 +20,17 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
      */
     public FinalizarPagamentoFuncionario() {
         initComponents();
+        InterfaceUtils.preparaTela(this);
+        
     }
-
-    public FinalizarPagamentoFuncionario(Funcionario funcionario, Date data) {
+    
+    public FinalizarPagamentoFuncionario(Funcionario funcionario, Date ParamData) {
         initComponents();
         InterfaceUtils.preparaTela(this);
-
+        nomeFuncionario.setText(funcionario.getNome());
+        data.setText(Util.DateToString(ParamData));
+        salario.setText(String.valueOf(funcionario.getSalario()));
+        
     }
 
     /**

@@ -268,7 +268,7 @@ public class Funcionario implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Funcionario[ codfunc=" + codfunc + " ]";
+        return this.nome;
     }
 
     public boolean isAtivo() {
