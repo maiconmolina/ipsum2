@@ -239,6 +239,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
     private void confirmarPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPagamentoActionPerformed
         PagamentoLoteJpaController jpgl = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
+        Lote lot = null;
         model.PagamentoLote pagLote = new model.PagamentoLote();
         pagLote.setTipopag((TipoPagamento) tipoPagamento.getSelectedItem());
         pagLote.setDatpag(new Date());
@@ -299,7 +300,8 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
             LancamentoRecfornJpaController recFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
             LancamentoRecforn recForn = new LancamentoRecforn();
-            Lote lot = (Lote) lote.getSelectedItem();
+            lot = (Lote) lote.getSelectedItem();
+
             recForn.setLancamento(lanc);
             recForn.setCodfornec(lot.getCodfornec());
             recForn.setCodpaglote(pagLote.getCodpaglote());
@@ -315,44 +317,9 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
         }
         this.dispose();
-
+        new Nfeview(pagLote);
 
     }//GEN-LAST:event_confirmarPagamentoActionPerformed
-    private void hue() {
-        List<LancamentoRecforn> recForn;
-        LancamentoRecfornJpaController RecFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
-        recForn = RecFornController.getEntityManager().createNamedQuery("LancamentoRecforn.findAll").getResultList();
-
-        List<PagamentoLote> paglote;
-        PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
-        paglote = pagamentoLoteController.getEntityManager().createNamedQuery("PagamentoLote.findAll").getResultList();
-
-        List<Lote> Listlote;
-        LoteJpaController LoteController = new LoteJpaController(ipsum2.Ipsum2.getFactory());
-        Listlote = LoteController.getEntityManager().createNamedQuery("Lote.findAll").getResultList();
-
-        List<Fornecedor> forn;
-        FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
-        forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
-
-        for (Lote lote : Listlote) {
-            boolean achou = false;
-            for (model.PagamentoLote pagDoLote : lote.getPagamentoLoteList()) {
-                for (LancamentoRecforn LancRecForn : recForn) {
-                    if (LancRecForn.getCodpaglote() == pagDoLote.getCodpaglote() && LancRecForn.getLancamento().getEstorno() == 1) {
-                        achou = true;
-                        JOptionPane.showMessageDialog(this, "Saiu:" + lote.getDescricao());
-
-                    }
-                }
-            }
-            if (achou == false) {
-                JOptionPane.showMessageDialog(this, "Entrou:" + lote.getDescricao());
-
-            }
-        }
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField campoData;
     private javax.swing.JButton cancelar;

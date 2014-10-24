@@ -48,7 +48,7 @@
                                       <Component id="jTextField9" pref="199" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jTextField7" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jFormattedTextField3" alignment="0" min="-2" pref="175" max="-2" attributes="0"/>
+                                  <Component id="cnpjForn" alignment="0" min="-2" pref="175" max="-2" attributes="0"/>
                                   <Component id="jTextField10" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
                                   <Component id="jTextField6" alignment="0" max="32767" attributes="0"/>
                               </Group>
@@ -98,13 +98,13 @@
                                       </Group>
                                       <Component id="jTextField2" alignment="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="jFormattedTextField1" min="-2" pref="176" max="-2" attributes="0"/>
+                                  <Component id="cnpjEmpresa" min="-2" pref="176" max="-2" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jTextField13" min="-2" pref="176" max="-2" attributes="0"/>
+                                      <Component id="data" min="-2" pref="176" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jTextField14" min="-2" pref="176" max="-2" attributes="0"/>
+                                      <Component id="numeroNota" min="-2" pref="176" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -142,14 +142,14 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField14" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField13" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="numeroNota" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="data" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jFormattedTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cnpjEmpresa" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -179,7 +179,7 @@
                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jFormattedTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cnpjForn" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -261,9 +261,15 @@
         <Property name="text" type="java.lang.String" value="Tomador de Servi&#xe7;os"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1">
+    <Component class="javax.swing.JFormattedTextField" name="cnpjEmpresa">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField2">
     </Component>
@@ -276,7 +282,10 @@
         <Property name="text" type="java.lang.String" value="CNPJ:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField3">
+    <Component class="javax.swing.JFormattedTextField" name="cnpjForn">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField6">
     </Component>
@@ -320,7 +329,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="jTextArea1">
+        <Component class="javax.swing.JTextArea" name="descricaoLote">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
@@ -361,9 +370,9 @@
         <Property name="text" type="java.lang.String" value="Numero da Nota:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField14">
+    <Component class="javax.swing.JTextField" name="numeroNota">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField13">
+    <Component class="javax.swing.JTextField" name="data">
     </Component>
   </SubComponents>
 </Form>

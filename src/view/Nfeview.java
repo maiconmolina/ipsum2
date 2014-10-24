@@ -3,8 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package view;
+
+import Util.Constante;
+import Util.Util;
+import controller.NfeJpaController;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Fornecedor;
+import model.Lote;
+import model.Nfe;
 
 /**
  *
@@ -17,6 +26,48 @@ public class Nfeview extends javax.swing.JInternalFrame {
      */
     public Nfeview() {
         initComponents();
+        InterfaceUtils.preparaTela(this);
+    }
+
+    public Nfeview(model.PagamentoLote pagLote) {
+        Lote lote = pagLote.getCodlote();
+        Fornecedor fornecedor = lote.getCodfornec();
+
+        initComponents();
+        InterfaceUtils.preparaTela(this);
+
+        NfeJpaController nfeController = new NfeJpaController(ipsum2.Ipsum2.getFactory());
+        Integer cod = nfeController.getNfeCount() + 1;
+        Date agora = new Date();
+        String codString = cod.toString();
+        String zeroFill = "";
+        int i;
+        for (i = codString.length(); i <= 9; i++) {
+            zeroFill = zeroFill + "0";
+        }
+        zeroFill = zeroFill + codString;
+
+        Nfe nfe = new Nfe();
+        nfe.setCodfornec(fornecedor);
+        nfe.setCodnfe(cod);
+        nfe.setCodpaglote(null);
+        nfe.setCodpaglote(pagLote);
+        nfe.setDataemi(agora);
+//        try {
+//            nfeController.create(nfe);
+//        } catch (Exception ex) {
+//            Logger.getLogger(Nfeview.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+        data.setText(Util.DateToString(agora));
+        numeroNota.setText(zeroFill);
+        cnpjEmpresa.setText(Constante.cnpj);
+        cnpjForn.setText(fornecedor.getCnpj());
+    }
+
+    public Nfeview(Nfe nfe) {
+        initComponents();
+        InterfaceUtils.preparaTela(this);
     }
 
     /**
@@ -35,13 +86,13 @@ public class Nfeview extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        cnpjEmpresa = new javax.swing.JFormattedTextField();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jFormattedTextField3 = new javax.swing.JFormattedTextField();
+        cnpjForn = new javax.swing.JFormattedTextField();
         jTextField6 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
@@ -53,7 +104,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
         jTextField10 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        descricaoLote = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel17 = new javax.swing.JLabel();
@@ -63,8 +114,8 @@ public class Nfeview extends javax.swing.JInternalFrame {
         jTextField12 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
-        jTextField14 = new javax.swing.JTextField();
-        jTextField13 = new javax.swing.JTextField();
+        numeroNota = new javax.swing.JTextField();
+        data = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("NFE");
@@ -83,7 +134,13 @@ public class Nfeview extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Tomador de Serviços");
 
+        cnpjEmpresa.setEditable(false);
+
+        jTextField1.setEditable(false);
+
         jLabel10.setText("CNPJ:");
+
+        cnpjForn.setEditable(false);
 
         jLabel12.setText("Endereço:");
 
@@ -95,9 +152,9 @@ public class Nfeview extends javax.swing.JInternalFrame {
 
         jLabel16.setText("Descrição do Lote:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        descricaoLote.setColumns(20);
+        descricaoLote.setRows(5);
+        jScrollPane1.setViewportView(descricaoLote);
 
         jLabel17.setText("Valor Total da Nota:");
 
@@ -136,7 +193,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
                                     .addComponent(jTextField7)
-                                    .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cnpjForn, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField6))
                                 .addGap(0, 0, Short.MAX_VALUE))))
@@ -173,13 +230,13 @@ public class Nfeview extends javax.swing.JInternalFrame {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(jTextField12, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))
                                         .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cnpjEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel20)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(numeroNota, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 2, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -204,13 +261,13 @@ public class Nfeview extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(jLabel20)
-                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numeroNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(data, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cnpjEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -236,7 +293,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jFormattedTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cnpjForn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -276,8 +333,10 @@ public class Nfeview extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JFormattedTextField jFormattedTextField3;
+    private javax.swing.JFormattedTextField cnpjEmpresa;
+    private javax.swing.JFormattedTextField cnpjForn;
+    private javax.swing.JTextField data;
+    private javax.swing.JTextArea descricaoLote;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -299,13 +358,10 @@ public class Nfeview extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -313,5 +369,6 @@ public class Nfeview extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField numeroNota;
     // End of variables declaration//GEN-END:variables
 }
