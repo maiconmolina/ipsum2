@@ -53,11 +53,11 @@ public class Nfeview extends javax.swing.JInternalFrame {
         nfe.setCodpaglote(null);
         nfe.setCodpaglote(pagLote);
         nfe.setDataemi(agora);
-//        try {
-//            nfeController.create(nfe);
-//        } catch (Exception ex) {
-//            Logger.getLogger(Nfeview.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+              nfeController.create(nfe);
+        } catch (Exception ex) {
+              Logger.getLogger(Nfeview.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         dataE.setText(Util.DateToString(agora));
         numeroNota.setText(zeroFill);

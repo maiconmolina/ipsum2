@@ -238,6 +238,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cancelarActionPerformed
 
     private void confirmarPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmarPagamentoActionPerformed
+        double valor;
         PagamentoLoteJpaController jpgl = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
         Lote lot = null;
         model.PagamentoLote pagLote = new model.PagamentoLote();
@@ -290,7 +291,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
             lanc.setDescricao("Pagamento Lote: " + pagLote.getCodlote().getCodlote().toString() + " - " + pagLote.getCodlote().getDescricao());
             lanc.setEstorno((short) 0);
             lanc.setCodlanc(codLanc);
-            double valor = Double.parseDouble(valorTotal.getText());
+            valor = Double.parseDouble(valorTotal.getText());
             lanc.setValor(valor);
             try {
                 lancController.create(lanc);
@@ -317,7 +318,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
 
         }
         this.dispose();
-        new Nfeview(pagLote);
+        new Nfeview(pagLote, valor);
 
     }//GEN-LAST:event_confirmarPagamentoActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables

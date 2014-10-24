@@ -54,6 +54,7 @@ public class Start extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jCaixa = new javax.swing.JMenuItem();
         jPagarFunc = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jFuncaoMenu = new javax.swing.JMenu();
         jFuncaoInserir = new javax.swing.JMenuItem();
@@ -163,6 +164,14 @@ public class Start extends javax.swing.JFrame {
         if (!Funcionario.permite(Permissoes.PAGAR_FUNCIONARIO)){
             jPagarFunc.setVisible(false);
         }
+
+        jMenuItem1.setText("Histórico de Nfe");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
 
         menuBar.add(jMenu2);
 
@@ -377,6 +386,10 @@ public class Start extends javax.swing.JFrame {
         ll.setVisible(true);
     }//GEN-LAST:event_jLotesActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new ListaNfe();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -433,6 +446,7 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jPagarFunc;
     private javax.swing.JMenuItem jProduto;
