@@ -351,7 +351,7 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         if (entra == false) {
             JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
         } else {
-            JOptionPane.showMessageDialog(this, senha.getText() + confirmaSenha.getText());
+            
             if (Util.ComparaSenhas(senha.getText(), confirmaSenha.getText())) {
                 if (this.editaFornecedor == null) {
                     List<Fornecedor> listForn;
