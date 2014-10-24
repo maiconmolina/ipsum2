@@ -56,6 +56,12 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             if (l.getLancamentoSaida() != null && l.getEstorno() == 0) {
                 saldoCaixa -= l.getValor();
             }
+            if (l.getLancamentoRecforn() != null && l.getEstorno() == 0) {
+                saldoCaixa -= l.getValor();
+            }
+            if (l.getLancamentoPagfunc() != null && l.getEstorno() == 0) {
+                saldoCaixa -= l.getValor();
+            }
         }
         saldo.setText("R$ " + String.valueOf(saldoCaixa).replace(".", ","));
         this.saldoFinal = saldoCaixa;
@@ -119,8 +125,8 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             if (o.getLancamentoSaida() != null) {
                 dados.add(DateToString2(o.getLancamentoSaida().getData()));
             }
-            
-            if (o.getLancamentoRecforn()!= null) {
+
+            if (o.getLancamentoRecforn() != null) {
                 dados.add(DateToString2(o.getLancamentoRecforn().getData()));
             }
 

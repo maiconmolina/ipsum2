@@ -5,11 +5,19 @@
  */
 package view;
 
+import Util.Constante;
+import Util.Util;
 import controller.FuncionarioJpaController;
+import controller.LancamentoPagfuncJpaController;
 import enuns.Meses;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Funcionario;
+import model.LancamentoPagfunc;
 
 /**
  *
@@ -36,12 +44,10 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
 
         jLabel1 = new javax.swing.JLabel();
         funcionario = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        mes = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        dataPagamento = new javax.swing.JTextField();
+        dataPagamento = new javax.swing.JFormattedTextField(Constante.DateMask);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pagamento de Funcionário");
@@ -54,13 +60,6 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
         listFunc = controllerFunc.getEntityManager().createNamedQuery("Funcionario.findAll").getResultList();
         for (Funcionario f : listFunc){
             this.funcionario.addItem(f);
-        }
-
-        jLabel2.setText("Digite o mês de pagamento");
-
-        mes.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
-        for(Meses m : Meses.values()){
-            this.mes.addItem(m);
         }
 
         jButton1.setText("Voltar");
@@ -83,24 +82,26 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(14, 14, 14)
-                .addComponent(jButton2)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(funcionario, 0, 232, Short.MAX_VALUE)
-                    .addComponent(mes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dataPagamento))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(14, 14, 14)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(33, 33, 33)
+                            .addComponent(jLabel1)
+                            .addGap(18, 18, 18)
+                            .addComponent(funcionario, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dataPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,13 +112,9 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
                     .addComponent(funcionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(dataPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2)))
@@ -133,8 +130,40 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
+        LancamentoPagfuncJpaController pagFuncController = new LancamentoPagfuncJpaController(ipsum2.Ipsum2.getFactory());
+        List<LancamentoPagfunc> listPagFunc = pagFuncController.getEntityManager().createNamedQuery("LancamentoPagfunc.findAll").getResultList();
+
         Date data = null;
-        new FinalizarPagamentoFuncionario((Funcionario) funcionario.getSelectedItem(), data);
+        try {
+            data = Util.StringToDate(dataPagamento.getText());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(data);
+            int mes = cal.get(Calendar.MONTH);
+            int mesCompara;
+            int ano = cal.get(Calendar.YEAR);
+            int anoCompara;
+            boolean achou = false;
+            for (LancamentoPagfunc pagFunc : listPagFunc) {
+                if (pagFunc.getCodfunc() == funcionario.getSelectedItem()) {
+                    cal.setTime(pagFunc.getData());
+                    mesCompara = cal.get(Calendar.MONTH);
+                    anoCompara = cal.get(Calendar.YEAR);
+                    if (mesCompara == mes && anoCompara == ano) {
+                        achou = true;
+                    }
+
+                }
+            }
+            if (achou == false) {
+
+            } else {
+
+            }
+            new FinalizarPagamentoFuncionario((Funcionario) funcionario.getSelectedItem(), data);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Data inválida");
+//            Logger.getLogger(PagamentoFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -151,16 +180,21 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PagamentoFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PagamentoFuncionario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PagamentoFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PagamentoFuncionario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PagamentoFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PagamentoFuncionario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PagamentoFuncionario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PagamentoFuncionario.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -178,8 +212,6 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JComboBox mes;
     // End of variables declaration//GEN-END:variables
 }
