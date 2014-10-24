@@ -6,8 +6,17 @@
 package view;
 
 import Util.Util;
+import controller.CaixaJpaController;
+import controller.LancamentoJpaController;
+import controller.LancamentoPagfuncJpaController;
+import controller.exceptions.PreexistingEntityException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Caixa;
 import model.Funcionario;
+import model.Lancamento;
+import model.LancamentoPagfunc;
 
 /**
  *
@@ -15,22 +24,28 @@ import model.Funcionario;
  */
 public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
 
+    private static Funcionario func = null;
+    private static Date dat = null;
+
     /**
      * Creates new form FinalizarPagamentoFuncionario
      */
     public FinalizarPagamentoFuncionario() {
         initComponents();
         InterfaceUtils.preparaTela(this);
-        
+
     }
-    
+
     public FinalizarPagamentoFuncionario(Funcionario funcionario, Date ParamData) {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        this.func = funcionario;
+        this.dat = ParamData;
         nomeFuncionario.setText(funcionario.getNome());
         data.setText(Util.DateToString(ParamData));
-        salario.setText(String.valueOf(funcionario.getSalario()));
-        
+        salario.setText(String.valueOf(funcionario.getSalario()).replace(".", ","));
+        total.setText(String.valueOf(funcionario.getSalario()).replace(".", ","));
+
     }
 
     /**
@@ -51,15 +66,11 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         salario = new javax.swing.JLabel();
-        adicionais = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
-        valorCaixa = new javax.swing.JLabel();
-        posPagamento = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        bonificacao = new javax.swing.JTextField();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -82,28 +93,15 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Salário:");
 
-        jLabel5.setText("Adicionais:");
+        jLabel5.setText("Bonificação:");
 
         salario.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         salario.setText("none");
 
-        adicionais.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        adicionais.setText("none");
-
         jLabel6.setText("Total:");
-
-        jLabel7.setText("Valor em caixa:");
-
-        jLabel8.setText("Valor pós pagamento:");
 
         total.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         total.setText("none");
-
-        valorCaixa.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        valorCaixa.setText("none");
-
-        posPagamento.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        posPagamento.setText("none");
 
         jButton1.setText("Voltar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -119,15 +117,30 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
             }
         });
 
+        bonificacao.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                bonificacaoFocusLost(evt);
+            }
+        });
+        bonificacao.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                bonificacaoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                bonificacaoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                bonificacaoKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel7)
                     .addComponent(jLabel6)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1)
@@ -140,13 +153,11 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
                     .addComponent(data)
                     .addComponent(valorProduzido)
                     .addComponent(salario)
-                    .addComponent(adicionais)
                     .addComponent(total)
-                    .addComponent(valorCaixa)
-                    .addComponent(posPagamento))
+                    .addComponent(bonificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(381, Short.MAX_VALUE)
+                .addContainerGap(368, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(11, 11, 11)
                 .addComponent(jButton2)
@@ -174,20 +185,12 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(adicionais))
+                    .addComponent(bonificacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(total))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(valorCaixa))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(posPagamento))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -203,8 +206,63 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        LancamentoJpaController lancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
+        LancamentoPagfuncJpaController pagFunController = new LancamentoPagfuncJpaController(ipsum2.Ipsum2.getFactory());
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        Caixa caixa = (Caixa) caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getSingleResult();
+        Lancamento lanc = new Lancamento();
+        LancamentoPagfunc pagFunc = new LancamentoPagfunc();
+        lanc.setAtivo((short) 1);
+        lanc.setCodcaixa(caixa);
+        lanc.setDescricao("Pagamento do Funcionário: "+this.func.getNome());
+        lanc.setCodlanc(lancController.getLancamentoCount() + 1);
+        lanc.setEstorno((short) 0);
+        lanc.setValor(Double.parseDouble(total.getText().replace(",", ".")));
+        try {
+            lancController.create(lanc);
+        } catch (Exception ex) {
+            Logger.getLogger(FinalizarPagamentoFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        pagFunc.setBonif(Double.parseDouble(bonificacao.getText().replace(",", ";")));
+        pagFunc.setCodfunc(this.func);
+        pagFunc.setCodlanc(lanc.getCodlanc());
+        pagFunc.setData(this.dat);
+        pagFunc.setLancamento(lanc);
+        try {
+            pagFunController.create(pagFunc);
+        } catch (PreexistingEntityException ex) {
+            Logger.getLogger(FinalizarPagamentoFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(FinalizarPagamentoFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void bonificacaoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bonificacaoFocusLost
+
+    }//GEN-LAST:event_bonificacaoFocusLost
+
+    private void bonificacaoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bonificacaoKeyPressed
+
+    }//GEN-LAST:event_bonificacaoKeyPressed
+
+    private void bonificacaoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bonificacaoKeyTyped
+//        bonificacao.setText(bonificacao.getText().replace(".", ","));
+//        double Tt = this.func.getSalario();
+//        Tt = Tt + Double.parseDouble(bonificacao.getText().replace(",", "."));
+//        total.setText(String.valueOf(Tt).replace(".", ","));
+    }//GEN-LAST:event_bonificacaoKeyTyped
+
+    private void bonificacaoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bonificacaoKeyReleased
+        bonificacao.setText(bonificacao.getText().replace(".", ","));
+        double Tt = this.func.getSalario();
+        try {
+            Tt = Tt + Double.parseDouble(bonificacao.getText().replace(",", "."));
+        } catch (Exception e) {
+        }
+        total.setText(String.valueOf(Tt).replace(".", ","));
+    }//GEN-LAST:event_bonificacaoKeyReleased
 
     /**
      * @param args the command line arguments
@@ -242,7 +300,7 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel adicionais;
+    private javax.swing.JTextField bonificacao;
     private javax.swing.JLabel data;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -252,13 +310,9 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel nomeFuncionario;
-    private javax.swing.JLabel posPagamento;
     private javax.swing.JLabel salario;
     private javax.swing.JLabel total;
-    private javax.swing.JLabel valorCaixa;
     private javax.swing.JLabel valorProduzido;
     // End of variables declaration//GEN-END:variables
 }

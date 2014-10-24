@@ -132,7 +132,7 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
         this.dispose();
         LancamentoPagfuncJpaController pagFuncController = new LancamentoPagfuncJpaController(ipsum2.Ipsum2.getFactory());
         List<LancamentoPagfunc> listPagFunc = pagFuncController.getEntityManager().createNamedQuery("LancamentoPagfunc.findAll").getResultList();
-
+        Funcionario funci = (Funcionario) funcionario.getSelectedItem();
         Date data = null;
         try {
             data = Util.StringToDate(dataPagamento.getText());
@@ -144,10 +144,10 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
             int anoCompara;
             boolean achou = false;
             for (LancamentoPagfunc pagFunc : listPagFunc) {
-                if (pagFunc.getCodfunc() == funcionario.getSelectedItem() && pagFunc.getLancamento().getEstorno() == 0) {
-                    cal.setTime(pagFunc.getData());
-                    mesCompara = cal.get(Calendar.MONTH);
-                    anoCompara = cal.get(Calendar.YEAR);
+                cal.setTime(pagFunc.getData());
+                mesCompara = cal.get(Calendar.MONTH);
+                anoCompara = cal.get(Calendar.YEAR);
+                if (pagFunc.getCodfunc().getCodfunc() == funci.getCodfunc()) {
                     if (mesCompara == mes && anoCompara == ano) {
                         achou = true;
                     }
@@ -155,7 +155,7 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
             }
             if (achou == false) {
                 this.dispose();
-                new FinalizarPagamentoFuncionario((Funcionario) funcionario.getSelectedItem(), data);
+                new FinalizarPagamentoFuncionario(funci, data);
             } else {
                 JOptionPane.showMessageDialog(this, "O funcionário já foi pago nesta data.");
                 this.dispose();
