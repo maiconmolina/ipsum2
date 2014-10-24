@@ -351,14 +351,13 @@ public class FornecedorCadastro extends javax.swing.JInternalFrame {
         if (entra == false) {
             JOptionPane.showMessageDialog(this, "Os seguintes erros foram encontrados: " + textoSaida);
         } else {
+            JOptionPane.showMessageDialog(this, senha.getText() + confirmaSenha.getText());
             if (Util.ComparaSenhas(senha.getText(), confirmaSenha.getText())) {
                 if (this.editaFornecedor == null) {
                     List<Fornecedor> listForn;
-
                     Fornecedor forn;
                     FornecedorJpaController controllerForn = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
                     listForn = controllerForn.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
-
                     int ProxCodigo;
                     if (!listForn.isEmpty()) {
                         forn = listForn.get(listForn.size() - 1);

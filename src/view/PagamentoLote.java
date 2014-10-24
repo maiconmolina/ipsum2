@@ -43,18 +43,13 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         campoData.setText(dateFormat.format(date));
-
-//        PagamentoLote pagLote = new PagamentoLote();
-//        int i;
-//        for (i = 0; i <= pagLote.size(); i++) {
-//
-//        }
+//        hue();
     }
-    
+
     public PagamentoLote(PagamentoLote paglote) {
         initComponents();
         InterfaceUtils.preparaTela(this);
-        
+
     }
 
     /**
@@ -117,6 +112,10 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         valorTotal.setEditable(false);
 
         lote.setModel(new javax.swing.DefaultComboBoxModel(new String[] { ">> SELECIONE <<" }));
+        List<LancamentoRecforn> recForn;
+        LancamentoRecfornJpaController RecFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+        recForn = RecFornController.getEntityManager().createNamedQuery("LancamentoRecforn.findAll").getResultList();
+
         List<PagamentoLote> paglote;
         PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
         paglote = pagamentoLoteController.getEntityManager().createNamedQuery("PagamentoLote.findAll").getResultList();
@@ -129,18 +128,18 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
         forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
 
-        for (Lote l : Listlote) {
+        for (Lote lote : Listlote) {
             boolean achou = false;
-            for (model.PagamentoLote pgL : l.getPagamentoLoteList()) {
-                if (pgL.getCodlote() == l) {
-                    if (pgL.getAtivo() == 0){
+            for (model.PagamentoLote pagDoLote : lote.getPagamentoLoteList()) {
+                for (LancamentoRecforn LancRecForn : recForn) {
+                    if (LancRecForn.getCodpaglote() == pagDoLote.getCodpaglote() && LancRecForn.getLancamento().getEstorno() == 0) {;
                         achou = true;
                     }
                 }
             }
             if (achou == false) {
-                this.lote.addItem(l);
-                //                this.lote.addItem(ll.getDescricao() + " " + l.getCodfornec().getRazao());
+                this.lote.addItem(lote);
+
             }
         }
         lote.addActionListener(new java.awt.event.ActionListener() {
@@ -247,7 +246,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         pagLote.setCodpaglote(jpgl.getPagamentoLoteCount() + 1);
         pagLote.setCodlote((Lote) lote.getSelectedItem());
         pagLote.setAtivo((short) 1);
-        
+
         try {
             jpgl.create(pagLote);
         } catch (Exception ex) {
@@ -272,7 +271,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
                     Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
+
             int codLanc = 1;
             Lancamento l;
             LancamentoJpaController LancController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
@@ -297,7 +296,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
             } catch (Exception ex) {
                 Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             LancamentoRecfornJpaController recFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
             LancamentoRecforn recForn = new LancamentoRecforn();
             Lote lot = (Lote) lote.getSelectedItem();
@@ -313,13 +312,46 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
             } catch (Exception ex) {
                 Logger.getLogger(PagamentoLote.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
         this.dispose();
-        
+
 
     }//GEN-LAST:event_confirmarPagamentoActionPerformed
+    private void hue() {
+        List<LancamentoRecforn> recForn;
+        LancamentoRecfornJpaController RecFornController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+        recForn = RecFornController.getEntityManager().createNamedQuery("LancamentoRecforn.findAll").getResultList();
 
+        List<PagamentoLote> paglote;
+        PagamentoLoteJpaController pagamentoLoteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
+        paglote = pagamentoLoteController.getEntityManager().createNamedQuery("PagamentoLote.findAll").getResultList();
+
+        List<Lote> Listlote;
+        LoteJpaController LoteController = new LoteJpaController(ipsum2.Ipsum2.getFactory());
+        Listlote = LoteController.getEntityManager().createNamedQuery("Lote.findAll").getResultList();
+
+        List<Fornecedor> forn;
+        FornecedorJpaController lancamentoController = new FornecedorJpaController(ipsum2.Ipsum2.getFactory());
+        forn = lancamentoController.getEntityManager().createNamedQuery("Fornecedor.findAll").getResultList();
+
+        for (Lote lote : Listlote) {
+            boolean achou = false;
+            for (model.PagamentoLote pagDoLote : lote.getPagamentoLoteList()) {
+                for (LancamentoRecforn LancRecForn : recForn) {
+                    if (LancRecForn.getCodpaglote() == pagDoLote.getCodpaglote() && LancRecForn.getLancamento().getEstorno() == 1) {
+                        achou = true;
+                        JOptionPane.showMessageDialog(this, "Saiu:" + lote.getDescricao());
+
+                    }
+                }
+            }
+            if (achou == false) {
+                JOptionPane.showMessageDialog(this, "Entrou:" + lote.getDescricao());
+
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField campoData;

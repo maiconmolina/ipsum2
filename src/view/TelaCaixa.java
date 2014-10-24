@@ -119,6 +119,10 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             if (o.getLancamentoSaida() != null) {
                 dados.add(DateToString2(o.getLancamentoSaida().getData()));
             }
+            
+            if (o.getLancamentoRecforn()!= null) {
+                dados.add(DateToString2(o.getLancamentoRecforn().getData()));
+            }
 
             model.addRow(dados.toArray());
             dados.clear();

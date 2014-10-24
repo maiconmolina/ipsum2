@@ -5,7 +5,7 @@
  */
 package view;
 
-import com.sun.org.apache.bcel.internal.generic.AALOAD;
+//import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import controller.LoteJpaController;
 import controller.SituacaoLoteJpaController;
 import enuns.Permissoes;

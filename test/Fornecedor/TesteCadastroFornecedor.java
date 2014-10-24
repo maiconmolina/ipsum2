@@ -227,7 +227,7 @@ public class TesteCadastroFornecedor {
         String str1 = "v923nnba!";
         String str2 = "v923nnba!";
         boolean resultado = Util.ComparaSenhas(str1, str2);
-        assertFalse(resultado);
+        assertTrue(resultado);
     }
 
     @Test

@@ -299,12 +299,21 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
             textoSaida = textoSaida + "\nDescrição vazia";
             entra = false;
         }
+        if (!Util.VerificaTamanhoStr(descricao.getText())) {
+            textoSaida = textoSaida + "\nDescrição muito pequena";
+            entra = false;
+        }
         if (Util.VerificaValorLancPositivo(valorInput)) {
             textoSaida = textoSaida + "\nValor menor que zero";
             entra = false;
         }
         if (Util.VerificaValorLancValido(valorInput)) {
             textoSaida = textoSaida + "\nValor inválido";
+            entra = false;
+        }
+        DecimalFormattedField val2 = new DecimalFormattedField(DecimalFormattedField.REAL);
+        if (!Util.VerificaValorLancValido(val2.converteDouble(valor.getText()))) {
+            textoSaida = textoSaida + "\n Valor muito grande";
             entra = false;
         }
         if (Util.VerificaValorNumerico(valorInput)) {
@@ -375,18 +384,20 @@ public class TelaLancamento extends javax.swing.JInternalFrame {
                 if (lanc.getLancamentoPagfunc() != null) {
                 }
                 if (lanc.getLancamentoRecforn() != null) {
-                    //FAZER LOTE
                     model.PagamentoLote pagLote = null;
                     PagamentoLoteJpaController loteController = new PagamentoLoteJpaController(ipsum2.Ipsum2.getFactory());
-                    pagLote = (model.PagamentoLote) loteController.getEntityManager().createNamedQuery("PagamentoLote.findByCodpaglote").setParameter("CODPAGLOTE", lanc.getLancamentoRecforn().getCodpaglote()).getSingleResult();
+                    pagLote = (model.PagamentoLote) loteController.getEntityManager().createNamedQuery("PagamentoLote.findByCodpaglote").setParameter("codpaglote", lanc.getLancamentoRecforn().getCodpaglote()).getSingleResult();
                     if (estorno.getSelectedIndex() == 0) {
                         pagLote.setAtivo((short) 0);
                     } else {
-
                         pagLote.setAtivo((short) 1);
                     }
+                    try {
+                        loteController.edit(pagLote);
+                    } catch (Exception ex) {
+                        Logger.getLogger(TelaLancamento.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-
             } else {
                 novaData = new Date();
                 try {

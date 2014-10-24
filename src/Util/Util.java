@@ -313,7 +313,7 @@ public class Util {
     }
 
     public static boolean ComparaSenhas(String s1, String s2) {
-        if (!Util.isNullOrEmpty(s1) && !Util.isNullOrEmpty(s2)) {
+        if (Util.isNullOrEmpty(s1) || Util.isNullOrEmpty(s2)) {
             return false;
         }
         return s1.equals(s2);
