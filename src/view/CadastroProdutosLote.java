@@ -257,9 +257,14 @@ public class CadastroProdutosLote extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) produtos.getModel();
         int i;
         Double v = (double) 0;
+        Boolean b;
         
         for(i = 0; i < model.getRowCount(); i++){
-            if ((Boolean)model.getValueAt(i, 4)){
+            if (model.getValueAt(i, 4) == null) b = false;
+            else {
+                b = (Boolean)model.getValueAt(i, 4);
+            }
+            if (b){
                 v = v + Double.parseDouble(model.getValueAt(i, 3).toString()) * (double) model.getValueAt(i, 2);
                 
             }
