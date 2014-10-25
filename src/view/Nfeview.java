@@ -116,7 +116,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
         descricaoLote.setText(lote.getDescricao());
         double valor = 0.0;
         LancamentoRecfornJpaController lancController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
-        List<LancamentoRecforn> listLanc = lancController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
+        List<LancamentoRecforn> listLanc = lancController.getEntityManager().createNamedQuery("LancamentoRecforn.findAll").getResultList();
         for (LancamentoRecforn lancRecForn : listLanc) {
             if (lancRecForn.getCodpaglote() == pagLote.getCodpaglote()) {
                 valor = lancRecForn.getLancamento().getValor();
