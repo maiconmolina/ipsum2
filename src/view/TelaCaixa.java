@@ -6,6 +6,7 @@
 package view;
 
 import Util.DecimalFormattedField;
+import static Util.Util.DateToString;
 import static Util.Util.DateToString2;
 import static Util.Util.doubleDuasCasasDecimais;
 import controller.CaixaJpaController;
@@ -130,7 +131,7 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
                 dados.add(DateToString2(o.getLancamentoRecforn().getData()));
             }
             if (o.getLancamentoPagfunc()!= null) {
-                dados.add(DateToString2(o.getLancamentoPagfunc().getData()));
+                dados.add(DateToString(o.getLancamentoPagfunc().getData()));
             }
 
             model.addRow(dados.toArray());

@@ -10,9 +10,11 @@ import Util.Util;
 import controller.LancamentoRecfornJpaController;
 import controller.NfeJpaController;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Fornecedor;
+import model.LancamentoRecforn;
 import static model.Lancamento_.valor;
 import model.Lote;
 import model.Nfe;
@@ -24,6 +26,7 @@ import model.Nfe;
 public class Nfeview extends javax.swing.JInternalFrame {
 
     private static Nfe nfe = null;
+
     /**
      * Creates new form Nfeview
      */
@@ -32,7 +35,6 @@ public class Nfeview extends javax.swing.JInternalFrame {
         InterfaceUtils.preparaTela(this);
     }
 
-    
     public Nfeview(model.PagamentoLote pagLote, double valor) {
         Lote lote = pagLote.getCodlote();
         Fornecedor fornecedor = lote.getCodfornec();
@@ -58,65 +60,71 @@ public class Nfeview extends javax.swing.JInternalFrame {
         nfe.setCodpaglote(pagLote);
         nfe.setDataemi(agora);
         try {
-              nfeController.create(nfe);
+            nfeController.create(nfe);
         } catch (Exception ex) {
-              Logger.getLogger(Nfeview.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Nfeview.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         dataE.setText(Util.DateToString(agora));
         numeroNota.setText(zeroFill);
-        
+
         cnpjEmpresa.setText(Constante.cnpj);
         razaoEmp.setText(Constante.razao);
         enderecoEmp.setText(Constante.endereco);
         municipioEmp.setText(Constante.municipio);
         ufEmp.setText(Constante.uf.getNomeEstado());
         emailEmp.setText(Constante.email);
-        
+
         cnpjForn.setText(fornecedor.getCnpj());
         razaoForn.setText(fornecedor.getRazao());
         enderecoForn.setText(fornecedor.getEndereco());
         municipioForn.setText(fornecedor.getCidade());
         ufForn.setText(fornecedor.getCoduf().getNome());
         emailForn.setText(fornecedor.getEmail());
-        
+
         descricaoLote.setText(lote.getDescricao());
         valorNota.setText(String.valueOf(valor));
-        }
+    }
 
-    public Nfeview(Nfe nf){
+    public Nfeview(Nfe nf) {
         initComponents();
         InterfaceUtils.preparaTela(this);
         this.nfe = nf;
-        
+
         model.PagamentoLote pagLote = nf.getCodpaglote();
-                
+
         Lote lote = pagLote.getCodlote();
         Fornecedor fornecedor = lote.getCodfornec();
-        
+
         dataE.setText(Util.DateToString2(pagLote.getDatpag()));
         numeroNota.setText(nf.getCodnfe().toString());
-        
+
         cnpjEmpresa.setText(Constante.cnpj);
         razaoEmp.setText(Constante.razao);
         enderecoEmp.setText(Constante.endereco);
         municipioEmp.setText(Constante.municipio);
         ufEmp.setText(Constante.uf.getNomeEstado());
         emailEmp.setText(Constante.email);
-        
+
         cnpjForn.setText(fornecedor.getCnpj());
         razaoForn.setText(fornecedor.getRazao());
         enderecoForn.setText(fornecedor.getEndereco());
         municipioForn.setText(fornecedor.getCidade());
         ufForn.setText(fornecedor.getCoduf().getNome());
         emailForn.setText(fornecedor.getEmail());
-        
+
         descricaoLote.setText(lote.getDescricao());
-        //LancamentoRecfornJpaController lancController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
-        //LancamentoRecforn lancRec = lancController.findLancamentoRecforn(i)
-        
-        
-        //valorNota.setText(String.valueOf(valor));
+        double valor = 0.0;
+        LancamentoRecfornJpaController lancController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+        List<LancamentoRecforn> listLanc = lancController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
+        for (LancamentoRecforn lancRecForn : listLanc) {
+            if (lancRecForn.getCodpaglote() == pagLote.getCodpaglote()) {
+                valor = lancRecForn.getLancamento().getValor();
+                break;
+            }
+        }
+//        LancamentoRecforn 
+        valorNota.setText(String.valueOf(valor));
     }
 
     /**
