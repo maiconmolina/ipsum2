@@ -81,12 +81,8 @@ public class Nfeview extends javax.swing.JInternalFrame {
         emailForn.setText(fornecedor.getEmail());
         
         descricaoLote.setText(lote.getDescricao());
-        //LancamentoRecfornJpaController lancController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
-        //LancamentoRecforn lancRec = lancController.findLancamentoRecforn(i)
-        
-        
-        //valorNota.setText(String.valueOf(valor));
-    }
+        valorNota.setText(String.valueOf(valor));
+        }
 
     public Nfeview(Nfe nf){
         initComponents();
@@ -116,7 +112,11 @@ public class Nfeview extends javax.swing.JInternalFrame {
         emailForn.setText(fornecedor.getEmail());
         
         descricaoLote.setText(lote.getDescricao());
-        valorNota.setText(String.valueOf(valor));
+        //LancamentoRecfornJpaController lancController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+        //LancamentoRecforn lancRec = lancController.findLancamentoRecforn(i)
+        
+        
+        //valorNota.setText(String.valueOf(valor));
     }
 
     /**
