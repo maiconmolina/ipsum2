@@ -78,6 +78,10 @@ public class FuncaoJpaController implements Serializable {
     public void edit(Funcao funcao) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
+            int pk = funcao.getCodfuncao();
+            Funcao nova = new Funcao(funcao);
+            nova.setCodfuncao(pk);
+
             em = getEntityManager();
             em.getTransaction().begin();
             Funcao persistentFuncao = em.find(Funcao.class, funcao.getCodfuncao());
@@ -111,6 +115,13 @@ public class FuncaoJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
+            FuncionarioJpaController ctr = new FuncionarioJpaController();
+            for (Funcionario f : ctr.getAll()) {
+                if (f.getCodfuncao() == null) {
+                    f.setCodfuncao(nova);
+                    ctr.edit(f);
+                }
+            }
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {

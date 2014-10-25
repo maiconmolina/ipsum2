@@ -2,9 +2,11 @@ package view;
 
 import Util.Util;
 import controller.FuncaoJpaController;
+import controller.UsuarioJpaController;
 import enuns.Permissoes;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Funcao;
@@ -225,6 +227,11 @@ public class FuncaoCadastro extends javax.swing.JInternalFrame {
                             Permissoes perm = (Permissoes) model.getValueAt(i, 0);
                             func.addPermissao(perm);
                         }
+                    }
+                    if (funcao.getCodfuncao().equals(new UsuarioJpaController().getCodFuncaoUsuarioLogado())) {
+                        JFrame top = (JFrame) this.getTopLevelAncestor();
+                        top.dispose();
+                        new Login().setVisible(true);
                     }
                 }
                 this.dispose();

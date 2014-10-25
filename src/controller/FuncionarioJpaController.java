@@ -383,4 +383,9 @@ public class FuncionarioJpaController implements Serializable {
         this.edit(func);
     }
 
+    public List<Funcionario> getAll() {
+        return this.getEntityManager()
+                .createNamedQuery("Funcionario.findAll")
+                .getResultList();
+    }
 }

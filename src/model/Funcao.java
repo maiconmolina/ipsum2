@@ -57,6 +57,13 @@ public class Funcao implements Serializable {
         this.codfuncao = codfuncao;
     }
 
+    public Funcao(Funcao funcao) {
+        this.ativo = funcao.ativo;
+        this.codfuncao = funcao.codfuncao;
+        this.descricao = funcao.descricao;
+        this.funcionarioList = funcao.funcionarioList;
+    }
+
     public Integer getCodfuncao() {
         return codfuncao;
     }

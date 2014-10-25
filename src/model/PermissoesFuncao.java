@@ -30,12 +30,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PermissoesFuncao implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Basic(optional = false)
     @Column(name = "CODPERM")
     private Integer codperm;
+
     @Column(name = "PERMISSAO")
     private Integer permissao;
+
     @Column(name = "CODFUNCAO")
     private Integer codfuncao;
 

@@ -9,6 +9,7 @@ import Util.Util;
 import controller.UsuarioJpaController;
 import enuns.Permissoes;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -113,6 +114,25 @@ public class Funcionario implements Serializable {
 
     public Funcionario(Integer codfunc) {
         this.codfunc = codfunc;
+    }
+
+    public Funcionario(Funcionario c) {
+        this.ativo = c.ativo;
+        this.codUsuario = c.codUsuario;
+        this.codfunc = c.codfunc;
+        this.codfuncao = c.codfuncao;
+        this.codhab = c.codhab;
+        this.cpf = c.cpf;
+        this.datanasc = c.datanasc;
+        this.endereco = c.endereco;
+        this.funcionarioDoLoteList = c.funcionarioDoLoteList;
+        this.lancamentoPagfuncList = c.lancamentoPagfuncList;
+        this.nome = c.nome;
+        this.producaoDiariaList = c.producaoDiariaList;
+        this.rg = c.rg;
+        this.salario = c.salario;
+        this.telefone = c.telefone;
+        this.temporario = c.temporario;
     }
 
     public Integer getCodfunc() {

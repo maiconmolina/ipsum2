@@ -6,6 +6,7 @@
 package ipsum2;
 
 import javax.persistence.*;
+import model.Funcionario;
 import persistencia.ConexaoBanco;
 import view.Login;
 import view.Splash;
