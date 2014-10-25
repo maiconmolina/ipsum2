@@ -5,18 +5,43 @@
  */
 package view;
 
+import controller.NfeJpaController;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Nfe;
+
 /**
  *
  * @author Lucas
  */
 public class ListaNfe extends javax.swing.JInternalFrame {
 
+    private List<Nfe> nfes = null;
+    
     /**
      * Creates new form ListaNfe
      */
     public ListaNfe() {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        NfeJpaController nfeController = new NfeJpaController(ipsum2.Ipsum2.getFactory());
+        this.nfes = nfeController.getEntityManager().createNamedQuery("Nfe.findAll").getResultList();
+        this.insereTabela(this.nfes);
+        
+    }
+    
+    private void insereTabela(List<Nfe> data) {
+        DefaultTableModel model = (DefaultTableModel) tabelaNfe.getModel();
+        List<Object> dados = new ArrayList<>();
+        for (Nfe o : data) {
+            dados.add(o);
+            dados.add(o.getCodfornec().getRazao());
+            dados.add(o.getCodpaglote().getCodlote().getCodlote());
+            model.addRow(dados.toArray());
+            dados.clear();
+        }
     }
 
     /**
@@ -28,24 +53,70 @@ public class ListaNfe extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaNfe = new javax.swing.JTable();
+        visualizar = new javax.swing.JButton();
+
         setClosable(true);
         setTitle("Listagem Nfe");
+
+        tabelaNfe.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Número da Nota", "Razão Social Fornecedor", "Codigo Lote"
+            }
+        ));
+        jScrollPane1.setViewportView(tabelaNfe);
+
+        visualizar.setText("Visualizar");
+        visualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(visualizar)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(visualizar)
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void visualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizarActionPerformed
+        //List<Nfe> nfe = new NfeJpaController(ipsum2.Ipsum2.getFactory()).getEntityManager().createNamedQuery("Nfe.findAll").getResultList();
+        try {
+            DefaultTableModel model = (DefaultTableModel) tabelaNfe.getModel();
+            Nfe nfe = (Nfe) model.getValueAt(tabelaNfe.getSelectedRow(), 0);
+            new Nfeview(nfe);
+            this.dispose();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(this, "Item selecionado inválido!");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Um erro aconteceu!\n" + ex.getMessage());
+        }
+    }//GEN-LAST:event_visualizarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabelaNfe;
+    private javax.swing.JButton visualizar;
     // End of variables declaration//GEN-END:variables
 }

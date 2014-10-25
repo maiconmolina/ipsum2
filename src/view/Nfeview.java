@@ -7,11 +7,13 @@ package view;
 
 import Util.Constante;
 import Util.Util;
+import controller.LancamentoRecfornJpaController;
 import controller.NfeJpaController;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Fornecedor;
+import static model.Lancamento_.valor;
 import model.Lote;
 import model.Nfe;
 
@@ -21,6 +23,7 @@ import model.Nfe;
  */
 public class Nfeview extends javax.swing.JInternalFrame {
 
+    private static Nfe nfe = null;
     /**
      * Creates new form Nfeview
      */
@@ -29,6 +32,7 @@ public class Nfeview extends javax.swing.JInternalFrame {
         InterfaceUtils.preparaTela(this);
     }
 
+    
     public Nfeview(model.PagamentoLote pagLote, double valor) {
         Lote lote = pagLote.getCodlote();
         Fornecedor fornecedor = lote.getCodfornec();
@@ -77,12 +81,42 @@ public class Nfeview extends javax.swing.JInternalFrame {
         emailForn.setText(fornecedor.getEmail());
         
         descricaoLote.setText(lote.getDescricao());
-        valorNota.setText(String.valueOf(valor));
+        //LancamentoRecfornJpaController lancController = new LancamentoRecfornJpaController(ipsum2.Ipsum2.getFactory());
+        //LancamentoRecforn lancRec = lancController.findLancamentoRecforn(i)
+        
+        
+        //valorNota.setText(String.valueOf(valor));
     }
 
-    public Nfeview(Nfe nfe) {
+    public Nfeview(Nfe nf){
         initComponents();
         InterfaceUtils.preparaTela(this);
+        this.nfe = nf;
+        
+        model.PagamentoLote pagLote = nf.getCodpaglote();
+                
+        Lote lote = pagLote.getCodlote();
+        Fornecedor fornecedor = lote.getCodfornec();
+        
+        dataE.setText(Util.DateToString2(pagLote.getDatpag()));
+        numeroNota.setText(nf.getCodnfe().toString());
+        
+        cnpjEmpresa.setText(Constante.cnpj);
+        razaoEmp.setText(Constante.razao);
+        enderecoEmp.setText(Constante.endereco);
+        municipioEmp.setText(Constante.municipio);
+        ufEmp.setText(Constante.uf.getNomeEstado());
+        emailEmp.setText(Constante.email);
+        
+        cnpjForn.setText(fornecedor.getCnpj());
+        razaoForn.setText(fornecedor.getRazao());
+        enderecoForn.setText(fornecedor.getEndereco());
+        municipioForn.setText(fornecedor.getCidade());
+        ufForn.setText(fornecedor.getCoduf().getNome());
+        emailForn.setText(fornecedor.getEmail());
+        
+        descricaoLote.setText(lote.getDescricao());
+        valorNota.setText(String.valueOf(valor));
     }
 
     /**

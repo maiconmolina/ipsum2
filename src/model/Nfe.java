@@ -108,7 +108,8 @@ public class Nfe implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Nfe[ codnfe=" + codnfe + " ]";
+        return this.codnfe.toString();
+        //return "model.Nfe[ codnfe=" + codnfe + " ]";
     }
     
 }
