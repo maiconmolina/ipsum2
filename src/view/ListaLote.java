@@ -33,7 +33,7 @@ public class ListaLote extends javax.swing.JInternalFrame {
      */
     private LoteJpaController jpa;
     private Lote lote;
-
+    
     public ListaLote() {
         initComponents();
         jpa = new LoteJpaController(ipsum2.Ipsum2.getFactory());
@@ -45,12 +45,14 @@ public class ListaLote extends javax.swing.JInternalFrame {
         List<Lote> llotes = jpa.findLoteEntities();
         DefaultTableModel model = (DefaultTableModel) lotes.getModel();
         int i;
+        
         for (i = 0; i < model.getRowCount(); i++) {
             model.removeRow(i);
         }
-
+        
         List<Object> dados = new ArrayList<>();
         for (Lote lote : llotes) {
+            //JOptionPane.showMessageDialog(rootPane, llotes.size());
             if (lote.getSitlote().equals((SituacaoLote) situacoes.getSelectedItem())) {
                 dados.add(lote.getCodlote());
                 dados.add(lote.getCodfornec().getRazao());
@@ -92,6 +94,7 @@ public class ListaLote extends javax.swing.JInternalFrame {
         situacoes = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         bprodutos = new javax.swing.JButton();
+        bfunc = new javax.swing.JButton();
 
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -153,16 +156,6 @@ public class ListaLote extends javax.swing.JInternalFrame {
             }
         });
 
-        situacoes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                situacoesMouseClicked(evt);
-            }
-        });
-        situacoes.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                situacoesItemStateChanged(evt);
-            }
-        });
         situacoes.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 situacoesKeyReleased(evt);
@@ -182,6 +175,17 @@ public class ListaLote extends javax.swing.JInternalFrame {
             }
         });
 
+        bfunc.setText("Funcionários");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, lotes, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), bfunc, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        bfunc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bfuncActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -197,6 +201,8 @@ public class ListaLote extends javax.swing.JInternalFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(bprodutos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bfunc)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -215,7 +221,9 @@ public class ListaLote extends javax.swing.JInternalFrame {
                             .addComponent(situacoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
                         .addGap(7, 7, 7))
-                    .addComponent(bprodutos, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(bprodutos)
+                        .addComponent(bfunc)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(baltera)
@@ -270,17 +278,20 @@ public class ListaLote extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_bprodutosActionPerformed
 
-    private void situacoesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_situacoesItemStateChanged
-        loadLotes();
-    }//GEN-LAST:event_situacoesItemStateChanged
+    private void bfuncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bfuncActionPerformed
+        if (this.lote == null){
+            return;
+        }
+        ListaFuncLote lfl = new ListaFuncLote(this.lote);
+        Start.addFrame(lfl);
+        lfl.setLocation(10, 10);
+        lfl.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_bfuncActionPerformed
 
     private void situacoesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_situacoesKeyReleased
         loadLotes();
     }//GEN-LAST:event_situacoesKeyReleased
-
-    private void situacoesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_situacoesMouseClicked
-        loadLotes();
-    }//GEN-LAST:event_situacoesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -319,6 +330,7 @@ public class ListaLote extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton baltera;
+    private javax.swing.JButton bfunc;
     private javax.swing.JButton bnovo;
     private javax.swing.JButton bprodutos;
     private javax.swing.ButtonGroup buttonGroup1;
