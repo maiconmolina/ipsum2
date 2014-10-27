@@ -267,6 +267,7 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
             }
             if (caixa == null) {
                 caixa = new Caixa();
+                caixa.setSaldo(0.0);
                 try {
                     caixaController.create(caixa);
                 } catch (Exception ex) {

@@ -108,7 +108,7 @@ public class MostraRelatorioFinanceiro extends javax.swing.JInternalFrame {
                     .addComponent(conteudoEntrada)
                     .addComponent(conteudoSaida)
                     .addComponent(conteudoFinal))
-                .addContainerGap(408, Short.MAX_VALUE))
+                .addContainerGap(369, Short.MAX_VALUE))
         );
 
         pack();

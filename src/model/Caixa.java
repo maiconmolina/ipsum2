@@ -46,6 +46,9 @@ public class Caixa implements Serializable {
     private List<Lancamento> lancamentoList;
 
     public Caixa() {
+        this.saldo = 0.0;
+        this.codcaixa = 1;
+        this.status = (short) 1;
     }
 
     public Caixa(Integer codcaixa) {
