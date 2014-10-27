@@ -232,17 +232,6 @@
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.MENU_FORNECEDOR)){&#xa;    jFornMenu.setVisible(false);&#xa;}"/>
               </AuxValues>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jFornPagamentoLote">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Pagamento do Lote"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFornPagamentoLoteActionPerformed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.PAGAR_LOTE)){&#xa;    jFornPagamentoLote.setVisible(false);&#xa;}"/>
-              </AuxValues>
-            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu4">

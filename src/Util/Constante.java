@@ -9,6 +9,7 @@ public class Constante {
     public static final MaskFormatter CpfMask = Util.setMascara("###.###.###-##");
     public static final MaskFormatter CnpjMask = Util.setMascara("##.###.###/####-##");
     public static final MaskFormatter CepMask = Util.setMascara("#####-###");
+    public static final MaskFormatter MesAno = Util.setMascara("##/####");
 
     public static final String razao = "Ipsum";
     public static final UfEnum uf = UfEnum.PR;

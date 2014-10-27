@@ -67,7 +67,6 @@ public class Start extends javax.swing.JFrame {
         jFuncioListagem = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jFornMenu = new javax.swing.JMenuItem();
-        jFornPagamentoLote = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jCadastroUF = new javax.swing.JMenuItem();
         jTipoPagamento = new javax.swing.JMenuItem();
@@ -275,17 +274,6 @@ public class Start extends javax.swing.JFrame {
             jFornMenu.setVisible(false);
         }
 
-        jFornPagamentoLote.setText("Pagamento do Lote");
-        jFornPagamentoLote.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFornPagamentoLoteActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jFornPagamentoLote);
-        if (!Funcionario.permite(Permissoes.PAGAR_LOTE)){
-            jFornPagamentoLote.setVisible(false);
-        }
-
         menuBar.add(jMenu3);
 
         jMenu4.setText("Geral");
@@ -371,10 +359,6 @@ public class Start extends javax.swing.JFrame {
         tela.setLocation(10, 10);
         tela.setVisible(true);
     }//GEN-LAST:event_jCadastroUFActionPerformed
-
-    private void jFornPagamentoLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFornPagamentoLoteActionPerformed
-        new PagamentoLote();
-    }//GEN-LAST:event_jFornPagamentoLoteActionPerformed
 
     private void jTipoPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTipoPagamentoActionPerformed
         CadastroTipoPagamentoView tela = new CadastroTipoPagamentoView();
@@ -487,7 +471,6 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JMenuItem jCadastroUF;
     private javax.swing.JMenuItem jCaixa;
     private javax.swing.JMenuItem jFornMenu;
-    private javax.swing.JMenuItem jFornPagamentoLote;
     private javax.swing.JMenuItem jFornPagamentoLote1;
     private javax.swing.JMenuItem jFuncaoInserir;
     private javax.swing.JMenuItem jFuncaoListagem;

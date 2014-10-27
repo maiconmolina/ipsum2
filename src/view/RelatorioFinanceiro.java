@@ -5,6 +5,12 @@
  */
 package view;
 
+import Util.Constante;
+import Util.Util;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LuisFernando
@@ -28,23 +34,90 @@ public class RelatorioFinanceiro extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
+        dataPagamento = new javax.swing.JFormattedTextField(Constante.MesAno);
+        jButton4 = new javax.swing.JButton();
+
         setClosable(true);
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Relatório Financeiro");
+
+        jLabel3.setText("Digite o mês e o Ano");
+
+        jButton4.setText("Avançar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(310, 310, 310)
+                        .addComponent(jButton4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dataPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(dataPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.dispose();
+        Date data = null;
+        try {
+            data = Util.StringToDate(dataPagamento.getText());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(data);
+            int mes = cal.get(Calendar.MONTH);
+            int mesCompara;
+            int ano = cal.get(Calendar.YEAR);
+            int anoCompara;
+            boolean achou = false;
+//            for (LancamentoPagfunc pagFunc : listPagFunc) {
+//            cal.setTime(pagFunc.getData());
+            mesCompara = cal.get(Calendar.MONTH);
+            anoCompara = cal.get(Calendar.YEAR);
+//            if (pagFunc.getCodfunc().getCodfunc() == funci.getCodfunc()) {
+            if (mesCompara == mes && anoCompara == ano) {
+                achou = true;
+            }
+//            }
+//            }
+            if (achou == false) {
+                this.dispose();
+//                new FinalizarPagamentoFuncionario(funci, data);
+            } else {
+                JOptionPane.showMessageDialog(this, "O funcionário já foi pago nesta data.");
+                this.dispose();
+                new PagamentoFuncionario();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Data inválida.");
+            this.dispose();
+            new PagamentoFuncionario();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -82,5 +155,10 @@ public class RelatorioFinanceiro extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField dataPagamento;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }
