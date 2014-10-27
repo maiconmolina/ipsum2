@@ -46,7 +46,7 @@ public class TesteMaterial {
     }
 
     @Test
-    public void testDescricaoFalse2() {
+    public void testDescricaoFalse2() {// 4 digitos minimos
         System.out.println("Testando descrição false: ");
         String str = "a";
         boolean resultado = Util.VerificaTamanhoStr(str);
@@ -54,7 +54,7 @@ public class TesteMaterial {
     }
 
     @Test
-    public void testQuantidadeTrue() {
+    public void testQuantidadeTrue() {// valor valido
         System.out.println("Testando quantidade true: ");
         Integer i = 100;
         boolean resultado = Util.VerificaQuantidade(i);
@@ -62,7 +62,7 @@ public class TesteMaterial {
     }
 
     @Test
-    public void testQuantidadeFalse() {
+    public void testQuantidadeFalse() {// valor negativo não é válido para quantidade
         System.out.println("Testando quantidade false: ");
         Integer i = -1;
         boolean resultado = Util.VerificaQuantidade(i);
