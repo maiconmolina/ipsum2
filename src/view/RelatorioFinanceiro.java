@@ -86,36 +86,12 @@ public class RelatorioFinanceiro extends javax.swing.JInternalFrame {
         this.dispose();
         Date data = null;
         try {
-            data = Util.StringToDate(dataPagamento.getText());
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(data);
-            int mes = cal.get(Calendar.MONTH);
-            int mesCompara;
-            int ano = cal.get(Calendar.YEAR);
-            int anoCompara;
-            boolean achou = false;
-//            for (LancamentoPagfunc pagFunc : listPagFunc) {
-//            cal.setTime(pagFunc.getData());
-            mesCompara = cal.get(Calendar.MONTH);
-            anoCompara = cal.get(Calendar.YEAR);
-//            if (pagFunc.getCodfunc().getCodfunc() == funci.getCodfunc()) {
-            if (mesCompara == mes && anoCompara == ano) {
-                achou = true;
-            }
-//            }
-//            }
-            if (achou == false) {
-                this.dispose();
-//                new FinalizarPagamentoFuncionario(funci, data);
-            } else {
-                JOptionPane.showMessageDialog(this, "O funcionário já foi pago nesta data.");
-                this.dispose();
-                new PagamentoFuncionario();
-            }
+            data = Util.StringToDate("01/" + dataPagamento.getText());
+            new MostraRelatorioFinanceiro(data, dataPagamento.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Data inválida.");
             this.dispose();
-            new PagamentoFuncionario();
+            new RelatorioFinanceiro();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
