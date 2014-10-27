@@ -43,12 +43,62 @@ public class PagamentoLote extends javax.swing.JInternalFrame {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         campoData.setText(dateFormat.format(date));
-//        hue();
+        List<Caixa> caixas;
+        Caixa caixa = null;
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        caixas = caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getResultList();
+        for (Caixa c : caixas) {
+            if (c.getCodcaixa() == 1) {
+                caixa = c;
+            }
+        }
+        if (caixa.getStatus() == 0) {
+            JOptionPane.showMessageDialog(this, "Não é possível pagar lote pois o caixa está fechado.");
+            this.dispose();
+            new TelaCaixa();
+        }
+        if (caixa == null) {
+            caixa = new Caixa();
+            caixa.setCodcaixa(1);
+            caixa.setSaldo(0.0);
+            caixa.setStatus(Short.parseShort("1"));
+            try {
+                caixaController.create(caixa);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     public PagamentoLote(PagamentoLote paglote) {
         initComponents();
         InterfaceUtils.preparaTela(this);
+        List<Caixa> caixas;
+        Caixa caixa = null;
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        caixas = caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getResultList();
+        for (Caixa c : caixas) {
+            if (c.getCodcaixa() == 1) {
+                caixa = c;
+            }
+        }
+        if (caixa.getStatus() == 0) {
+            JOptionPane.showMessageDialog(this, "Não é possível pagar lote pois o caixa está fechado.");
+            this.dispose();
+            new TelaCaixa();
+        }
+        if (caixa == null) {
+            caixa = new Caixa();
+            caixa.setCodcaixa(1);
+            caixa.setSaldo(0.0);
+            caixa.setStatus(Short.parseShort("1"));
+            try {
+                caixaController.create(caixa);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
     }
 

@@ -87,11 +87,14 @@ public class RelatorioFinanceiro extends javax.swing.JInternalFrame {
         Date data = null;
         try {
             data = Util.StringToDate("01/" + dataPagamento.getText());
-            new MostraRelatorioFinanceiro(data, dataPagamento.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Data inválida.");
             this.dispose();
             new RelatorioFinanceiro();
+        }
+        if (data != null) {
+            this.dispose();
+            new MostraRelatorioFinanceiro(data, dataPagamento.getText());
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

@@ -40,9 +40,36 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         initComponents();
         InterfaceUtils.preparaTela(this);
 
-        statusCaixa.setText("Aberto");
-        alterar.setEnabled(true);
-        novoLanc.setEnabled(true);
+        List<Caixa> caixas;
+        Caixa caixa = null;
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        caixas = caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getResultList();
+        for (Caixa c : caixas) {
+            if (c.getCodcaixa() == 1) {
+                caixa = c;
+            }
+        }
+        if (caixa == null) {
+            caixa = new Caixa();
+            caixa.setCodcaixa(1);
+            caixa.setSaldo(0.0);
+            caixa.setStatus(Short.parseShort("1"));
+            try {
+                caixaController.create(caixa);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (caixa.getStatus() == 1) {
+            statusCaixa.setText("Aberto");
+            alterar.setEnabled(true);
+            novoLanc.setEnabled(true);
+
+        } else {
+            statusCaixa.setText("Fechado");
+            alterar.setEnabled(false);
+            novoLanc.setEnabled(false);
+        }
         List<Lancamento> lancamentos;
         LancamentoJpaController lancamentoController = new LancamentoJpaController(ipsum2.Ipsum2.getFactory());
         lancamentos = lancamentoController.getEntityManager().createNamedQuery("Lancamento.findAll").getResultList();
@@ -66,8 +93,14 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
         }
         saldo.setText("R$ " + String.valueOf(saldoCaixa).replace(".", ","));
         this.saldoFinal = saldoCaixa;
-        Caixa caixa = InitCaixa();
+        caixa.setSaldo(saldoCaixa);
         this.caixa = caixa;
+        try {
+            caixaController.edit(caixa);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         this.insereTabela(lancamentos);
 
     }
@@ -130,8 +163,8 @@ public class TelaCaixa extends javax.swing.JInternalFrame {
             if (o.getLancamentoRecforn() != null) {
                 dados.add(DateToString2(o.getLancamentoRecforn().getData()));
             }
-            if (o.getLancamentoPagfunc()!= null) {
-                dados.add(DateToString(o.getLancamentoPagfunc().getData()));
+            if (o.getLancamentoPagfunc() != null) {
+                dados.add(DateToString(o.getLancamentoPagfunc().getData()).substring(0, 6)+DateToString(o.getLancamentoPagfunc().getData()).substring(8));
             }
 
             model.addRow(dados.toArray());

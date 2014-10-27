@@ -5,20 +5,31 @@
  */
 package view;
 
+import controller.CaixaJpaController;
 import enuns.Permissoes;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Caixa;
 import model.Funcionario;
 
 public class Start extends javax.swing.JFrame {
 
+    public static Caixa caixa = null;
+
     public Start() {
         Funcionario.atualizaPermissoes();
-
-        initComponents();
         setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        initComponents();
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        this.caixa = (Caixa) caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getSingleResult();
+        if (this.caixa.getCodcaixa() == null || this.caixa.getCodcaixa() != 1) {
+            this.caixa = new Caixa();
+            this.caixa.setCodcaixa(1);
+            this.caixa.setSaldo(0.0);
+            this.caixa.setStatus(Short.parseShort("1"));
+        }
     }
 
     public static void addFrame(Component comp) {
@@ -426,7 +437,7 @@ public class Start extends javax.swing.JFrame {
     }//GEN-LAST:event_jFornPagamentoLote1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-       new RelatorioFinanceiro();
+        new RelatorioFinanceiro();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**

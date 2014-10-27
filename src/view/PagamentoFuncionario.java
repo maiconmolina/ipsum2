@@ -7,6 +7,7 @@ package view;
 
 import Util.Constante;
 import Util.Util;
+import controller.CaixaJpaController;
 import controller.FuncionarioJpaController;
 import controller.LancamentoPagfuncJpaController;
 import enuns.Meses;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.Caixa;
 import model.Funcionario;
 import model.LancamentoPagfunc;
 
@@ -31,6 +33,33 @@ public class PagamentoFuncionario extends javax.swing.JInternalFrame {
     public PagamentoFuncionario() {
         InterfaceUtils.preparaTela(this);
         initComponents();
+        
+        List<Caixa> caixas;
+        Caixa caixa = null;
+        CaixaJpaController caixaController = new CaixaJpaController(ipsum2.Ipsum2.getFactory());
+        caixas = caixaController.getEntityManager().createNamedQuery("Caixa.findAll").getResultList();
+        for (Caixa c : caixas) {
+            if (c.getCodcaixa() == 1) {
+                caixa = c;
+            }
+        }
+        if (caixa.getStatus() == 0) {
+            JOptionPane.showMessageDialog(this, "Não é possível pagar funcionário pois o caixa está fechado.");
+            this.dispose();
+            new TelaCaixa();
+        }
+        if (caixa == null) {
+            caixa = new Caixa();
+            caixa.setCodcaixa(1);
+            caixa.setSaldo(0.0);
+            caixa.setStatus(Short.parseShort("1"));
+            try {
+                caixaController.create(caixa);
+            } catch (Exception ex) {
+                Logger.getLogger(TelaCaixa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     /**
