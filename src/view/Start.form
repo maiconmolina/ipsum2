@@ -15,29 +15,13 @@
             <Property name="text" type="java.lang.String" value="Ipsum"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="openMenuItem">
-              <Properties>
-                <Property name="mnemonic" type="int" value="111"/>
-                <Property name="text" type="java.lang.String" value="Open"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="saveMenuItem">
-              <Properties>
-                <Property name="mnemonic" type="int" value="115"/>
-                <Property name="text" type="java.lang.String" value="Save"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="saveAsMenuItem">
-              <Properties>
-                <Property name="mnemonic" type="int" value="97"/>
-                <Property name="text" type="java.lang.String" value="Save As ..."/>
-                <Property name="displayedMnemonicIndex" type="int" value="5"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
               <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Q"/>
+                </Property>
                 <Property name="mnemonic" type="int" value="120"/>
-                <Property name="text" type="java.lang.String" value="Exit"/>
+                <Property name="text" type="java.lang.String" value="Sair"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitMenuItemActionPerformed"/>
@@ -83,6 +67,32 @@
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (!Funcionario.permite(Permissoes.MENU_LOTE)){&#xa;    jLotes.setVisible(false);&#xa;}"/>
               </AuxValues>
             </MenuItem>
+            <Menu class="javax.swing.JMenu" name="jMenu6">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Produ&#xe7;&#xe3;o Di&#xe1;ria"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Ctrl+A"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Atualizar"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Consultar"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">

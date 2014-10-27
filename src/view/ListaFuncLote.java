@@ -50,7 +50,7 @@ public class ListaFuncLote extends javax.swing.JInternalFrame {
         tfun = new javax.swing.JTable();
         bsalvar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jlote = new javax.swing.JLabel();
 
         setClosable(true);
         setTitle("Funcionários do Lote");
@@ -98,7 +98,7 @@ public class ListaFuncLote extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Lote:");
 
-        jLabel2.setText(" ");
+        jlote.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,7 +114,7 @@ public class ListaFuncLote extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlote, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -124,7 +124,7 @@ public class ListaFuncLote extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jlote))
                 .addGap(11, 11, 11)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -177,8 +177,8 @@ public class ListaFuncLote extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bsalvar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jlote;
     private javax.swing.JTable tfun;
     // End of variables declaration//GEN-END:variables
 
@@ -187,6 +187,7 @@ public class ListaFuncLote extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(rootPane, "Lote invalido");
         }
         this.lote = plote;
+        jlote.setText(this.lote.getCodlote().toString());
 
     }
 

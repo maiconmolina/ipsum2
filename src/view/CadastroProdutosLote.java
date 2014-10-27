@@ -61,7 +61,7 @@ public class CadastroProdutosLote extends javax.swing.JInternalFrame {
             
             for (ProdutoDoLote pdl : pdlote){
                 if (p.equals(pdl.getProduto())){
-                    dados.add(pdl.getQtde());
+                    dados.add((pdl.getQtde()==null)?0:pdl.getQtde());
                     dados.add(true);
                 }
                 else zerado = true;
@@ -223,8 +223,11 @@ public class CadastroProdutosLote extends javax.swing.JInternalFrame {
         }
         
         int i;
+        Boolean b = false;
         for(i = 0; i < model.getRowCount(); i++){
-            if ((Boolean)model.getValueAt(i, 4)){
+            b = (Boolean)model.getValueAt(i, 4);
+            if (b == null) b = false;
+            if (b){
                 Integer pd = (Integer)model.getValueAt(i, 0);
                 p = jpaprod.findProduto(pd);
                 pdl = new ProdutoDoLote();
@@ -258,6 +261,7 @@ public class CadastroProdutosLote extends javax.swing.JInternalFrame {
         int i;
         Double v = (double) 0;
         Boolean b;
+        Double qtde, preco;
         
         for(i = 0; i < model.getRowCount(); i++){
             if (model.getValueAt(i, 4) == null) b = false;
@@ -265,8 +269,13 @@ public class CadastroProdutosLote extends javax.swing.JInternalFrame {
                 b = (Boolean)model.getValueAt(i, 4);
             }
             if (b){
-                v = v + Double.parseDouble(model.getValueAt(i, 3).toString()) * (double) model.getValueAt(i, 2);
+                if (model.getValueAt(i, 3) == null)  qtde = (double) 0;
+                else qtde = Double.parseDouble(model.getValueAt(i, 3).toString());
                 
+                if (model.getValueAt(i, 2) == null) preco = (double) 0;
+                else preco = Double.parseDouble(model.getValueAt(i, 2).toString());
+                
+                v = v + qtde * preco;
             }
         }
         

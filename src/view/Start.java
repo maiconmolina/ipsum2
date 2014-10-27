@@ -15,6 +15,7 @@ public class Start extends javax.swing.JFrame {
 
     public Start() {
         Funcionario.atualizaPermissoes();
+        
         initComponents();
         setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -43,14 +44,14 @@ public class Start extends javax.swing.JFrame {
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMaterial = new javax.swing.JMenuItem();
         jProduto = new javax.swing.JMenuItem();
         jLotes = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jCaixa = new javax.swing.JMenuItem();
         jPagarFunc = new javax.swing.JMenuItem();
@@ -80,21 +81,9 @@ public class Start extends javax.swing.JFrame {
         fileMenu.setMnemonic('f');
         fileMenu.setText("Ipsum");
 
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
-        fileMenu.add(openMenuItem);
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        fileMenu.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        fileMenu.add(saveAsMenuItem);
-
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
+        exitMenuItem.setText("Sair");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
@@ -138,6 +127,27 @@ public class Start extends javax.swing.JFrame {
         if (!Funcionario.permite(Permissoes.MENU_LOTE)){
             jLotes.setVisible(false);
         }
+
+        jMenu6.setText("Produção Diária");
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Atualizar");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem2);
+
+        jMenuItem3.setText("Consultar");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem3);
+
+        jMenu1.add(jMenu6);
 
         menuBar.add(jMenu1);
 
@@ -390,6 +400,21 @@ public class Start extends javax.swing.JFrame {
         new ListaNfe();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        AtualizaProducaoDiaria pd = new AtualizaProducaoDiaria();
+        addFrame(pd);
+        pd.setLocation(10, 10);
+        pd.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        ConsultaProducao cp = new ConsultaProducao();
+        addFrame(cp);
+        cp.setLocation(10, 10);
+        cp.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -446,16 +471,16 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jPagarFunc;
     private javax.swing.JMenuItem jProduto;
     private javax.swing.JMenuItem jSituacaoLote;
     private javax.swing.JMenuItem jTipoPagamento;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 
 }
