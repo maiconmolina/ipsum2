@@ -6,10 +6,15 @@
 package view;
 
 import controller.LoteJpaController;
+import controller.ProducaoDiariaJpaController;
 import java.awt.event.ItemEvent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 import model.Lote;
+import model.ProducaoDiaria;
+import model.ProdutoDoLote;
 
 /**
  *
@@ -21,8 +26,10 @@ public class ConsultaProducao extends javax.swing.JInternalFrame {
      * Creates new form ConsultaProducao
      */
     private Lote lote;
+    private ProducaoDiariaJpaController jpapd;
     public ConsultaProducao() {
         initComponents();
+        jpapd = new ProducaoDiariaJpaController(ipsum2.Ipsum2.getFactory());
         loadLotes();
     }
 
@@ -38,7 +45,7 @@ public class ConsultaProducao extends javax.swing.JInternalFrame {
         lotes = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        producoes = new javax.swing.JTable();
 
         setClosable(true);
         setTitle("Consulta Produção");
@@ -51,12 +58,9 @@ public class ConsultaProducao extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Lote:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        producoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Funcionário", "Produto", "Produzido", "Total"
@@ -77,10 +81,10 @@ public class ConsultaProducao extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(30);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(30);
+        jScrollPane1.setViewportView(producoes);
+        if (producoes.getColumnModel().getColumnCount() > 0) {
+            producoes.getColumnModel().getColumn(2).setPreferredWidth(30);
+            producoes.getColumnModel().getColumn(3).setPreferredWidth(30);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,7 +119,9 @@ public class ConsultaProducao extends javax.swing.JInternalFrame {
 
     private void lotesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_lotesItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED){
-            
+            this.lote = (Lote) lotes.getSelectedItem();
+            if (this.lote != null)
+            loadProducao();
         }
     }//GEN-LAST:event_lotesItemStateChanged
 
@@ -123,8 +129,8 @@ public class ConsultaProducao extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JComboBox lotes;
+    private javax.swing.JTable producoes;
     // End of variables declaration//GEN-END:variables
 
     private void loadLotes() {
@@ -136,5 +142,31 @@ public class ConsultaProducao extends javax.swing.JInternalFrame {
             model.addElement(l);
         }
         
+    }
+
+    private void loadProducao() {
+        List<ProducaoDiaria> prods = jpapd.getEntityManager().createNamedQuery("ProducaoDiaria.findByCodlote").setParameter("codlote", lote.getCodlote()).getResultList();
+        DefaultTableModel model = (DefaultTableModel) producoes.getModel();
+        List<Object> dados = new ArrayList<>();
+        
+        int z;
+        for (z = 0; z < model.getRowCount(); z++){
+            model.removeRow(z);
+        }
+        
+        
+        for (ProducaoDiaria p : prods){
+            dados.add(p.getFuncionario().getNome());
+            dados.add(p.getProduto().getDescricao());
+            dados.add(p.getQtde());
+            for (ProdutoDoLote x : lote.getProdutoDoLoteList()){
+                if (p.getProduto().equals(x.getProduto())){
+                    dados.add(x.getQtde());
+                }
+            }
+            
+            model.addRow(dados.toArray());
+            dados.clear();
+        }
     }
 }
