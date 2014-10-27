@@ -325,7 +325,7 @@ public class Util {
         if (i < 0 || i > 1000000) {
             return false;
         }
-        return true;
+        return (i % 1) == 0;
     }
 
     public static boolean VerificaQuantidade(String s) {
@@ -335,5 +335,6 @@ public class Util {
     public static boolean VerificaQuantidade(Double d) {
         return (d % 1) == 0;
     }
+
 //Maicon
 }

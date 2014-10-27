@@ -15,7 +15,7 @@ public class Start extends javax.swing.JFrame {
 
     public Start() {
         Funcionario.atualizaPermissoes();
-        
+
         initComponents();
         setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -56,6 +56,8 @@ public class Start extends javax.swing.JFrame {
         jCaixa = new javax.swing.JMenuItem();
         jPagarFunc = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jFornPagamentoLote1 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jFuncaoMenu = new javax.swing.JMenu();
         jFuncaoInserir = new javax.swing.JMenuItem();
@@ -182,6 +184,25 @@ public class Start extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jMenuItem1);
+
+        jFornPagamentoLote1.setText("Pagamento do Lote");
+        jFornPagamentoLote1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFornPagamentoLote1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jFornPagamentoLote1);
+        if (!Funcionario.permite(Permissoes.PAGAR_LOTE)){
+            jFornPagamentoLote.setVisible(false);
+        }
+
+        jMenuItem4.setText("Relatório financeiro");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
 
         menuBar.add(jMenu2);
 
@@ -405,7 +426,7 @@ public class Start extends javax.swing.JFrame {
         addFrame(pd);
         pd.setLocation(10, 10);
         pd.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -414,6 +435,15 @@ public class Start extends javax.swing.JFrame {
         cp.setLocation(10, 10);
         cp.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jFornPagamentoLote1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFornPagamentoLote1ActionPerformed
+        new PagamentoLote();
+
+    }//GEN-LAST:event_jFornPagamentoLote1ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+       new RelatorioFinanceiro();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -458,6 +488,7 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JMenuItem jCaixa;
     private javax.swing.JMenuItem jFornMenu;
     private javax.swing.JMenuItem jFornPagamentoLote;
+    private javax.swing.JMenuItem jFornPagamentoLote1;
     private javax.swing.JMenuItem jFuncaoInserir;
     private javax.swing.JMenuItem jFuncaoListagem;
     private javax.swing.JMenu jFuncaoMenu;
@@ -475,6 +506,7 @@ public class Start extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jPagarFunc;
     private javax.swing.JMenuItem jProduto;
