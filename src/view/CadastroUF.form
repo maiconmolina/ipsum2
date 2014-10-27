@@ -73,8 +73,8 @@
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="codufField" alignment="0" pref="345" max="32767" attributes="0"/>
-                                  <Component id="nomeField" alignment="0" pref="345" max="32767" attributes="0"/>
+                                  <Component id="codufField" alignment="0" pref="337" max="32767" attributes="0"/>
+                                  <Component id="nomeField" alignment="0" pref="337" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="masterScrollPane" pref="380" max="32767" attributes="0"/>
@@ -161,7 +161,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="codufLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="UF:"/>
+        <Property name="text" type="java.lang.String" value="Cod UF:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="nomeLabel">
