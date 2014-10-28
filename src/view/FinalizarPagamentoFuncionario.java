@@ -61,8 +61,6 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
         nomeFuncionario = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         data = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        valorProduzido = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         salario = new javax.swing.JLabel();
@@ -85,11 +83,6 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
 
         data.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         data.setText("none");
-
-        jLabel3.setText("Valor produzido:");
-
-        valorProduzido.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        valorProduzido.setText("none");
 
         jLabel4.setText("Salário:");
 
@@ -139,10 +132,9 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel3)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel5)
@@ -151,7 +143,6 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nomeFuncionario)
                     .addComponent(data)
-                    .addComponent(valorProduzido)
                     .addComponent(salario)
                     .addComponent(total)
                     .addComponent(bonificacao, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -174,11 +165,7 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(data))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(valorProduzido))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(salario))
@@ -190,7 +177,7 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(total))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -306,13 +293,11 @@ public class FinalizarPagamentoFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel nomeFuncionario;
     private javax.swing.JLabel salario;
     private javax.swing.JLabel total;
-    private javax.swing.JLabel valorProduzido;
     // End of variables declaration//GEN-END:variables
 }

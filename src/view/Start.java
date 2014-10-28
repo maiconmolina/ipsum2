@@ -202,9 +202,9 @@ public class Start extends javax.swing.JFrame {
             }
         });
         jMenu2.add(jFornPagamentoLote1);
-      //  if (!Funcionario.permite(Permissoes.PAGAR_LOTE)){
-    //        jFornPagamentoLote.setVisible(false);
-      //  }
+        if (!Funcionario.permite(Permissoes.PAGAR_LOTE)){
+            
+        }
 
         jMenuItem4.setText("Relatório financeiro");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {

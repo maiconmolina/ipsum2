@@ -50,7 +50,7 @@ public class TesteLancamento {
         System.out.println("Testando descrição false: ");
         String str = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tempor consequat nisl et placerat. In rhoncus neque ullamcorper, cursus massa sit amet, malesuada lacus. Morbi vel ante at purus ornare luctus non a tortor. Duis elementum tincidunt nisl quis rhoncus. Pellentesque pharetra lobortis mauris, ut bibendum urna viverra sed. Duis consequat tempus velit, vel sollicitudin leo viverra ut. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras dictum dui et massa sodales, ac malesuada nibh volutpat. Nunc vitae venenatis dolor. Quisque vulputate tortor tortor, nec venenatis dolor blandit et. Etiam nisl lacus, consequat et orci sed, dictum ultrices odio. Sed erat lacus, ultricies in tortor ac, condimentum tincidunt eros.";
         boolean resultadoEsperado = false;
-        boolean resultado = Util.VerificaTamanhoStr(str);
+        boolean resultado = !Util.VerificaTamanhoStr(str);
         assertEquals(resultadoEsperado, resultado);
     }
 

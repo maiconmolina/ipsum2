@@ -19,7 +19,7 @@ public class ListaProdutos extends javax.swing.JInternalFrame {
     public ListaProdutos() {
         initComponents();
         InterfaceUtils.preparaTela(this);
-
+        jAtivo2.setVisible(false);
         ProdutoJpaController produtoController = new ProdutoJpaController(ipsum2.Ipsum2.getFactory());
         this.listProdutos = produtoController.getEntityManager().createNamedQuery("Produto.findAll").getResultList();
         this.listProdutosAtivos = produtoController.getEntityManager().createNamedQuery("Produto.findByAtivo").setParameter("ativo", 1).getResultList();
@@ -28,6 +28,7 @@ public class ListaProdutos extends javax.swing.JInternalFrame {
 
     public ListaProdutos(Produto p) {
         initComponents();
+        jAtivo2.setVisible(false);
         InterfaceUtils.preparaTela(this);
     }
 
